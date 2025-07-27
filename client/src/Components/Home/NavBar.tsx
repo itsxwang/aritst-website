@@ -1,5 +1,5 @@
 import React, { useContext, useState } from "react";
-import ThemeContext from "../../globalContexts/themeContext";
+import ThemeContext from "../../contexts/themeContext";
 import { Search, Sun, Moon, Menu, X } from "lucide-react";
 
 const Navbar: React.FC = () => {
@@ -8,9 +8,9 @@ const Navbar: React.FC = () => {
 
   return (
     <nav
-      className={`flex items-center font-[sans-serif] justify-between px-6 md:px-8 py-4 border-b transition-colors duration-300 ${theme === "dark"
-          ? "bg-[#131528] border-gray-700 text-white"
-          : "bg-white border-gray-200 text-gray-900"
+      className={`flex items-center font-[sans-serif] justify-between px-6 md:px-8 py-4 border-b transition-colors duration-300 backdrop-blur-md z-50 overflow-x-hidden overflow-y-hidden  ${theme === "dark"
+          ? "bg-gray-900/90 border-gray-700 text-white"
+          : "bg-beige-50/90 border-gray-400 text-gray-900 border-b-1"
         }`}
     >
       {/* ✅ Brand */}
@@ -30,7 +30,7 @@ const Navbar: React.FC = () => {
             className="relative font-[inter] group px-2 font-medium"
           >
             {link}
-            <span className="absolute left-0 -bottom-[5px] w-0 h-[2px] bg-current transition-all duration-300 group-hover:w-full"></span>
+            <span className="absolute left-0 -bottom-[5px] w-0 h-[1px] bg-current transition-all duration-300 group-hover:w-full"></span>
           </a>
         ))}
       </div>
@@ -84,7 +84,7 @@ const Navbar: React.FC = () => {
             className="relative font-[inter] group px-2 font-medium"
           >
             {link}
-            <span className="absolute left-0 -bottom-[5px] w-0 h-[2px] bg-current transition-all duration-300 group-hover:w-full"></span>
+            <span className="absolute left-0 -bottom-[5px] w-0 h-[1px] bg-current transition-all duration-300 group-hover:w-full"></span>
           </a>
         ))}
         </div>

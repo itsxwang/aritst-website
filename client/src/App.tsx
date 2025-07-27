@@ -2,7 +2,7 @@ import {  useState } from "react";
 
 
 import Home from "./Components/Home/Home";
-import ThemeContext from "./globalContexts/themeContext";
+import ThemeContext from "./contexts/themeContext";
 
 import './index.css';
 

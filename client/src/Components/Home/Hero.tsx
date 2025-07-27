@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import ThemeContext from "../../globalContexts/themeContext";
+import ThemeContext from "../../contexts/themeContext";
 import "./hero.css"; // ✅ we’ll add a tiny custom CSS file
 
 function Hero() {
@@ -34,7 +34,7 @@ function Hero() {
       {/* ✅ Subheading */}
       <p
         className={`hero-subheading text-lg md:text-xl lg:text-2xl max-w-6xl mb-10 font-inter transition-colors duration-300 whitespace-nowrap md:whitespace-normal ${
-          theme === "dark" ? "text-gray-200" : "text-gray-700"
+          theme === "dark" ? "text-gray-200" : "text-gray-900"
         }`}
       >
         Contemporary paintings that capture the essence of emotion and beauty.
@@ -55,7 +55,7 @@ function Hero() {
         <button
           className={`px-6 py-3 rounded-md font-semibold font-inter cursor-pointer transition-all duration-300 transform hover:scale-105 ${
             theme === "dark"
-              ? "bg-black text-white hover:bg-gray-800 border border-gray-700"
+              ? "bg-black text-white hover:bg-gray-800 border border-gray-900"
               : "bg-white text-gray-900 hover:bg-gray-100 border border-gray-300"
           }`}
         >
