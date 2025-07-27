@@ -8,7 +8,7 @@ function Home() {
   const { theme } = useContext(ThemeContext);
   return (
     <>
-    <div className={`${ theme === "dark" && 'bg-gradient-to-b from-gray-900 to-black sticky top-0 z-50'} sticky top-0 z-50`}>
+    <div id="homeNavParent" className={`${ theme === "dark" && 'bg-gradient-to-b from-gray-900 to-black sticky top-0 z-50'} sticky top-0 z-50`}>
       <Navbar />
     </div>
     

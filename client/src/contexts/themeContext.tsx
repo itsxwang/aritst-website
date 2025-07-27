@@ -5,7 +5,7 @@ interface ThemeContextProps {
         setTheme: Dispatch<SetStateAction<string>>;
     }
     
-const ThemeContext = createContext<ThemeContextProps>({
+    const ThemeContext = createContext<ThemeContextProps>({
         theme: 'dark',
         setTheme: () => {},
     });

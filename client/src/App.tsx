@@ -1,4 +1,4 @@
-import {  useState } from "react";
+import {  useState,useEffect } from "react";
 
 
 import Home from "./Components/Home/Home";
@@ -9,7 +9,17 @@ import './index.css';
 
 
 function App() {
-  const [theme, setTheme] = useState("dark");
+  const [theme, setTheme] = useState(() => {
+    const storedTheme = localStorage.getItem("theme");
+    if (storedTheme === null) {
+      return "dark";
+    }
+    return storedTheme === "light" ? "light" : "dark";
+  });
+
+  useEffect(() => {
+    localStorage.setItem("theme", theme);
+  }, [theme]);
 
   return (
     <>
