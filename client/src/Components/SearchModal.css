@@ -1,0 +1,19 @@
+@media (max-width: 547px) {
+    .cus-main-input::placeholder {
+        font-size: 0.9rem;
+        padding-left: 0;
+        padding-right: 5px ;
+
+    }
+
+}
+
+@media (max-width: 505px) {
+    .cus-main-input::placeholder {
+        font-size: 0.8rem;
+        padding-left: 0;
+        padding-right: 15px ;
+        
+    }
+
+}
