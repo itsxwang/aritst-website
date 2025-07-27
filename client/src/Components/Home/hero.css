@@ -1,0 +1,33 @@
+/* ✅ At ~610px: allow subheading wrap + slight shrink */
+@media (max-width: 610px) {
+  .hero-subheading {
+    white-space: normal;
+    font-size: 1rem;
+  }
+}
+
+/* ✅ At ~517px: heading shrinks */
+@media (max-width: 517px) {
+  .hero-heading {
+    font-size: 2.8rem;
+    line-height: 1.1;
+  }
+}
+
+/* ✅ NEW - At ~401px: shrink heading + buttons */
+@media (max-width: 420px) {
+  .hero-heading {
+    font-size: 2.2rem;  /* smaller heading for tiny devices */
+    line-height: 1.05;
+  }
+
+  .hero-subheading {
+    font-size: 0.9rem; /* subheading adjusts too */
+  }
+
+  /* Buttons shrink: less padding + smaller text */
+  button {
+    padding: 0.5rem 1rem;
+    font-size: 0.85rem;
+  }
+}
