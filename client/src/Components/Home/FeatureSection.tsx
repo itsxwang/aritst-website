@@ -18,9 +18,9 @@ function FeatureSection() {
   ];
 
   return (
-    <section className={`w-full py-12 cursor-pointer ${theme === 'dark' ? 'bg-[#202738] text-white' : 'bg-gray-100 text-gray-800'}`}>
+    <section className={`pb-20 pt-20 w-full py-12 cursor-pointer ${theme === 'dark' ? 'bg-[#202738] text-white' : 'bg-gray-100 text-gray-800'}`}>
       <div className="container mx-auto px-4 text-center">
-        <h2 className="font-[playflair] text-7xl font-bold mb-4">Featured Artworks</h2>
+        <h2 className="font-[playflair] text-5xl font-bold mb-4">Featured Artworks</h2>
         <p className="font-[Intra]  text-2xl mb-8">Discover the latest collection of contemporary paintings, each piece telling its own unique story</p>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {featuredItems.map((item, index) => (
@@ -29,7 +29,7 @@ function FeatureSection() {
               <h3 className="text-xl font-semibold mb-2">{item.title}</h3>
               <p className={`${ theme === 'dark' ? 'text-gray-100' : 'text-gray-900'}  mb-2`}>{item.description}</p>
               <p className={` ${ theme === 'dark' ? 'text-gray-100' : 'text-gray-900'} font-bold mb-4`}>{item.price}</p>
-              <button className={`cursor-pointer w-full bg-[#817565] font-semibold py-2 rounded ${ theme === 'dark' ? 'text-white hover:bg-[#625a50]' : 'bg-[#625a50] hover:bg-[#686055]  text-gray-900'} `}>Buy</button>
+              <button className={`cursor-pointer transition duration-200 w-full bg-[#817565] font-semibold py-2 rounded ${ theme === 'dark' ? 'text-white hover:bg-[#625a50]' : 'bg-[#625a50] hover:bg-[#686055]  text-gray-900'} `}>Buy</button>
             </div>
           ))}
         </div>

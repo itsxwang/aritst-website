@@ -18,10 +18,10 @@ function Home() {
         <Hero />
       </main>
 
-      <section>
+      <section >
           <FeatureSection />
       </section>
-
+      
       <Footer />
     </>
   )
