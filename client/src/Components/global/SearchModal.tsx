@@ -1,7 +1,7 @@
 import React, { useEffect, useContext } from "react";
 import ReactDOM from "react-dom";
 import { X } from "lucide-react";
-import ThemeContext from "../contexts/themeContext";
+import ThemeContext from "../../contexts/themeContext";
 import './SearchModal.css'
 
 interface SearchModalProps {

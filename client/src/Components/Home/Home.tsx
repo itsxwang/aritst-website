@@ -4,6 +4,7 @@ import ThemeContext from "../../contexts/themeContext"
 import Hero from "./Hero"
 import Navbar from "./NavBar"
 import FeatureSection from "./FeatureSection";
+import Footer from "../global/Footer";
 
 function Home() {
   const { theme } = useContext(ThemeContext);
@@ -21,6 +22,7 @@ function Home() {
           <FeatureSection />
       </section>
 
+      <Footer />
     </>
   )
 }

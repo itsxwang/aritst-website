@@ -33,7 +33,7 @@ function FeatureSection() {
             </div>
           ))}
         </div>
-        <button className={`cursor-pointer mt-8 px-9 py-[0.4rem] font-[Inter] font-semibold text-[1.2rem] transition duration-200 rounded ${theme === 'dark' ? 'bg-gray-700 hover:bg-gray-600 text-gray-100' : ' bg-[#E0DCD1] hover:bg-[#cec7b5] text-gray-800'} `}>
+        <button className={`cursor-pointer mt-15 px-9 py-[0.4rem] font-[Inter] font-semibold text-[1.2rem] transition duration-200 rounded ${theme === 'dark' ? 'bg-gray-700 hover:bg-gray-600 text-gray-100' : ' bg-[#E0DCD1] hover:bg-[#cec7b5] text-gray-800'} `}>
           View All Artworks
     <span className="ml-2 text-2xl">→</span>
         </button>

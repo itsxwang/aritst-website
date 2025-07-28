@@ -1,7 +1,7 @@
 import React, { useContext, useState, useEffect } from "react";
 import ThemeContext from "../../contexts/themeContext";
 import { Search, Sun, Moon, Menu, X } from "lucide-react";
-import SearchModal from "../SearchModal";
+import SearchModal from "../global/SearchModal";
 
 const Navbar: React.FC = () => {
   const { theme, setTheme } = useContext(ThemeContext);
