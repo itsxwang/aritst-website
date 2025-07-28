@@ -42,7 +42,7 @@ const SearchModal: React.FC<SearchModalProps> = ({ isOpen, onClose }) => {
         </button>
 
         {/* ✅ Title */}
-        <h2 className="text-3xl font-semibold mb-5 font-[playfair]">Search Artwork</h2>
+        <h2 className="cus-input-heading text-3xl font-semibold mb-5 font-[playfair]">Search Artwork</h2>
 
         {/* ✅ Search Input Wrapper */}
         <div className="relative">
@@ -68,7 +68,7 @@ const SearchModal: React.FC<SearchModalProps> = ({ isOpen, onClose }) => {
           <input
             autoFocus
             type="text"
-            placeholder="Search artworks by name, medium, or description..."
+            placeholder= {window.innerWidth < 487 ? "Search artworks..." : "Search artworks by name, medium, or description..."}
             className={`cus-main-input flex h-10 w-full rounded-md border px-3 py-2 text-base md:text-sm pl-10
               placeholder:text-muted-foreground focus:outline-none 
               ${theme === "dark" 

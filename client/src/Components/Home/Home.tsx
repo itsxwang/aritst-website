@@ -3,6 +3,7 @@ import ThemeContext from "../../contexts/themeContext"
 
 import Hero from "./Hero"
 import Navbar from "./NavBar"
+import FeatureSection from "./FeatureSection";
 
 function Home() {
   const { theme } = useContext(ThemeContext);
@@ -15,6 +16,10 @@ function Home() {
       <main className="flex flex-col items-center w-full">
         <Hero />
       </main>
+
+      <section>
+          <FeatureSection />
+      </section>
 
     </>
   )

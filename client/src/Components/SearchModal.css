@@ -2,18 +2,22 @@
     .cus-main-input::placeholder {
         font-size: 0.9rem;
         padding-left: 0;
-        padding-right: 5px ;
-
+        padding-right: 5px;
     }
-
 }
 
 @media (max-width: 505px) {
     .cus-main-input::placeholder {
         font-size: 0.8rem;
         padding-left: 0;
-        padding-right: 15px ;
-        
+        padding-right: 5px; /* Changed from 15px to 5px */
     }
-
 }
+
+/* New media query for very small screens */
+@media (max-width: 400px ) {
+    .cus-input-heading {
+        font-size: 1.3rem;
+    }
+}
+
