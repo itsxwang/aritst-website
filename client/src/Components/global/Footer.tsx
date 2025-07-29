@@ -1,18 +1,17 @@
-import { useContext } from "react";
-import ThemeContext from "../../contexts/themeContext";
-
 function Footer() {
-  const { theme } = useContext(ThemeContext);
-
   return (
-    <footer className={`py-12 ${theme === "dark" ? "bg-[#111827] text-white" : "bg-[#e0dcd1] text-black"}`}>
+    <footer className="py-12 bg-[#e0dcd1] text-black dark:bg-[#111827] dark:text-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           <div>
             <h3 className="font-[playflair] text-2xl font-semibold mb-4">Magic Colors of Samridhi</h3>
             <p className="font-[Inter] mb-4">Contemporary artist creating meaningful connections through color and form.</p>
             <div className="flex space-x-4">
-              <a href="https://www.youtube.com/@magiccoloursofsamridhi4874" target="_blank" className={`cursor-pointer inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 hover:bg-accent h-10 w-10 ${theme === "dark" ? "text-gray-100 hover:bg-gray-800" : "text-gray-900 hover:bg-gray-100"}`}>
+              <a
+                href="https://www.youtube.com/@magiccoloursofsamridhi4874"
+                target="_blank"
+                className="cursor-pointer inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 hover:bg-accent h-10 w-10 text-gray-900 hover:bg-gray-100 dark:text-gray-100 dark:hover:bg-gray-800"
+              >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   width="24"
@@ -29,7 +28,11 @@ function Footer() {
                   <path d="m10 15 5-3-5-3z"></path>
                 </svg>
               </a>
-              <a href="https://www.instagram.com/magic_colours_of_samridhi/" target="_blank" className={`cursor-pointer inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 hover:bg-accent h-10 w-10 ${theme === "dark" ? "text-gray-100 hover:bg-gray-800" : "text-gray-900 hover:bg-gray-100"}`}>
+              <a
+                href="https://www.instagram.com/magic_colours_of_samridhi/"
+                target="_blank"
+                className="cursor-pointer inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 hover:bg-accent h-10 w-10 text-gray-900 hover:bg-gray-100 dark:text-gray-100 dark:hover:bg-gray-800"
+              >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   width="24"
@@ -77,15 +80,15 @@ function Footer() {
           <div>
             <h4 className="font-[Inter] font-semibold text-lg mb-4">Newsletter</h4>
             <p className="mb-4">Stay updated on new artworks and exhibitions.</p>
-            <form className="flex">
+            <div className="flex">
               <input
                 type="email"
-                className={`flex h-10 w-full rounded-md border px-3 py-2 text-base ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50 md:text-sm flex-1 bg-gray-100 border-gray-300 text-gray-900 rounded-r-none focus:ring-gray-900 ${theme === "dark" ? "bg-gray-700 border-gray-600 text-white focus:ring-gray-500 focus-visible:ring-offset-2" : "focus-visible:ring-offset-0"}`}
+                className="flex h-10 w-full rounded-md border px-3 py-2 text-base ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50 md:text-sm flex-1 bg-gray-100 border-gray-300 text-gray-900 rounded-r-none focus:ring-gray-900 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:focus:ring-gray-500 focus-visible:ring-offset-0 dark:focus-visible:ring-offset-2"
                 placeholder="Enter your email"
               />
               <button
                 type="submit"
-                className={`cursor-pointer inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-white h-10 px-4 py-2 rounded-l-none ${theme === "dark" ? "bg-[#817565] hover:bg-[#625a50]" : "bg-[#625a50] hover:bg-[#4e4841]"}`}
+                className="cursor-pointer inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-white h-10 px-4 py-2 rounded-l-none bg-[#625a50] hover:bg-[#4e4841] dark:bg-[#817565] dark:hover:bg-[#625a50]"
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -103,7 +106,7 @@ function Footer() {
                   <path d="m12 5 7 7-7 7"></path>
                 </svg>
               </button>
-            </form>
+            </div>
           </div>
         </div>
         <div className="mt-8 pt-8 border-t border-gray-300 dark:border-gray-600 text-center">
