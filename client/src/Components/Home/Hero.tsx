@@ -1,9 +1,9 @@
-import { useContext } from "react";
-import ThemeContext from "../../contexts/themeContext";
+import { useState } from "react";
 import "./hero.css"; // ✅ we’ll add a tiny custom CSS file
+import { getTheme } from "../../utilities/themeHandler";
 
 function Hero() {
-  const { theme } = useContext(ThemeContext);
+  const [ theme, setTheme ] = useState(() => getTheme());
 
   const bgImage =
     "url('https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2070&q=80')";

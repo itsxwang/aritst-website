@@ -24,12 +24,15 @@ function FeatureSection() {
         <p className="font-[Intra]  text-2xl mb-8">Discover the latest collection of contemporary paintings, each piece telling its own unique story</p>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {featuredItems.map((item, index) => (
-            <div key={index} className={ `${ theme === 'dark' ? 'bg-gray-800' : 'bg-white'} p-4 rounded-lg shadow-md` }>
+            <div key={index} className={ `${ theme === 'dark' ? 'bg-gray-800' : 'bg-white'} p-0 rounded-lg shadow-md` }>
               <div className="w-full h-64 bg-gray-300 dark:bg-gray-700 mb-4"></div> {/* Placeholder for image */}
-              <h3 className="text-xl font-semibold mb-2">{item.title}</h3>
+              <h3 className="p-2 text-xl font-semibold mb-2">{item.title}</h3>
               <p className={`${ theme === 'dark' ? 'text-gray-100' : 'text-gray-900'}  mb-2`}>{item.description}</p>
               <p className={` ${ theme === 'dark' ? 'text-gray-100' : 'text-gray-900'} font-bold mb-4`}>{item.price}</p>
+
+              <div className="p-7 pb-4 pt-3">
               <button className={`cursor-pointer transition duration-200 w-full bg-[#817565] font-semibold py-2 rounded ${ theme === 'dark' ? 'text-white hover:bg-[#625a50]' : 'bg-[#625a50] hover:bg-[#686055]  text-gray-900'} `}>Buy</button>
+              </div>
             </div>
           ))}
         </div>
