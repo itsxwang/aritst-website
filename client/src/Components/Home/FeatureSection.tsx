@@ -1,6 +1,5 @@
 import { fetchAllArtoworks } from "../../utilities/fetchArtoworks";
-
-
+  
 function FeatureSection() {
   // will come from api, this is just for demo
   const featuredItems = fetchAllArtoworks();
@@ -12,7 +11,7 @@ function FeatureSection() {
         <p className="font-[Intra] text-2xl mb-8">Discover the latest collection of contemporary paintings, each piece telling its own unique story</p>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {featuredItems.map((item) => (
-            <div key={item.id} className="bg-white dark:bg-gray-800 p-0 rounded-lg shadow-md">
+            <div key={item.id} className="cursor-pointer bg-white dark:bg-gray-800 p-0 rounded-lg shadow-md transition duration-300 ease  hover:scale-105  ">
               <div className="w-full h-64 bg-gray-300 dark:bg-gray-700 mb-4"></div> {/* Placeholder for image */}
               <h3 className="p-2 text-xl font-semibold mb-2">{item.title}</h3>
               <p className="text-gray-900 dark:text-gray-100 mb-2">{item.description}</p>
@@ -20,7 +19,7 @@ function FeatureSection() {
 
               <div className="p-7 pb-4 pt-3">
                 <button className="cursor-pointer transition duration-200 w-full bg-[#817565] font-semibold py-2 rounded text-gray-900 dark:text-white hover:bg-[#686055] dark:hover:bg-[#625a50]">
-                  Buy
+                  Add To Cart
                 </button>
               </div>
             </div>

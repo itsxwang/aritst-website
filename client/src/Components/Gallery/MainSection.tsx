@@ -2,6 +2,8 @@ import { useState, useEffect, useMemo, useRef } from 'react';
 import { fetchAllArtoworks } from '../../utilities/fetchArtoworks';
 type artworksType = ReturnType<typeof fetchAllArtoworks>;
 
+import "./styles/mainSection.css"
+
 const MainSection = () => {
   const [layout, setLayout] = useState<'grid' | 'list'>('grid');
   const [allArtworks, setAllArtworks] = useState<artworksType>([]);
@@ -56,14 +58,13 @@ const MainSection = () => {
           {/* Layout and Filter Controls */}
           <div className="mt-9 flex justify-center space-x-5">
             {/* View buttons - Grid and List */}
-            <div className="flex p-1 gap-x-0.5 rounded-xl bg-[#e0dcd1] dark:bg-[#374151]">
+            <div className="gridNlist flex p-1 gap-x-0.5 rounded-xl bg-[#e0dcd1] dark:bg-[#374151] transition duration-300">
               {['grid', 'list'].map((view) => (
                 <button
                   key={view}
                   onClick={() => setLayout(view as 'grid' | 'list')}
-                  className={`cursor-pointer px-4 py-2.5 h-10 ${
-                    layout === view ? 'bg-[#625a50]' : 'hover:bg-[#cbc3b4] dark:hover:bg-[#4b5563]'
-                  } dark:text-white text-black rounded-lg font-[Inter] inline-flex items-center`}
+                  className={`cursor-pointer px-4 py-2.5 h-10 ${layout === view ? 'bg-[#625a50]' : 'hover:bg-[#cbc3b4] dark:hover:bg-[#4b5563]'
+                    } dark:text-white text-black rounded-lg font-[Inter] inline-flex items-center`}
                 >
                   {view === 'grid' ? (
                     <svg
@@ -113,7 +114,7 @@ const MainSection = () => {
             {/* Multi-Select Dropdown */}
             <div className="relative" ref={dropdownRef}>
               <button
-                
+
                 onClick={() => setIsDropdownOpen(!isDropdownOpen)}
                 className="cursor-pointer flex items-center px-4 py-6 h-10 bg-[#e0dcd1] dark:bg-[#374151] text-black dark:text-white rounded-lg font-[Inter] hover:bg-[#cbc3b4] dark:hover:bg-[#4b5563]"
               >
@@ -130,15 +131,15 @@ const MainSection = () => {
               </button>
 
               {isDropdownOpen && (
-                <div className="absolute z-10 mt-2 w-48 bg-white dark:bg-gray-800 rounded-lg shadow-lg max-h-60 overflow-y-auto">
+                <div className="absolute z-10 mt-2 w-48 bg-white dark:bg-gray-800 rounded-lg shadow-lg max-h-60 overflow-y-auto transition-all duration-300 ease-in-out origin-top scale-95 animate-fadeIn">
+
                   <div className="p-2">
                     <button
                       onClick={() => setSelectedTypes([])}
-                      className={`cursor-pointer w-full text-left px-3 py-2 rounded-md font-[Inter] mb-1 ${
-                        selectedTypes.length === 0
+                      className={`cursor-pointer w-full text-left px-3 py-2 rounded-md font-[Inter] mb-1 ${selectedTypes.length === 0
                           ? 'bg-[#625a50] text-white'
                           : 'text-gray-900 dark:text-white hover:bg-[#cbc3b4] dark:hover:bg-[#4b5563]'
-                      }`}
+                        }`}
                     >
                       All
                     </button>
@@ -146,11 +147,10 @@ const MainSection = () => {
                       <button
                         key={type}
                         onClick={() => toggleType(type)}
-                        className={`cursor-pointer w-full text-left px-3 py-2 rounded-md font-[Inter] mb-1 ${
-                          selectedTypes.includes(type)
+                        className={`cursor-pointer w-full text-left px-3 py-2 rounded-md font-[Inter] mb-1 ${selectedTypes.includes(type)
                             ? 'bg-[#625a50] text-white'
                             : 'text-gray-900 dark:text-white hover:bg-[#cbc3b4] dark:hover:bg-[#4b5563]'
-                        }`}
+                          }`}
                       >
                         {type}
                       </button>
@@ -164,28 +164,53 @@ const MainSection = () => {
 
         {/* Artwork Grid */}
         <div
-          className={`grid gap-8 ${
-            layout === 'grid' ? 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3' : 'grid-cols-1'
-          }`}
-        >
-          {filteredArtworks.map((artwork) => (
-            <div key={artwork.id} className="bg-white dark:bg-gray-800 p-4 rounded-lg shadow-md">
-              <img
-                // src={artwork.image}
-                alt={artwork.title}
-                className="w-full h-48 object-cover mb-4 rounded"
-              />
-              <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2 font-[playfair]">
-                {artwork.title}
-              </h3>
-              <p className="text-gray-700 dark:text-gray-300 mb-2 font-[Inter]">{artwork.description}</p>
-              <p className="text-gray-900 dark:text-white font-bold mb-4 font-[Inter]">{artwork.price}</p>
-              <button className=" cursor-pointer transition duration-200 w-full bg-[#625a50] text-gray-900 hover:bg-[#686055] dark:bg-[#817565] dark:text-white dark:hover:bg-[#625a50] px-4 py-2 rounded font-[Inter] font-semibold">
-                Purchase
-              </button>
-            </div>
-          ))}
+  className={`grid gap-8 transition-all duration-500 ease-in-out ${
+    layout === 'grid' ? 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3' : 'grid-cols-1'
+  }`}
+>
+  {filteredArtworks.map((artwork) => (
+    <div
+      key={artwork.id}
+      className={`cursor-pointer bg-white dark:bg-gray-800 rounded-lg shadow-md transition-all duration-300 ease   ${
+        layout === 'list' ? 'flex flex-col space-x-6  hover:scale-105' : 'hover:-translate-y-2 p-0 transform hover:shadow-lg '
+      }`}
+    >
+      {/* Image placeholder */}
+      <div
+        className={`transition-all duration-300 ease-in-out ${
+          layout === 'grid'
+            ? 'w-full h-64 bg-gray-300 dark:bg-gray-700 mb-4 rounded-t-lg'
+            : 'w-full h-40 bg-gray-300 dark:bg-gray-700 rounded'
+        }`}
+      ></div>
+
+      {/* Content */}
+      <div className={`${layout === 'list' ? 'flex-1 mt-3' : ''} transition-all duration-300`}>
+        <h3 className="p-2 text-xl font-semibold mb-2 flex justify-center text-black dark:text-white transition-colors duration-300">
+          {artwork.title}
+        </h3>
+
+        <p className="text-gray-700 dark:text-gray-300 mb-2 font-[Inter] flex justify-center transition-colors duration-300">
+          {artwork.description}
+        </p>
+
+        <p className="text-gray-900 dark:text-white font-bold mb-3 font-[Inter] flex justify-center transition-colors duration-300">
+          {artwork.price}
+        </p>
+
+        {/* Buy Button wrapper */}
+        <div className={`${layout === 'grid' ? 'p-7 pb-4 pt-3' : 'pt-3 pb-5'}`}>
+          <button
+            className={`cursor-pointer transition-all duration-300 ease-in-out bg-[#817565] font-semibold py-2 rounded text-gray-900 dark:text-white hover:bg-[#686055] dark:hover:bg-[#625a50]
+            ${layout === 'grid' ? 'w-full' : 'w-auto px-6 mx-auto block '}`}
+          >
+            Add To Cart
+          </button>
         </div>
+      </div>
+    </div>
+  ))}
+</div>
       </div>
     </section>
   );
