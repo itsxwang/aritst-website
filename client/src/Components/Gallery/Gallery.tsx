@@ -4,19 +4,19 @@ import MainSection from "./MainSection"
 
 function Gallery() {
   return (
-    <>
-     <div id="homeNavParent" className={` dark:bg-gradient-to-b dark:from-gray-900 dark:to-black   sticky top-0 z-50`}>
-      <Navbar />
-    </div>
+    <div className="flex flex-col min-h-screen dark:bg-gradient-to-b dark:from-gray-900 dark:to-black bg-white">
+      <div>
+        <Navbar />
+      </div>
 
-    <div>
-      <MainSection />
-    </div>
+      <div className="flex-grow">
+        <MainSection />
+      </div>
 
-    <div>
-      <Footer />
+      <div>
+        <Footer />
+      </div>
     </div>
-    </>
   )
 }
 

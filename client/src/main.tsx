@@ -6,6 +6,7 @@ import Home from './Components/Home/Home.tsx'
 import Gallery from './Components/Gallery/Gallery.tsx'
 import Contact from './Components/Contact/Contact.tsx'
 import About from './Components/About/About.tsx'
+import Cart from './Components/Cart/Cart.tsx'
 
 
 const router = createBrowserRouter([
@@ -23,8 +24,12 @@ const router = createBrowserRouter([
     element: <Contact/>
   },
   {
-    path:'/About',
+    path:'/about',
     element: <About/>
+  },
+  {
+    path:'/cart',
+    element: <Cart/>
   }
 ])
 

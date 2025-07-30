@@ -185,7 +185,7 @@ const MainSection = () => {
       ></div>
 
       {/* Content */}
-      <div className={`${layout === 'list' ? 'flex-1 mt-3' : ''} transition-all duration-300`}>
+      <div className={`${layout === 'list'? 'flex-1 mt-3.5' : ''} transition-all duration-300`}>
         <h3 className="p-2 text-xl font-semibold mb-2 flex justify-center text-black dark:text-white transition-colors duration-300">
           {artwork.title}
         </h3>

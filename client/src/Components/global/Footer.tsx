@@ -56,6 +56,11 @@ function Footer() {
             <h4 className="font-[Inter] font-semibold text-lg mb-4">Quick Links</h4>
             <ul className="space-y-2">
               <li>
+                <a href="/cart" className="font-[Inter] hover:text-gray-700 transition-colors">
+                  Cart
+                </a>
+              </li>
+              <li>
                 <a href="/gallery" className="font-[Inter] hover:text-gray-700 transition-colors">
                   Gallery
                 </a>
@@ -68,11 +73,6 @@ function Footer() {
               <li>
                 <a href="/contact" className="font-[Inter] hover:text-gray-700 transition-colors">
                   Contact
-                </a>
-              </li>
-              <li>
-                <a href="#" className="font-[Inter] hover:text-gray-700 transition-colors">
-                  Commissions
                 </a>
               </li>
             </ul>

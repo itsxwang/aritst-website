@@ -1,50 +1,50 @@
 import React, { useState, useEffect } from "react";
-import { Search, Sun, Moon, Menu, X } from "lucide-react";
+import { Search, Sun, ShoppingCart, Moon, Menu, X } from "lucide-react";
 import SearchModal from "../global/SearchModal";
 
 const Navbar: React.FC = () => {
   const [menuOpen, setMenuOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
   const [theme, setTheme] = useState(() => {
-      if (typeof window !== 'undefined') {
-        if (
-          localStorage.getItem("theme") === "light" ||
-          (!("theme" in localStorage) &&
-            window.matchMedia("(prefers-color-scheme: light)").matches)
-        ) {
-          return "light";
-        }
+    if (typeof window !== 'undefined') {
+      if (
+        localStorage.getItem("theme") === "light" ||
+        (!("theme" in localStorage) &&
+          window.matchMedia("(prefers-color-scheme: light)").matches)
+      ) {
+        return "light";
       }
-      return "dark";
+    }
+    return "dark";
   })
-    useEffect(() => {
-      // theme handle
-      const storedTheme = localStorage.getItem("theme");
-      if (!storedTheme) {
-        if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
-          document.documentElement.classList.add("dark");
-          localStorage.setItem("theme", "dark");
-          setTheme("dark");
-        }
-      } else {
-        if (storedTheme === "dark") {
-          document.documentElement.classList.add("dark");
-          setTheme("dark");
-        }
-        else {
-          document.documentElement.classList.remove("dark");
-          setTheme("light");
-        }
+  useEffect(() => {
+    // theme handle
+    const storedTheme = localStorage.getItem("theme");
+    if (!storedTheme) {
+      if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
+        document.documentElement.classList.add("dark");
+        localStorage.setItem("theme", "dark");
+        setTheme("dark");
       }
+    } else {
+      if (storedTheme === "dark") {
+        document.documentElement.classList.add("dark");
+        setTheme("dark");
+      }
+      else {
+        document.documentElement.classList.remove("dark");
+        setTheme("light");
+      }
+    }
 
-      //  menu handle
+    //  menu handle
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.ctrlKey && e.key.toLowerCase() === "k") {
         e.preventDefault();
         setSearchOpen(true);
       }
     };
-    
+
 
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
@@ -61,14 +61,14 @@ const Navbar: React.FC = () => {
       setTheme("dark");
     }
   }
-  
+
   return (
     <>
       {/* ✅ Navbar */}
       <nav
         className={`flex items-center font-[sans-serif] justify-between px-6 md:px-8 py-4 transition-colors duration-300 backdrop-blur-md z-50 overflow-x-hidden dark:bg-gray-900/90 dark:border-gray-700 dark:text-white
 bg-beige-50/90 border-gray-400 text-gray-900 border-b-1`
-        }        
+        }
       >
         {/* ✅ Brand */}
         <a
@@ -103,6 +103,16 @@ bg-beige-50/90 border-gray-400 text-gray-900 border-b-1`
             <Search size={18} />
           </button>
 
+          {/* Cart Icon*/}
+          <button
+            onClick={() => window.location.href = "/cart"}
+            className={`p-2.5 rounded-md hover:bg-gray-700/30 
+              dark:bg-gray-800 cursor-pointer`}
+          >
+            <ShoppingCart size={18} />
+          </button>
+
+
           {/* Dark/Light Toggle */}
           <button
             aria-label={theme === "dark" ? "Switch to light mode" : "Switch to dark mode"}
@@ -112,7 +122,7 @@ bg-beige-50/90 border-gray-400 text-gray-900 border-b-1`
           >
             {theme === "dark" ? <Sun size={18} /> : <Moon size={18} />}
           </button>
-
+              
           {/* ✅ Hamburger Icon (mobile) */}
           <button
             className={`md:hidden p-2.5 rounded-md cursor-pointer 
@@ -127,9 +137,8 @@ bg-beige-50/90 border-gray-400 text-gray-900 border-b-1`
 
       {/* ✅ Sliding Mobile Menu (NOW OUTSIDE NAV) */}
       <div
-        className={`fixed top-0 right-0 h-full w-2/3 sm:w-1/2 lg:w-1/3 transform transition-transform duration-300 ease-in-out z-50 ${
-          menuOpen ? "translate-x-0" : "translate-x-full"
-        }  dark:bg-[#131528] dark:text-white : bg-white text-gray-900}`}
+        className={`fixed top-0 right-0 h-full w-2/3 sm:w-1/2 lg:w-1/3 transform transition-transform duration-300 ease-in-out z-50 ${menuOpen ? "translate-x-0" : "translate-x-full"
+          }  dark:bg-[#131528] dark:text-white : bg-white text-gray-900}`}
       >
         {/* Close Button inside menu */}
         <div className="flex justify-end p-4">
@@ -163,7 +172,7 @@ bg-beige-50/90 border-gray-400 text-gray-900 border-b-1`
           onClick={() => setMenuOpen(false)}
         />
       )}
-         {/* ✅ SEARCH MODAL */}
+      {/* ✅ SEARCH MODAL */}
       <SearchModal isOpen={searchOpen} onClose={() => setSearchOpen(false)} />
     </>
   );
