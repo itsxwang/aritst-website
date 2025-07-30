@@ -1,16 +1,9 @@
-interface FeatureItem {
-  title: string;
-  description: string;
-  price: string;
-}
+import { fetchAllArtoworks } from "../../utilities/fetchArtoworks";
+
 
 function FeatureSection() {
   // will come from api, this is just for demo
-  const featuredItems: FeatureItem[] = [
-    { title: 'Whispers of Banaras', description: 'Acrylic on Canvas, 30"x24"', price: '₹42,000' },
-    { title: 'Mountain Serenity', description: 'Oil on Canvas, 30"x40"', price: '₹1,80,000' },
-    { title: 'Urban Reflections', description: 'Mixed Media, 20"x24"', price: '₹95,000' },
-  ];
+  const featuredItems = fetchAllArtoworks();
 
   return (
     <section className="pb-20 pt-20 w-full py-12 cursor-pointer bg-gray-100 text-gray-800 dark:bg-[#202738] dark:text-white">
@@ -18,8 +11,8 @@ function FeatureSection() {
         <h2 className="font-[playflair] text-5xl font-bold mb-4">Featured Artworks</h2>
         <p className="font-[Intra] text-2xl mb-8">Discover the latest collection of contemporary paintings, each piece telling its own unique story</p>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {featuredItems.map((item, index) => (
-            <div key={index} className="bg-white dark:bg-gray-800 p-0 rounded-lg shadow-md">
+          {featuredItems.map((item) => (
+            <div key={item.id} className="bg-white dark:bg-gray-800 p-0 rounded-lg shadow-md">
               <div className="w-full h-64 bg-gray-300 dark:bg-gray-700 mb-4"></div> {/* Placeholder for image */}
               <h3 className="p-2 text-xl font-semibold mb-2">{item.title}</h3>
               <p className="text-gray-900 dark:text-gray-100 mb-2">{item.description}</p>

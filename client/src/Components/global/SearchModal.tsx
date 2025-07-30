@@ -1,7 +1,6 @@
-import React, { useEffect, useContext } from "react";
+import React, { useEffect } from "react";
 import ReactDOM from "react-dom";
 import { X } from "lucide-react";
-import ThemeContext from "../../contexts/themeContext";
 import './SearchModal.css'
 
 interface SearchModalProps {
@@ -10,8 +9,6 @@ interface SearchModalProps {
 }
 
 const SearchModal: React.FC<SearchModalProps> = ({ isOpen, onClose }) => {
-  const { theme } = useContext(ThemeContext);
-
   // ✅ Close modal on ESC key
   useEffect(() => {
     const handleEsc = (e: KeyboardEvent) => {
@@ -27,16 +24,13 @@ const SearchModal: React.FC<SearchModalProps> = ({ isOpen, onClose }) => {
     <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/50 backdrop-blur-sm">
       {/* ✅ Modal Box */}
       <div
-        className={`px-10 py-11 rounded-2xl shadow-lg w-[92%] sm:w-[550px] md:w-[687px] relative transition-colors duration-300
-          ${theme === "dark" ? "bg-[#1f2937] text-white" : "bg-white text-black"}
-        `}
+        className="px-10 py-11 rounded-2xl shadow-lg w-[92%] sm:w-[550px] md:w-[687px] relative transition-colors duration-300 bg-white text-black dark:bg-[#1f2937] dark:text-white"
         onClick={(e) => e.stopPropagation()} // prevent closing when clicking inside modal
       >
         {/* ✅ Close Button */}
         <button
           onClick={onClose}
-          className={`absolute top-11 right-9 p-1.5 rounded-md transition cursor-pointer 
-            ${theme === "dark" ? "hover:bg-gray-700" : "hover:bg-gray-200"}`}
+          className="absolute top-11 right-9 p-1.5 rounded-md transition cursor-pointer hover:bg-gray-200 dark:hover:bg-gray-700"
         >
           <X size={20} />
         </button>
@@ -57,8 +51,7 @@ const SearchModal: React.FC<SearchModalProps> = ({ isOpen, onClose }) => {
             strokeWidth="2"
             strokeLinecap="round"
             strokeLinejoin="round"
-            className={`lucide lucide-search absolute left-3 top-3 h-4 w-4 
-              ${theme === "dark" ? "text-beige-400" : "text-gray-900"}`}
+            className="lucide lucide-search absolute left-3 top-3 h-4 w-4 text-gray-900 dark:text-[rgb(245,245,220)]"
           >
             <circle cx="11" cy="11" r="8"></circle>
             <path d="m21 21-4.3-4.3"></path>
@@ -68,12 +61,8 @@ const SearchModal: React.FC<SearchModalProps> = ({ isOpen, onClose }) => {
           <input
             autoFocus
             type="text"
-            placeholder= {window.innerWidth < 487 ? "Search artworks..." : "Search artworks by name, medium, or description..."}
-            className={`cus-main-input flex h-10 w-full rounded-md border px-3 py-2 text-base md:text-sm pl-10
-              placeholder:text-muted-foreground focus:outline-none 
-              ${theme === "dark" 
-                ? "bg-gray-700 border-gray-600 text-beige-200 focus:ring-1 focus:ring-gray-400 ring-offset-1"  
-                : "bg-gray-100 border-gray-300 text-black focus:ring-2 focus:ring-gray-900 ring-offset-0"}`}
+            placeholder={window.innerWidth < 487 ? "Search artworks..." : "Search artworks by name, medium, or description..."}
+            className="cus-main-input flex h-10 w-full rounded-md border px-3 py-2 text-base md:text-sm pl-10 placeholder:text-muted-foreground focus:outline-none bg-gray-100 border-gray-300 text-black focus:ring-2 focus:ring-gray-900 ring-offset-0 dark:bg-gray-700 dark:border-gray-600 dark:text-[rgb(245,245,220)] dark:focus:ring-1 dark:focus:ring-gray-400 dark:ring-offset-1"
           />
         </div>
       </div>

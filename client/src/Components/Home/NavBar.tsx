@@ -116,7 +116,7 @@ bg-beige-50/90 border-gray-400 text-gray-900 border-b-1`
           {/* ✅ Hamburger Icon (mobile) */}
           <button
             className={`md:hidden p-2.5 rounded-md cursor-pointer 
-              dark:hover:bg-gray-700/30 bg-gray-800
+              dark:hover:bg-gray-700/30 dark:bg-gray-800  hover:bg-gray-700/30
             }`}
             onClick={() => setMenuOpen(true)}
           >
@@ -129,7 +129,7 @@ bg-beige-50/90 border-gray-400 text-gray-900 border-b-1`
       <div
         className={`fixed top-0 right-0 h-full w-2/3 sm:w-1/2 lg:w-1/3 transform transition-transform duration-300 ease-in-out z-50 ${
           menuOpen ? "translate-x-0" : "translate-x-full"
-        }  dark:bg-[#131528] dark:text-white : "bg-white text-gray-900"}`}
+        }  dark:bg-[#131528] dark:text-white : bg-white text-gray-900}`}
       >
         {/* Close Button inside menu */}
         <div className="flex justify-end p-4">
