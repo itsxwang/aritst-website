@@ -49,7 +49,7 @@ const MainCart: React.FC = () => {
         {cartItems.map((item) => (
           <div
             key={item.id}
-            className="flex flex-col sm:flex-row sm:items-center gap-4 border-b dark:border-gray-700 border-gray-300 pb-4 cursor-pointer transition duration-300 hover:scale-105"
+            className="flex flex-col sm:flex-row sm:items-center gap-4 border-b dark:border-gray-700 border-gray-300 pb-4 cursor-pointer"
           >
             {/* --- Group 1: Image & Details --- */}
             <div className="flex items-center flex-1">

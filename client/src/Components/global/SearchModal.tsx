@@ -1,14 +1,27 @@
-import React, { useEffect } from "react";
+import React, { useEffect,useState } from "react";
 import ReactDOM from "react-dom";
 import { X } from "lucide-react";
 import './styles/SearchModal.css'
+import { fetchAllArtoworks } from "../../utilities/fetchArtoworks";
+type artworksType = ReturnType <typeof fetchAllArtoworks>;
+
 
 interface SearchModalProps {
   isOpen: boolean;
   onClose: () => void;
 }
 
+
+
 const SearchModal: React.FC<SearchModalProps> = ({ isOpen, onClose }) => {
+
+  const [artworks, setArtworks] = useState<artworksType>([]);
+  const [searchTerm, setSearchTerm] = useState('');
+  useEffect(() => {
+    const artworks = fetchAllArtoworks();
+    setArtworks(artworks);
+  },[])
+
   // ✅ Close modal on ESC key
   useEffect(() => {
     const handleEsc = (e: KeyboardEvent) => {
@@ -60,12 +73,45 @@ const SearchModal: React.FC<SearchModalProps> = ({ isOpen, onClose }) => {
           {/* ✅ Input Field */}
           <input
             autoFocus
+            onChange={(e) => setSearchTerm(e.target.value)}
+            value={searchTerm}
             type="text"
             placeholder={window.innerWidth < 487 ? "Search artworks..." : "Search artworks by name, medium, or shortDsc..."}
             className="cus-main-input flex h-10 w-full rounded-md border px-3 py-2 text-base md:text-sm pl-10 placeholder:text-muted-foreground focus:outline-none bg-gray-100 border-gray-300 text-black focus:ring-2 focus:ring-gray-900 ring-offset-0 dark:bg-gray-700 dark:border-gray-600 dark:text-[rgb(245,245,220)] dark:focus:ring-1 dark:focus:ring-gray-400 dark:ring-offset-1"
           />
         </div>
+
+        {/* ✅ Search Results */}
+          {/* {searchTerm && (
+            <div className="flex flex-col gap-2">
+              {artworks
+                .filter((artwork) =>
+                  artwork.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                  artwork.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                  artwork.shortDsc.toLowerCase().includes(searchTerm.toLowerCase())
+                )
+                .map((artwork) => (
+                  <div
+                    key={artwork.id}
+                    className="mt-5 flex items-center gap-3 text-black dark:text-white"
+                  >
+                    <img
+                      src={artwork.image}
+                      alt={artwork.title}
+                      className="w-16 h-16 object-cover rounded-md"
+                    />
+                    <div>
+                      <h3 className="font-semibold">{artwork.title}</h3>
+                      <p className="text-sm text-gray-600 dark:text-gray-300">
+                        {artwork.shortDsc}
+                      </p>
+                    </div>
+                  </div>
+                ))}
+            </div>
+          )} */}
       </div>
+      
     </div>,
     document.body
   );
