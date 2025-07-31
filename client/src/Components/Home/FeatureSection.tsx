@@ -14,8 +14,8 @@ function FeatureSection() {
             <div key={item.id} className="cursor-pointer bg-white dark:bg-gray-800 p-0 rounded-lg shadow-md transition duration-300 ease  hover:scale-105  ">
               <div className="w-full h-64 bg-gray-300 dark:bg-gray-700 mb-4"></div> {/* Placeholder for image */}
               <h3 className="p-2 text-xl font-semibold mb-2">{item.title}</h3>
-              <p className="text-gray-900 dark:text-gray-100 mb-2">{item.description}</p>
-              <p className="text-gray-900 dark:text-gray-100 font-bold mb-4">{item.price}</p>
+              <p className="text-gray-900 dark:text-gray-100 mb-2">{item.shortDsc}</p>
+              <p className="text-gray-900 dark:text-gray-100 font-bold mb-4">₹{item.price}</p>
 
               <div className="p-7 pb-4 pt-3">
                 <button className="cursor-pointer transition duration-200 w-full bg-[#817565] font-semibold py-2 rounded text-gray-900 dark:text-white hover:bg-[#686055] dark:hover:bg-[#625a50]">
@@ -25,7 +25,7 @@ function FeatureSection() {
             </div>
           ))}
         </div>
-        <button className="cursor-pointer mt-15 px-9 py-[0.4rem] font-[Inter] font-semibold text-[1.2rem] transition duration-200 rounded bg-[#E0DCD1] text-gray-800 hover:bg-[#cec7b5] dark:bg-gray-700 dark:text-gray-100 dark:hover:bg-gray-600">
+        <button onClick={() => window.location.href = "/gallery"} className="cursor-pointer mt-15 px-9 py-[0.4rem] font-[Inter] font-semibold text-[1.2rem] transition duration-200 rounded bg-[#E0DCD1] text-gray-800 hover:bg-[#cec7b5] dark:bg-gray-700 dark:text-gray-100 dark:hover:bg-gray-600">
           View All Artworks
           <span className="ml-2 text-2xl">→</span>
         </button>

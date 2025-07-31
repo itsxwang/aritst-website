@@ -191,11 +191,11 @@ const MainSection = () => {
         </h3>
 
         <p className="text-gray-700 dark:text-gray-300 mb-2 font-[Inter] flex justify-center transition-colors duration-300">
-          {artwork.description}
+          {artwork.shortDsc}
         </p>
 
         <p className="text-gray-900 dark:text-white font-bold mb-3 font-[Inter] flex justify-center transition-colors duration-300">
-          {artwork.price}
+          ₹{artwork.price}
         </p>
 
         {/* Buy Button wrapper */}

@@ -1,0 +1,11 @@
+@media (max-width: 425px) {
+
+    .minus {
+        font-size: 2.5rem;
+    }
+
+    .plus {
+        font-size: 2rem;
+    }
+
+}

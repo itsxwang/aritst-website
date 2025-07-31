@@ -61,7 +61,7 @@ const SearchModal: React.FC<SearchModalProps> = ({ isOpen, onClose }) => {
           <input
             autoFocus
             type="text"
-            placeholder={window.innerWidth < 487 ? "Search artworks..." : "Search artworks by name, medium, or description..."}
+            placeholder={window.innerWidth < 487 ? "Search artworks..." : "Search artworks by name, medium, or shortDsc..."}
             className="cus-main-input flex h-10 w-full rounded-md border px-3 py-2 text-base md:text-sm pl-10 placeholder:text-muted-foreground focus:outline-none bg-gray-100 border-gray-300 text-black focus:ring-2 focus:ring-gray-900 ring-offset-0 dark:bg-gray-700 dark:border-gray-600 dark:text-[rgb(245,245,220)] dark:focus:ring-1 dark:focus:ring-gray-400 dark:ring-offset-1"
           />
         </div>

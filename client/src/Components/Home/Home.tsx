@@ -7,7 +7,7 @@ import Footer from "../global/Footer";
 function Home() {
   return (
     <>
-    <div id="homeNavParent" className={` dark:bg-gradient-to-b dark:from-gray-900 dark:to-black   sticky top-0 z-50`}>
+    <div id="homeNavParent" className={` dark:bg-gradient-to-b dark:from-gray-900 dark:to-black  sticky top-0 z-50`}>
       <Navbar />
     </div>
     
