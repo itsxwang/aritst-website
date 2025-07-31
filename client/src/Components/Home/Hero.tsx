@@ -1,4 +1,4 @@
-import "./hero.css"; // ✅ we’ll keep the custom CSS file
+import "./styles/hero.css"; // ✅ we’ll keep the custom CSS file
 
 function Hero() {
   return (

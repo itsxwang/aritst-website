@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { Search, Sun, ShoppingCart, Moon, Menu, X } from "lucide-react";
-import SearchModal from "../global/SearchModal";
+import SearchModal from "./SearchModal";
+
+import './styles/navbar.css'
 
 const Navbar: React.FC = () => {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -66,13 +68,13 @@ const Navbar: React.FC = () => {
     <>
       {/* ✅ Navbar */}
       <nav
-        className={`flex items-center font-[sans-serif] justify-between px-6 md:px-8 py-4 transition-colors duration-300 backdrop-blur-md z-50 overflow-x-hidden dark:bg-gray-900/90 dark:border-gray-700 dark:text-white
+        className={`main-nav flex items-center font-[sans-serif] justify-between px-6 md:px-8 py-4 transition-colors duration-300 backdrop-blur-md z-50 overflow-x-hidden dark:bg-gray-900/90 dark:border-gray-700 dark:text-white
 bg-beige-50/90 border-gray-400 text-gray-900 border-b-1`
         }
       >
         {/* ✅ Brand */}
         <a
-          className="text-xl font-[Times-New-Roman] font-bold text-[24px] cursor-pointer"
+          className="artist-name text-xl font-[Times-New-Roman] font-bold text-[24px] cursor-pointer"
           href="/"
         >
           Samridhi Studio
@@ -93,7 +95,7 @@ bg-beige-50/90 border-gray-400 text-gray-900 border-b-1`
         </div>
 
         {/* ✅ Right-side Icons */}
-        <div className="flex items-center gap-3">
+        <div className="right-icons flex items-center gap-1.5 sm:gap-3 ">
           {/* Search Button */}
           <button
             onClick={() => setSearchOpen(true)}

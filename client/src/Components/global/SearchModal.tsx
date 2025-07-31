@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import ReactDOM from "react-dom";
 import { X } from "lucide-react";
-import './SearchModal.css'
+import './styles/SearchModal.css'
 
 interface SearchModalProps {
   isOpen: boolean;

@@ -1,5 +1,5 @@
 import Footer from "../global/Footer"
-import Navbar from "../Home/NavBar"
+import Navbar from "../global/NavBar"
 import MainSection from "./MainSection"
 
 function Gallery() {

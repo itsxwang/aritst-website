@@ -1,0 +1,31 @@
+@media (max-width: 395px) {
+    .main-nav {
+        padding-inline: 0.5rem;
+    }
+}
+
+@media (max-width: 360px) {
+    .main-nav {
+        padding-inline: 0.4rem;
+    }
+    .artist-name {
+           font-size: 1.5rem;
+    }
+
+}
+
+@media (max-width: 340px) {
+    .right-icons {
+        gap: 4px;
+    }
+}
+
+@media (max-width: 325px) {
+    .main-nav {
+        padding-inline: 0.2rem;
+        padding-left: 0.3rem;
+    }
+    .artist-name {
+        font-size: 1.4rem;
+    }
+}

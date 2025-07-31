@@ -1,6 +1,6 @@
 
 import Hero from "./Hero"
-import Navbar from "./NavBar"
+import Navbar from "../global/NavBar"
 import FeatureSection from "./FeatureSection";
 import Footer from "../global/Footer";
 
