@@ -1,12 +1,10 @@
-import { useState,useRef, useEffect,useCallback,useMemo } from "react";
+import { useState, useRef, useEffect, useCallback, useMemo } from "react";
 import { Link } from "react-router-dom";
 import { fetchArt } from "../../utilities/fetchArtoworks";
 import { ArrowLeft, ArrowRight, Share2, Heart, IndianRupee } from 'lucide-react';
 
 // Define the Artwork interface to type the fetchArt return value
-
-
-
+// Assuming this is defined elsewhere, as it was not provided in the original code
 
 // Type for toast function parameters
 interface ToastParams {
@@ -58,33 +56,32 @@ function MainDetails({ id }: { id: number }) {
 
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
-  const allImages = useMemo(() => [artWork!.mainImage, ...artWork!.images]  , [artWork]);
+  const allImages = useMemo(() => [artWork!.mainImage, ...artWork!.images], [artWork]);
 
+  const handleNextImage = useCallback(() => {
+    setCurrentImageIndex((prevIndex) => (prevIndex + 1) % allImages.length);
+  }, [allImages]);
 
-    const handleNextImage = useCallback(() => {
-  setCurrentImageIndex((prevIndex) => (prevIndex + 1) % allImages.length);
-}, [allImages, setCurrentImageIndex]);
-
-const handlePrevImage = useCallback(() => {
-  setCurrentImageIndex((prevIndex) => (prevIndex - 1 + allImages.length) % allImages.length);
-}, [allImages, setCurrentImageIndex]);
+  const handlePrevImage = useCallback(() => {
+    setCurrentImageIndex((prevIndex) => (prevIndex - 1 + allImages.length) % allImages.length);
+  }, [allImages]);
 
   useEffect(() => {
-  const handleKeyDown = (event: KeyboardEvent) => {
-    if (event.key === 'ArrowRight') {
-      handleNextImage();
-    } else if (event.key === 'ArrowLeft') {
-      handlePrevImage();
-    }
-  };
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'ArrowRight') {
+        handleNextImage();
+      } else if (event.key === 'ArrowLeft') {
+        handlePrevImage();
+      }
+    };
 
-  document.addEventListener('keydown', handleKeyDown);
+    document.addEventListener('keydown', handleKeyDown);
 
-  return () => {
-    document.removeEventListener('keydown', handleKeyDown);
-  };
-}, [handleNextImage, handlePrevImage]);
-  
+    return () => {
+      document.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [handleNextImage, handlePrevImage]);
+
   // If artwork is not found, display a message
   if (!artWork) {
     return (
@@ -105,9 +102,6 @@ const handlePrevImage = useCallback(() => {
       </div>
     );
   }
-
-
-
 
   const handleShare = () => {
     if (navigator.share) {
@@ -140,7 +134,7 @@ const handlePrevImage = useCallback(() => {
   const ctaButton = isAvailable ? (
     <Button
       onClick={handleAddToCart}
-      className="cursor-pointer font-[inter] bg-[#625a50] hover:bg-[#45403b] transition-colors duration-200  w-full py-3 text-lg font-medium text-black  dark:text-white dark:bg-[#817565]  dark:hover:bg-[#625a50]"
+      className="cursor-pointer font-[inter] bg-[#625a50] hover:bg-[#45403b] transition-colors duration-200 w-full py-3 text-lg font-medium text-black dark:text-white dark:bg-[#817565] dark:hover:bg-[#625a50]"
     >
       Add To Cart
     </Button>
@@ -153,14 +147,13 @@ const handlePrevImage = useCallback(() => {
     </Button>
   );
 
-
   return (
     <section ref={carouselRef} className="py-12 md:py-20">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="mb-8">
           <Link
             to="/gallery"
-            className="hover:bg-gray-200 px-4 py-2 rounded-sm dark:hover:bg-gray-800    inline-flex items-center text-gray-600 dark:text-gray-400 hover:text-black dark:hover:text-white transition-colors"
+            className="hover:bg-gray-200 px-4 py-2 rounded-sm dark:hover:bg-gray-800 inline-flex items-center text-gray-600 dark:text-gray-400 hover:text-black dark:hover:text-white transition-colors"
           >
             <ArrowLeft className="h-4 w-4 mr-2" />
             Back to Gallery
@@ -169,15 +162,17 @@ const handlePrevImage = useCallback(() => {
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
           {/* Image Carousel */}
-          <div  className="relative group aspect-square rounded-lg shadow-lg overflow-hidden">
-
-            
-            <img
-              key={allImages[currentImageIndex]} // Use image URL as key for better uniqueness
-              src={allImages[currentImageIndex]}
-              alt={`${artWork.title} - view ${currentImageIndex + 1}`}
-              className="w-full h-full object-cover animate-fade-in"
-            />
+          <div className="relative group aspect-square rounded-lg shadow-lg overflow-hidden">
+            <div className="relative w-full h-full">
+              <img
+                key={allImages[currentImageIndex]}
+                src={allImages[currentImageIndex]}
+                alt={`${artWork.title} - view ${currentImageIndex + 1}`}
+                className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
+              />
+              {/* Hover overlay */}
+              <div className="absolute inset-0 bg-black/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+            </div>
             {allImages.length > 1 && (
               <>
                 <Button
@@ -195,7 +190,7 @@ const handlePrevImage = useCallback(() => {
                 <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex space-x-2">
                   {allImages.map((image, index) => (
                     <div
-                      key={image} // Use image URL as key for uniqueness
+                      key={image}
                       className={`w-2 h-2 rounded-full transition-all ${
                         currentImageIndex === index ? 'bg-white scale-125' : 'bg-white/50'
                       }`}
@@ -213,7 +208,7 @@ const handlePrevImage = useCallback(() => {
                 {artWork.types.map((type) => (
                   <Badge
                     key={type}
-                    className=" dark:text-white bg-[#e0dcd1]  dark:bg-gray-700/50 text-black px-2.5 py-1 rounded-full"
+                    className="dark:text-white bg-[#e0dcd1] dark:bg-gray-700/50 text-black px-2.5 py-1 rounded-full"
                   >
                     {type}
                   </Badge>
@@ -243,7 +238,7 @@ const handlePrevImage = useCallback(() => {
                 <div>
                   <p className="text-sm text-gray-500 dark:text-gray-400">Price</p>
                   <p className="text-4xl font-bold text-gray-900 dark:text-gray-100 flex items-center">
-                    <IndianRupee className="inline h-7 w-7 " />
+                    <IndianRupee className="inline h-7 w-7" />
                     {artWork.price.toLocaleString('en-IN')}
                   </p>
                 </div>
