@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef, useMemo } from "react";
 import ReactDOM from "react-dom";
 import { X } from "lucide-react";
 import "./styles/SearchModal.css";
@@ -14,13 +14,17 @@ interface SearchModalProps {
 const SearchModal: React.FC<SearchModalProps> = ({ isOpen, onClose }) => {
   const [artworks, setArtworks] = useState<artworksType>([]);
   const [searchTerm, setSearchTerm] = useState("");
+  const [highlightedIndex, setHighlightedIndex] = useState<number>(-1);
+
+  const resultsRef = useRef<HTMLDivElement>(null);
+  const itemRefs = useRef<(HTMLAnchorElement | null)[]>([]);
 
   useEffect(() => {
     const artworks = fetchAllArtoworks();
     setArtworks(artworks);
   }, []);
 
-  // ✅ Close modal on ESC key
+  // ✅ Close modal on ESC
   useEffect(() => {
     const handleEsc = (e: KeyboardEvent) => {
       if (e.key === "Escape") onClose();
@@ -28,6 +32,63 @@ const SearchModal: React.FC<SearchModalProps> = ({ isOpen, onClose }) => {
     window.addEventListener("keydown", handleEsc);
     return () => window.removeEventListener("keydown", handleEsc);
   }, [onClose]);
+
+  // ✅ Filtered search results
+  const filteredResults = useMemo(() => {
+    if (!searchTerm) return [];
+    return artworks.filter(
+      (artwork) =>
+        artwork.title
+          .toLowerCase()
+          .split(" ")
+          .join("")
+          .includes(searchTerm.toLowerCase().split(" ").join("")) ||
+        artwork.description
+          .toLowerCase()
+          .split(" ")
+          .join("")
+          .includes(searchTerm.toLowerCase().split(" ").join("")) ||
+        artwork.medium
+          .toLowerCase()
+          .split(" ")
+          .join("")
+          .includes(searchTerm.toLowerCase().split(" ").join(""))
+    );
+  }, [searchTerm, artworks]);
+
+  // ✅ Handle keyboard navigation
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (!isOpen || filteredResults.length === 0) return;
+
+      if (e.key === "ArrowDown") {
+        setHighlightedIndex((prev) =>
+          prev === filteredResults.length - 1 ? 0 : prev + 1
+        );
+        e.preventDefault();
+      } else if (e.key === "ArrowUp") {
+        setHighlightedIndex((prev) =>
+          prev <= 0 ? filteredResults.length - 1 : prev - 1
+        );
+        e.preventDefault();
+      } else if (e.key === "Enter" && highlightedIndex >= 0) {
+        window.location.href = `/art/${filteredResults[highlightedIndex].id}`;
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [filteredResults, highlightedIndex, isOpen]);
+
+  // ✅ Scroll highlighted item into view
+  useEffect(() => {
+    if (highlightedIndex >= 0 && itemRefs.current[highlightedIndex]) {
+      itemRefs.current[highlightedIndex]?.scrollIntoView({
+        block: "nearest",
+        behavior: "smooth",
+      });
+    }
+  }, [highlightedIndex]);
 
   if (!isOpen) return null;
 
@@ -51,9 +112,8 @@ const SearchModal: React.FC<SearchModalProps> = ({ isOpen, onClose }) => {
           Search Artwork
         </h2>
 
-        {/* ✅ Search Input Wrapper */}
+        {/* ✅ Search Input */}
         <div className="relative">
-          {/* ✅ Search Icon (Left) */}
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="24"
@@ -70,10 +130,12 @@ const SearchModal: React.FC<SearchModalProps> = ({ isOpen, onClose }) => {
             <path d="m21 21-4.3-4.3"></path>
           </svg>
 
-          {/* ✅ Input Field */}
           <input
             autoFocus
-            onChange={(e) => setSearchTerm(e.target.value)}
+            onChange={(e) => {
+              setSearchTerm(e.target.value);
+              setHighlightedIndex(-1);
+            }}
             value={searchTerm}
             type="text"
             placeholder={
@@ -85,35 +147,30 @@ const SearchModal: React.FC<SearchModalProps> = ({ isOpen, onClose }) => {
           />
         </div>
 
-        {/* ✅ Search Results */}
+        {/* ✅ Search Results Section */}
         {searchTerm && (
           <div
-            className="flex flex-col gap-2 mt-4 pt-3 border-t border-gray-200 dark:border-gray-600 
-            max-h-[300px] overflow-y-auto pr-2 scrollbar-thin scrollbar-thumb-gray-400 dark:scrollbar-thumb-gray-600 scrollbar-track-transparent"
+            ref={resultsRef}
+            className={`flex flex-col gap-2 mt-4 pt-4 border-gray-200 dark:border-gray-600 
+            max-h-[300px] overflow-y-auto pr-2 scrollbar-thin scrollbar-thumb-gray-400 dark:scrollbar-thumb-gray-600 scrollbar-track-transparent ${
+              filteredResults.length === 0 && "border-t" }`}
           >
-            {artworks
-              .filter(
-                (artwork) =>
-                  artwork.title
-                    .toLowerCase()
-                    .split(" ")
-                    .join("")
-                    .includes(searchTerm.toLowerCase().split(" ").join("")) ||
-                  artwork.description
-                    .toLowerCase()
-                    .split(" ")
-                    .join("")
-                    .includes(searchTerm.toLowerCase().split(" ").join("")) ||
-                  artwork.medium
-                    .toLowerCase()
-                    .split(" ")
-                    .join("")
-                    .includes(searchTerm.toLowerCase().split(" ").join(""))
-              )
-              .map((artwork) => (
+            {filteredResults.length > 0 ? (
+              filteredResults.map((artwork, index) => (
                 <a
                   key={artwork.id}
-                  className="rounded-lg p-3 cursor-pointer flex items-center gap-3 text-black dark:text-white hover:bg-[#e0dcd1] dark:hover:bg-gray-700 transition-colors"
+                  ref={(el) => {
+                    if (el) {
+                      itemRefs.current[index] = el;
+                    }
+                  }}
+                  onClick={() => (window.location.href = `/art/${artwork.id}`)}
+                  className={`rounded-lg p-3 cursor-pointer flex items-center gap-3 
+                    ${
+                      highlightedIndex === index
+                        ? "bg-[#e0dcd1] dark:bg-gray-700"
+                        : "hover:bg-[#e0dcd1] dark:hover:bg-gray-700"
+                    } transition-colors`}
                 >
                   <img
                     src={artwork.mainImage}
@@ -127,7 +184,12 @@ const SearchModal: React.FC<SearchModalProps> = ({ isOpen, onClose }) => {
                     </p>
                   </div>
                 </a>
-              ))}
+              ))
+            ) : (
+              <p className="text-center text-gray-600 dark:text-gray-400 italic py-4">
+                No artworks found for "{searchTerm}"
+              </p>
+            )}
           </div>
         )}
       </div>

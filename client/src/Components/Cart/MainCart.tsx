@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from "react";
-// ✅ Import Plus and Minus icons from lucide-react
 import { X } from "lucide-react";
 import { fetchCart } from "../../utilities/fetchArtoworks";
-import './styles/mainCart.css'
+import "./styles/mainCart.css";
 
 type CartType = ReturnType<typeof fetchCart>;
 
@@ -13,19 +12,20 @@ const MainCart: React.FC = () => {
     setCartItems(fetchCart());
   }, []);
 
-  // ✅ Increase/Decrease Qty
+  // ✅ Increase/Decrease Quantity
   const updateQuantity = (id: number, amount: number) => {
     setCartItems((prev) => {
-      const tempAr = prev.map((item) => {
+      const updatedItems = prev.map((item) => {
         if (item.id === id) {
           const newQuantity = item.quantity + amount;
-          if (newQuantity < 1) return null; // Signal to remove item
+          if (newQuantity < 1) return null; // Remove item if qty goes below 1
           return { ...item, quantity: newQuantity };
         }
         return item;
       });
-      // Filter out items that were marked for removal
-      return tempAr.filter((item): item is NonNullable<typeof item> => item !== null);
+
+      // ✅ Filter out items that were marked for removal
+      return updatedItems.filter((item): item is NonNullable<typeof item> => item !== null);
     });
   };
 
@@ -55,7 +55,7 @@ const MainCart: React.FC = () => {
             <div className="flex items-center flex-1">
               {/* ✅ Image */}
               <img
-                src={item.img}
+                src={item.mainImage}
                 alt={item.title}
                 className="w-20 h-20 object-cover rounded"
               />
@@ -65,33 +65,46 @@ const MainCart: React.FC = () => {
                 <h2 className="text-[1.1rem] font-semibold font-[Intra]">
                   {item.title}
                 </h2>
+                {/* ✅ Medium & Size */}
                 <p className="text-sm text-gray-600 dark:text-gray-400">
-                  {item.shortDsc}
+                  {item.medium} • {item.size}
                 </p>
               </div>
             </div>
 
+            {/* --- Group 2: Qty, Price & Remove --- */}
             <div className="flex items-center justify-around sm:justify-end w-full sm:w-auto sm:gap-4">
               {/* ✅ Quantity Controls */}
               <div className="flex items-center gap-2">
+                {/* ✅ Minus Button */}
                 <button
                   className="minus text-3xl w-7 h-7 flex items-center justify-center p-1 rounded-full cursor-pointer hover:bg-gray-400/30 text-gray-500 hover:text-black dark:text-gray-400 dark:hover:text-white"
                   onClick={() => updateQuantity(item.id, -1)}
                 >
-                  	&#45;
+                  &#45;
                 </button>
+
                 <span>{item.quantity}</span>
-                
+
+                {/* ✅ Plus Button (disabled if quantity == stock) */}
                 <button
-                  className="plus text-3xl w-7 h-7 flex items-center justify-center p-1 rounded-full cursor-pointer hover:bg-gray-400/30 text-gray-500 hover:text-black dark:text-gray-400 dark:hover:text-white"
-                  onClick={() => updateQuantity(item.id, 1)}
-                >                 
-                  	&#43;
+                  className={`plus text-3xl w-7 h-7 flex items-center justify-center p-1 rounded-full ${
+                    item.quantity === item.stock_quantity
+                      ? "opacity-50 cursor-not-allowed"
+                      : "cursor-pointer hover:bg-gray-400/30 text-gray-500 hover:text-black dark:text-gray-400 dark:hover:text-white"
+                  }`}
+                  onClick={() => {
+                    if (item.quantity < item.stock_quantity) {
+                      updateQuantity(item.id, 1);
+                    }
+                  }}
+                  disabled={item.quantity === item.stock_quantity}
+                >
+                  &#43;
                 </button>
               </div>
 
               {/* ✅ Price */}
-              {/* ✅ FIX: Center price on mobile, right-align on desktop. Increased width slightly. */}
               <p className="w-24 text-center sm:w-20 sm:text-right font-semibold">
                 ₹{(item.price * item.quantity).toFixed(2)}
               </p>
@@ -109,7 +122,6 @@ const MainCart: React.FC = () => {
       </div>
 
       {/* ✅ Subtotal Section */}
-
       <div className="mt-6 flex justify-between items-center border-t dark:border-gray-700 border-gray-300 pt-4">
         <span className="font-semibold">Subtotal</span>
         <span className="font-bold text-lg">₹{subtotal.toFixed(2)}</span>

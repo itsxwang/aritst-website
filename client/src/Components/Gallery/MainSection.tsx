@@ -55,7 +55,7 @@ const MainSection = () => {
       <div className="container mx-auto px-4">
         {/* ✅ Header Section */}
         <div className="text-center mb-8">
-          <h1 className="text-7xl font-bold text-gray-900 dark:text-white font-[playfair]">
+          <h1 className="text-4xl xs:text-4xl md:text-6xl font-bold text-gray-900 dark:text-white font-playfair">
             Complete Gallery
           </h1>
           <p className="text-lg text-gray-700 dark:text-white mt-2 font-[Inter]">

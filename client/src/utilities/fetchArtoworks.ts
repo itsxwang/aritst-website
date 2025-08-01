@@ -9,7 +9,7 @@ export function fetchAllArtoworks() {
       medium: "Acrylic on Canvas",
       size: "89x24",
       description: "A serene abstract landscape with muted pastels, evoking calm and balance.lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quae. Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quae.",
-      mainImage: "horizon_main.jpg",
+      mainImage: "https://placehold.co/800?text=Hello+World&font=roboto",
       images: ["horizon_1.jpg", "horizon_2.jpg", "horizon_3.jpg"],
       price: 1200.00,
       types: ["Abstract", "Landscape"],
@@ -26,7 +26,7 @@ export function fetchAllArtoworks() {
       medium: "Oil on Canvas",
       size: "60x48",
       description: "A vibrant urban impression with bold brushstrokes capturing the energy of a bustling city. lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quae. Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quae.",
-      mainImage: "city_motion_main.jpg",
+      mainImage: "https://picsum.photos/seed/picsum/200/300",
       images: ["city_motion_1.jpg", "city_motion_2.jpg"],
       price: 2200.50,
       types: ["Modern", "Urban"],
@@ -43,7 +43,7 @@ export function fetchAllArtoworks() {
       medium: "Mixed Media",
       size: "30x40",
       description: "A minimal piece combining gold leaf and textured paint to create a meditative aura.",
-      mainImage: "golden_silence_main.jpg",
+      mainImage: "https://picsum.photos/200/300/?blur=2",
       images: ["golden_silence_1.jpg", "golden_silence_2.jpg", "golden_silence_3.jpg"],
       price: 1500.00,
       types: ["Minimal", "Luxury"],
@@ -95,11 +95,11 @@ export function fetchAllArtoworks() {
 export function fetchCart() {
   // comes from an api 
   return [
-    { id: 1, title: "Whispers of Banaras", shortDsc: "Acrylic on Canvas - 89x24", price: 1110.75, quantity: 1, img: "https://placehold.co/800?text=Hello+World&font=roboto" },
-    { id: 2, title: "Mountain Serenity", shortDsc: "Oil on Canvas - 30x40", price: 71111.77, quantity: 1, img: "https://via.placeholder.com/80" },
-    { id: 3, title: "Urban Reflections", shortDsc: "Mixed Media - 20x24", price: 1150, quantity: 1, img: "https://via.placeholder.com/80" },
-    { id: 4, title: "Romy Trousers", shortDsc: "Portrait on Canvas - 30x40", price: 2150, quantity: 1, img: "https://via.placeholder.com/80" },
-    { id: 5, title: "Renname", shortDsc: "Renname on Canvas - 30x40", price: 5000, quantity: 1, img: "https://via.placeholder.com/80" },
+    { id: 1, title: "Whispers of Banaras", medium: "Acrylic on Canvas", size: "9x24",   price: 1110.75, quantity: 1, mainImage: "https://placehold.co/800?text=Hello+World&font=roboto", stock_quantity:4 },
+    { id: 2, title: "Mountain Serenity", medium: "Oil on Canvas", size: "30x40",  price: 71111.77, quantity: 1, mainImage: "https://via.placeholder.com/80", stock_quantity:1 },
+    { id: 3, title: "Urban Reflections", medium: "Mixed Media", size: "30x40",  price: 1150, quantity: 1, mainImage: "https://via.placeholder.com/80", stock_quantity:2 },
+    { id: 4, title: "Romy Trousers", medium: "Portrait on Canvas", size: "30x40",  price: 2150, quantity: 1, mainImage: "https://via.placeholder.com/80", stock_quantity:5 },
+    { id: 5, title: "Renname", medium: "Renname on Canvas", size: "30x40",  price: 5000, quantity: 1, mainImage: "https://via.placeholder.com/80", stock_quantity:1 },
   ]
 
 }
