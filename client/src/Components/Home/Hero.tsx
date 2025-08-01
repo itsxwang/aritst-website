@@ -29,17 +29,19 @@ function Hero() {
 
       {/* ✅ Buttons */}
       <div className="flex gap-6 relative z-10">
-        <button
+        <a
+          href="/gallery"
           className="px-6 py-3 rounded-md font-semibold font-inter cursor-pointer transition-all duration-300 transform hover:scale-105 bg-[#D1BFA3] text-gray-900 hover:bg-[#c7b591] shadow dark:bg-[#8B7E66] dark:text-white dark:hover:bg-[#a39076] dark:shadow-md"
         >
           Explore Gallery
-        </button>
+        </a>
 
-        <button
+        <a
+          href="/about"
           className="px-6 py-3 rounded-md font-semibold font-inter cursor-pointer transition-all duration-300 transform hover:scale-105 bg-white text-gray-900 hover:bg-gray-100 border border-gray-300 dark:bg-black dark:text-white dark:hover:bg-gray-800 dark:border dark:border-gray-900"
         >
           About Samridhi
-        </button>
+        </a>
       </div>
     </section>
   );

@@ -151,9 +151,9 @@ const SearchModal: React.FC<SearchModalProps> = ({ isOpen, onClose }) => {
         {searchTerm && (
           <div
             ref={resultsRef}
-            className={`flex flex-col gap-2 mt-4 pt-4 border-gray-200 dark:border-gray-600 
+            className={`flex flex-col gap-2 mt-4  border-gray-200 dark:border-gray-600 
             max-h-[300px] overflow-y-auto pr-2 scrollbar-thin scrollbar-thumb-gray-400 dark:scrollbar-thumb-gray-600 scrollbar-track-transparent ${
-              filteredResults.length === 0 && "border-t" }`}
+              filteredResults.length === 0 ? "border-t border-b justify-center py-4" : "pt-4" }`}
           >
             {filteredResults.length > 0 ? (
               filteredResults.map((artwork, index) => (
@@ -187,7 +187,7 @@ const SearchModal: React.FC<SearchModalProps> = ({ isOpen, onClose }) => {
               ))
             ) : (
               <p className="text-center text-gray-600 dark:text-gray-400 italic py-4">
-                No artworks found for "{searchTerm}"
+                No artworks found for <strong>« {searchTerm} »</strong>
               </p>
             )}
           </div>

@@ -22,7 +22,8 @@ function FeatureSection() {
         {/* ✅ Grid layout */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {featuredItems.map((item) => (
-            <div
+            <a
+              href={`/art/${item.id}`}
               key={item.id}
               className="cursor-pointer bg-white dark:bg-gray-800 p-0 rounded-lg shadow-md transition duration-300 ease hover:scale-105"
             >
@@ -74,7 +75,7 @@ function FeatureSection() {
                   </button>
                 )}
               </div>
-            </div>
+            </a>
           ))}
         </div>
 

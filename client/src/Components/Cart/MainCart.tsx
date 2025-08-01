@@ -47,7 +47,8 @@ const MainCart: React.FC = () => {
       {/* ✅ Cart Items */}
       <div className="space-y-4">
         {cartItems.map((item) => (
-          <div
+          <a
+            href={`/art/${item.id}`}
             key={item.id}
             className="flex flex-col sm:flex-row sm:items-center gap-4 border-b dark:border-gray-700 border-gray-300 pb-4 cursor-pointer"
           >
@@ -78,8 +79,8 @@ const MainCart: React.FC = () => {
               <div className="flex items-center gap-2">
                 {/* ✅ Minus Button */}
                 <button
-                  className="minus text-3xl w-7 h-7 flex items-center justify-center p-1 rounded-full cursor-pointer hover:bg-gray-400/30 text-gray-500 hover:text-black dark:text-gray-400 dark:hover:text-white"
-                  onClick={() => updateQuantity(item.id, -1)}
+                  className="cus-minus-btn text-3xl w-7 h-7 flex items-center justify-center p-1 rounded-full cursor-pointer hover:bg-gray-400/30 text-gray-500 hover:text-black dark:text-gray-400 dark:hover:text-white"
+                  onClick={(e) =>{ e.preventDefault(); updateQuantity(item.id, -1) } }
                 >
                   &#45;
                 </button>
@@ -88,12 +89,13 @@ const MainCart: React.FC = () => {
 
                 {/* ✅ Plus Button (disabled if quantity == stock) */}
                 <button
-                  className={`plus text-3xl w-7 h-7 flex items-center justify-center p-1 rounded-full ${
+                  className={`cus-plus-btn md:dark:bg-transparent text-3xl w-7 h-7 flex items-center justify-center p-1 rounded-full  ${
                     item.quantity === item.stock_quantity
                       ? "opacity-50 cursor-not-allowed"
                       : "cursor-pointer hover:bg-gray-400/30 text-gray-500 hover:text-black dark:text-gray-400 dark:hover:text-white"
                   }`}
-                  onClick={() => {
+                  onClick={(e) => {
+                    e.preventDefault();
                     if (item.quantity < item.stock_quantity) {
                       updateQuantity(item.id, 1);
                     }
@@ -112,12 +114,12 @@ const MainCart: React.FC = () => {
               {/* ✅ Remove Button */}
               <button
                 className="cursor-pointer rounded-full p-1.5 hover:bg-gray-400/30 text-gray-500 hover:text-black dark:text-gray-400 dark:hover:text-white"
-                onClick={() => removeItem(item.id)}
+                onClick={(e) => { e.preventDefault(); removeItem(item.id)} }
               >
                 <X size={18} />
               </button>
             </div>
-          </div>
+          </a>
         ))}
       </div>
 

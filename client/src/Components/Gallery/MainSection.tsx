@@ -151,7 +151,8 @@ const MainSection = () => {
             }`}
         >
           {filteredArtworks.map((artwork) => (
-            <div
+            <a
+              href={`/art/${artwork.id}`}
               key={artwork.id}
               className={`cursor-pointer bg-white dark:bg-gray-800 rounded-lg shadow-md transition-all duration-300 ease ${layout === 'list'
                   ? 'flex flex-col space-x-6 hover:scale-105'
@@ -216,7 +217,7 @@ const MainSection = () => {
                   )}
                 </div>
               </div>
-            </div>
+            </a>
           ))}
         </div>
       </div>
