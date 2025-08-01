@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState,useRef, useEffect,useCallback,useMemo } from "react";
 import { Link } from "react-router-dom";
 import { fetchArt } from "../../utilities/fetchArtoworks";
 import { ArrowLeft, ArrowRight, Share2, Heart, IndianRupee } from 'lucide-react';
@@ -54,9 +54,37 @@ const Badge = ({ children, className = '' }: BadgeProps) => (
 
 function MainDetails({ id }: { id: number }) {
   const artWork = fetchArt(id); // Fetch the artwork data
+  const carouselRef = useRef<HTMLDivElement>(null);
 
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
+  const allImages = useMemo(() => [artWork!.mainImage, ...artWork!.images]  , [artWork]);
+
+
+    const handleNextImage = useCallback(() => {
+  setCurrentImageIndex((prevIndex) => (prevIndex + 1) % allImages.length);
+}, [allImages, setCurrentImageIndex]);
+
+const handlePrevImage = useCallback(() => {
+  setCurrentImageIndex((prevIndex) => (prevIndex - 1 + allImages.length) % allImages.length);
+}, [allImages, setCurrentImageIndex]);
+
+  useEffect(() => {
+  const handleKeyDown = (event: KeyboardEvent) => {
+    if (event.key === 'ArrowRight') {
+      handleNextImage();
+    } else if (event.key === 'ArrowLeft') {
+      handlePrevImage();
+    }
+  };
+
+  document.addEventListener('keydown', handleKeyDown);
+
+  return () => {
+    document.removeEventListener('keydown', handleKeyDown);
+  };
+}, [handleNextImage, handlePrevImage]);
+  
   // If artwork is not found, display a message
   if (!artWork) {
     return (
@@ -78,15 +106,8 @@ function MainDetails({ id }: { id: number }) {
     );
   }
 
-  const allImages = [artWork.mainImage, ...artWork.images];
 
-  const handleNextImage = () => {
-    setCurrentImageIndex((prevIndex) => (prevIndex + 1) % allImages.length);
-  };
 
-  const handlePrevImage = () => {
-    setCurrentImageIndex((prevIndex) => (prevIndex - 1 + allImages.length) % allImages.length);
-  };
 
   const handleShare = () => {
     if (navigator.share) {
@@ -132,8 +153,9 @@ function MainDetails({ id }: { id: number }) {
     </Button>
   );
 
+
   return (
-    <section className="py-12 md:py-20">
+    <section ref={carouselRef} className="py-12 md:py-20">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="mb-8">
           <Link
@@ -147,7 +169,9 @@ function MainDetails({ id }: { id: number }) {
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
           {/* Image Carousel */}
-          <div className="relative group aspect-square rounded-lg shadow-lg overflow-hidden">
+          <div  className="relative group aspect-square rounded-lg shadow-lg overflow-hidden">
+
+            
             <img
               key={allImages[currentImageIndex]} // Use image URL as key for better uniqueness
               src={allImages[currentImageIndex]}

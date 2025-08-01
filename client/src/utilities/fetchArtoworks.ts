@@ -10,7 +10,7 @@ export function fetchAllArtoworks() {
       dimensions: "89x24",
       description: "A serene abstract landscape with muted pastels, evoking calm and balance.lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quae. Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quae.",
       mainImage: "https://placehold.co/800?text=Hello+World&font=roboto",
-      images: ["horizon_1.jpg", "horizon_2.jpg", "horizon_3.jpg"],
+      images: ["https://picsum.photos/seed/picsum/200/300", "https://picsum.photos/seed/picsum/200/700", "https://picsum.photos/seed/picsum/200/400"],
       price: 1200.00,
       types: ["Abstract", "Landscape"],
       instaVideoLink: "https://www.instagram.com/reel/abc123",
