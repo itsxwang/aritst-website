@@ -1,5 +1,6 @@
 import { fetchAllArtoworks } from "../../utilities/fetchArtoworks";
 import  truncateDescription  from "../../utilities/truncateDescription";
+import { Link } from "react-router-dom";
 
 function FeatureSection() {
   // ✅ Fetch all artworks (will come from API later)
@@ -20,10 +21,10 @@ function FeatureSection() {
         </p>
 
         {/* ✅ Grid layout */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-15">
           {featuredItems.map((item) => (
-            <a
-              href={`/art/${item.id}`}
+            <Link
+              to={`/art/${item.id}`}
               key={item.id}
               className="cursor-pointer bg-white dark:bg-gray-800 p-0 rounded-lg shadow-md transition duration-300 ease hover:scale-105"
             >
@@ -75,18 +76,18 @@ function FeatureSection() {
                   </button>
                 )}
               </div>
-            </a>
+            </Link>
           ))}
         </div>
 
         {/* ✅ View All Button */}
-        <button
-          onClick={() => (window.location.href = "/gallery")}
-          className="cursor-pointer mt-15 px-9 py-[0.4rem] font-[Inter] font-semibold text-[1.2rem] transition duration-200 rounded bg-[#E0DCD1] text-gray-800 hover:bg-[#cec7b5] dark:bg-gray-700 dark:text-gray-100 dark:hover:bg-gray-600"
+
+        <Link
+          to="/gallery"
+          className="cursor-pointer mt-15 px-9 py-[0.67rem]  font-[Inter] font-semibold text-[1.2rem] transition duration-200 rounded bg-[#E0DCD1] text-gray-800 hover:bg-[#cec7b5] dark:bg-gray-700 dark:text-gray-100 dark:hover:bg-gray-600"
         >
-          View All Artworks
-          <span className="ml-2 text-2xl">→</span>
-        </button>
+          View All Artworks <span className="ml-2 text-2xl">→</span> 
+        </Link>
       </div>
     </section>
   );

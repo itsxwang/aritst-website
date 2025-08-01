@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Search, Sun, ShoppingCart, Moon, Menu, X } from "lucide-react";
+import { Link } from "react-router-dom";
+
 import SearchModal from "./SearchModal";
 
 import './styles/navbar.css'
@@ -73,24 +75,24 @@ bg-beige-50/90 border-gray-400 text-gray-900 border-b-1`
         }
       >
         {/* ✅ Brand */}
-        <a
+        <Link
           className="artist-name text-xl font-[Times-New-Roman] font-bold text-[24px] cursor-pointer"
-          href="/"
+          to="/"
         >
           Samridhi Studio
-        </a>
+        </Link>
 
         {/* ✅ Desktop Nav Links */}
         <div className="hidden md:flex gap-8">
           {["Home", "Gallery", "About", "Contact"].map((link) => (
-            <a
+            <Link
               key={link}
-              href={link.toLowerCase() === "home" ? "/" : `/${link.toLowerCase()}`}
+              to={link.toLowerCase() === "home" ? "/" : `/${link.toLowerCase()}`}
               className="relative font-[inter] group px-2 font-medium"
             >
               {link}
               <span className="absolute left-0 -bottom-[5px] w-0 h-[1px] bg-current transition-all duration-300 group-hover:w-full"></span>
-            </a>
+            </Link>
           ))}
         </div>
 
@@ -106,13 +108,13 @@ bg-beige-50/90 border-gray-400 text-gray-900 border-b-1`
           </button>
 
           {/* Cart Icon*/}
-          <button
-            onClick={() => window.location.href = "/cart"}
+          <Link
+            to = "/cart"
             className={`p-2.5 rounded-md hover:bg-gray-700/30 
               dark:bg-gray-800 cursor-pointer`}
           >
             <ShoppingCart size={18} />
-          </button>
+          </Link>
 
 
           {/* Dark/Light Toggle */}
@@ -155,14 +157,14 @@ bg-beige-50/90 border-gray-400 text-gray-900 border-b-1`
         {/* Links */}
         <div className="flex flex-col items-start gap-6 px-8 mt-4">
           {["Home", "Gallery", "About", "Contact"].map((link) => (
-            <a
+            <Link
               key={link}
-              href={link.toLowerCase() === "home" ? "/" : `/${link.toLowerCase()}`}
+              to={link.toLowerCase() === "home" ? "/" : `/${link.toLowerCase()}`}
               className="relative font-[inter] group px-2 font-medium"
             >
               {link}
               <span className="absolute left-0 -bottom-[5px] w-0 h-[1px] bg-current transition-all duration-300 group-hover:w-full"></span>
-            </a>
+            </Link>
           ))}
         </div>
       </div>

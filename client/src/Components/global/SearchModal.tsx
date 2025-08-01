@@ -1,5 +1,7 @@
 import React, { useEffect, useState, useRef, useMemo } from "react";
 import ReactDOM from "react-dom";
+import { Link } from "react-router-dom";
+
 import { X } from "lucide-react";
 import "./styles/SearchModal.css";
 import { fetchAllArtoworks } from "../../utilities/fetchArtoworks";
@@ -157,14 +159,14 @@ const SearchModal: React.FC<SearchModalProps> = ({ isOpen, onClose }) => {
           >
             {filteredResults.length > 0 ? (
               filteredResults.map((artwork, index) => (
-                <a
+                <Link
                   key={artwork.id}
                   ref={(el) => {
                     if (el) {
                       itemRefs.current[index] = el;
                     }
                   }}
-                  onClick={() => (window.location.href = `/art/${artwork.id}`)}
+                  to={`/art/${artwork.id}`}
                   className={`rounded-lg p-3 cursor-pointer flex items-center gap-3 
                     ${
                       highlightedIndex === index
@@ -183,7 +185,7 @@ const SearchModal: React.FC<SearchModalProps> = ({ isOpen, onClose }) => {
                       {artwork.medium} • {artwork.size}
                     </p>
                   </div>
-                </a>
+                </Link>
               ))
             ) : (
               <p className="text-center text-gray-600 dark:text-gray-400 italic py-4">

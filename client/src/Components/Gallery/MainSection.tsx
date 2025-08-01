@@ -1,5 +1,7 @@
 import { useState, useEffect, useMemo, useRef } from 'react';
 import { fetchAllArtoworks } from '../../utilities/fetchArtoworks';
+import { Link } from "react-router-dom";
+
 import truncateDescription from '../../utilities/truncateDescription';
 
 type artworksType = ReturnType<typeof fetchAllArtoworks>;
@@ -151,8 +153,8 @@ const MainSection = () => {
             }`}
         >
           {filteredArtworks.map((artwork) => (
-            <a
-              href={`/art/${artwork.id}`}
+            <Link
+              to={`/art/${artwork.id}`}
               key={artwork.id}
               className={`cursor-pointer bg-white dark:bg-gray-800 rounded-lg shadow-md transition-all duration-300 ease ${layout === 'list'
                   ? 'flex flex-col space-x-6 hover:scale-105'
@@ -195,14 +197,14 @@ const MainSection = () => {
                 <div className={`${layout === 'grid' ? 'p-7 pb-4 pt-3' : 'pt-3 pb-5'}`}>
                   {artwork.availability === "Reserved" ? (
                     <button
-                      className={`w-full bg-yellow-500 text-white font-semibold py-2 rounded opacity-70 cursor-not-allowed`}
+                      className={`w-full bg-yellow-500 dark:text-white text-gray-950 font-semibold py-2 rounded opacity-70 cursor-not-allowed`}
                       disabled
                     >
                       Reserved
                     </button>
                   ) : artwork.stock_quantity === 0 ? (
                     <button
-                      className={`w-full bg-gray-500 text-white font-semibold py-2 rounded opacity-70 cursor-not-allowed`}
+                      className={`w-full bg-gray-500 dark:text-white text-gray-950 font-semibold py-2 rounded opacity-70 cursor-not-allowed`}
                       disabled
                     >
                       Out of Stock
@@ -217,7 +219,7 @@ const MainSection = () => {
                   )}
                 </div>
               </div>
-            </a>
+            </Link>
           ))}
         </div>
       </div>

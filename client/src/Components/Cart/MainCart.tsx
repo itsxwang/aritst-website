@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { X } from "lucide-react";
 import { fetchCart } from "../../utilities/fetchArtoworks";
+import { Link } from "react-router-dom";
+
 import "./styles/mainCart.css";
 
 type CartType = ReturnType<typeof fetchCart>;
@@ -47,8 +49,8 @@ const MainCart: React.FC = () => {
       {/* ✅ Cart Items */}
       <div className="space-y-4">
         {cartItems.map((item) => (
-          <a
-            href={`/art/${item.id}`}
+          <Link
+            to={`/art/${item.id}`}
             key={item.id}
             className="flex flex-col sm:flex-row sm:items-center gap-4 border-b dark:border-gray-700 border-gray-300 pb-4 cursor-pointer"
           >
@@ -119,7 +121,7 @@ const MainCart: React.FC = () => {
                 <X size={18} />
               </button>
             </div>
-          </a>
+          </Link>
         ))}
       </div>
 
