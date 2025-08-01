@@ -182,7 +182,7 @@ const SearchModal: React.FC<SearchModalProps> = ({ isOpen, onClose }) => {
                   <div>
                     <h3 className="font-semibold">{artwork.title}</h3>
                     <p className="text-sm text-gray-600 dark:text-gray-300">
-                      {artwork.medium} • {artwork.size}
+                      {artwork.medium} • {artwork.dimensions}
                     </p>
                   </div>
                 </Link>

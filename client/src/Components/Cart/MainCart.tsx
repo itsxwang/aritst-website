@@ -70,7 +70,7 @@ const MainCart: React.FC = () => {
                 </h2>
                 {/* ✅ Medium & Size */}
                 <p className="text-sm text-gray-600 dark:text-gray-400">
-                  {item.medium} • {item.size}
+                  {item.medium} • {item.dimensions}
                 </p>
               </div>
             </div>

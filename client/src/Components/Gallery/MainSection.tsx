@@ -181,7 +181,7 @@ const MainSection = () => {
                 </h3>
 
                 <p className="text-gray-700 dark:text-gray-300 text-sm text-center">
-                  {artwork.medium} • {artwork.size}
+                  {artwork.medium} • {artwork.dimensions}
                 </p>
 
 

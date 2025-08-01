@@ -8,7 +8,8 @@ import Contact from './Components/Contact/Contact.tsx'
 import About from './Components/About/About.tsx'
 import Cart from './Components/Cart/Cart.tsx'
 import Page404 from './Components/404/page404.tsx'
-import ArtPage from './Components/ArtPage/Artpage.tsx'
+import ArtDetails from './Components/ArtDetails/ArtDetails.tsx'
+
 
 const router = createBrowserRouter([
   {
@@ -34,7 +35,7 @@ const router = createBrowserRouter([
   },
   {
     path: '/art/:artId',
-    element: <ArtPage />
+    element: <ArtDetails/>
   },
   {
     path: '*',

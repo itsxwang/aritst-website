@@ -42,7 +42,7 @@ function FeatureSection() {
               <div className="p-4 text-left">
                 <h3 className="text-xl font-semibold mb-2 text-center font-playfair">{item.title}</h3>
                 <p className="text-gray-700 dark:text-gray-300 text-sm text-center">
-                  {item.medium} • {item.size}
+                  {item.medium} • {item.dimensions}
                 </p>
 
                 {/* ✅ Truncated description */}
