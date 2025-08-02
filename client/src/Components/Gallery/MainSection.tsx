@@ -44,9 +44,27 @@ const MainSection = () => {
     );
   }, [selectedTypes, allArtworks]);
 
+  useEffect(() => {
+    const storedTypes = localStorage.getItem("galleryTypes");
+    if (storedTypes) {
+      const filteredTypes = JSON.parse(storedTypes).filter((type: string) => types.includes(type));
+      setSelectedTypes(filteredTypes);
+    }
+  }, [types]);
+
   const toggleType = (type: string) => {
     setSelectedTypes((prev) =>
-      prev.includes(type) ? prev.filter((t) => t !== type) : [...prev, type]
+    {
+
+      if (prev.includes(type)) {
+         const types = prev.filter((t) => t !== type) 
+         localStorage.setItem("galleryTypes", JSON.stringify(types));
+         return types;
+      }
+        const types = [...prev, type]
+        localStorage.setItem("galleryTypes", JSON.stringify(types));
+        return types;
+    }
     );
   };
 
@@ -120,7 +138,7 @@ const MainSection = () => {
                 <div className="absolute z-10 mt-2 w-48 bg-white dark:bg-gray-800 rounded-lg shadow-lg max-h-60 overflow-y-auto transition-all duration-300 ease-in-out origin-top scale-95 animate-fadeIn">
                   <div className="p-2">
                     <button
-                      onClick={() => setSelectedTypes([])}
+                      onClick={() => { localStorage.removeItem('galleryTypes')  ;setSelectedTypes([]) }}
                       className={`cursor-pointer w-full text-left px-3 py-2 rounded-md font-[Inter] mb-1 ${selectedTypes.length === 0
                           ? 'bg-[#625a50] text-white'
                           : 'text-gray-900 dark:text-white hover:bg-[#cbc3b4] dark:hover:bg-[#4b5563]'
