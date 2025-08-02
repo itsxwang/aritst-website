@@ -112,7 +112,7 @@ function Footer() {
           </div>
         </div>
         <div className="mt-8 pt-8 border-t border-gray-300 dark:border-gray-600 text-center">
-          <p>© 2024 Samridhi Studio. All rights reserved.</p>
+          <p>© 2025 Samridhi Studio. All rights reserved.</p>
         </div>
       </div>
     </footer>

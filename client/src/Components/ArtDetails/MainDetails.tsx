@@ -2,10 +2,9 @@ import { useState, useRef, useEffect, useCallback, useMemo } from "react";
 import { Link } from "react-router-dom";
 import { fetchArt } from "../../utilities/fetchArtoworks";
 import { ArrowLeft, ArrowRight, Share2, Heart, IndianRupee } from 'lucide-react';
+import './styles/MainDetails.css'
 
 // Define the Artwork interface to type the fetchArt return value
-// Assuming this is defined elsewhere, as it was not provided in the original code
-
 type Artwork = ReturnType<typeof fetchArt>;
 
 // Type for toast function parameters
@@ -54,18 +53,92 @@ const Badge = ({ children, className = '' }: BadgeProps) => (
 
 function MainDetails({ id }: { id: number }) {
   const [artWork, setArtWork] = useState<Artwork | null>(null);
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+
+  // State and refs for Amazon-style zoom
+  const [zoomActive, setZoomActive] = useState(false);
+  const [lensPosition, setLensPosition] = useState({ x: 0, y: 0 });
+  const imageContainerRef = useRef<HTMLDivElement>(null);
+
+  // State for swipe functionality
+  const [touchStartX, setTouchStartX] = useState<number | null>(null);
+  const [touchEndX, setTouchEndX] = useState<number | null>(null);
+
   useEffect(() => {
     setArtWork(fetchArt(id));
   }, [id]);
 
-  const carouselRef = useRef<HTMLDivElement>(null);
+  // Calculations for the zoom pane
+  const zoomLevel = 2; // FIX: Set to 2 to match the lens size (w-1/2 => 1/0.5 = 2)
+  const backgroundPositionX = -lensPosition.x * zoomLevel;
+  const backgroundPositionY = -lensPosition.y * zoomLevel;
 
-  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  // Event handlers for the zoom feature
+  const handleMouseEnter = () => {
+    setZoomActive(true);
+  };
 
-const allImages = useMemo(() => {
-  if (!artWork) return [];
-  return [artWork.mainImage, ...artWork.images];
-}, [artWork]);
+  const handleMouseLeave = () => {
+    setZoomActive(false);
+  };
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (!imageContainerRef.current) return;
+
+    const imageRect = imageContainerRef.current.getBoundingClientRect();
+    const lensWidth = imageRect.width / 2; // Lens is 50% of container width
+    const lensHeight = imageRect.height / 2; // Lens is 50% of container height
+
+    // Calculate cursor position relative to the image container
+    let x = e.clientX - imageRect.left;
+    let y = e.clientY - imageRect.top;
+
+    // Center the lens on the cursor
+    x = x - (lensWidth / 2);
+    y = y - (lensHeight / 2);
+
+    // Clamp lens position to stay within the image bounds
+    const maxX = imageRect.width - lensWidth;
+    const maxY = imageRect.height - lensHeight;
+    x = Math.max(0, Math.min(x, maxX));
+    y = Math.max(0, Math.min(y, maxY));
+    
+    setLensPosition({ x, y });
+  };
+
+  // Swipe event handlers
+  const handleTouchStart = (e: React.TouchEvent<HTMLDivElement>) => {
+    setTouchStartX(e.touches[0].clientX);
+    setTouchEndX(null);
+  };
+
+  const handleTouchMove = (e: React.TouchEvent<HTMLDivElement>) => {
+    setTouchEndX(e.touches[0].clientX);
+  };
+
+  const handleTouchEnd = () => {
+    if (touchStartX !== null && touchEndX !== null) {
+      const diff = touchStartX - touchEndX;
+      const swipeThreshold = 50; // Minimum distance for a swipe
+
+      if (Math.abs(diff) > swipeThreshold) {
+        if (diff > 0) {
+          // Swipe left - go to next image
+          handleNextImage();
+        } else {
+          // Swipe right - go to previous image
+          handlePrevImage();
+        }
+      }
+    }
+    setTouchStartX(null);
+    setTouchEndX(null);
+  };
+  
+  const allImages = useMemo(() => {
+    if (!artWork) return [];
+    return [artWork.mainImage, ...artWork.images];
+  }, [artWork]);
 
   const handleNextImage = useCallback(() => {
     setCurrentImageIndex((prevIndex) => (prevIndex + 1) % allImages.length);
@@ -81,21 +154,13 @@ const allImages = useMemo(() => {
 
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
-      if (event.key === 'ArrowRight') {
-        handleNextImage();
-      } else if (event.key === 'ArrowLeft') {
-        handlePrevImage();
-      }
+      if (event.key === 'ArrowRight') handleNextImage();
+      else if (event.key === 'ArrowLeft') handlePrevImage();
     };
-
     document.addEventListener('keydown', handleKeyDown);
-
-    return () => {
-      document.removeEventListener('keydown', handleKeyDown);
-    };
+    return () => document.removeEventListener('keydown', handleKeyDown);
   }, [handleNextImage, handlePrevImage]);
 
-  // If artwork is not found, display a message
   if (!artWork) {
     return (
       <div className="flex-grow flex items-center justify-center text-center p-4">
@@ -103,9 +168,7 @@ const allImages = useMemo(() => {
           <h1 className="text-2xl font-bold text-gray-800 dark:text-gray-100 mb-4">
             Artwork Not Found
           </h1>
-          <Button
-            className="bg-gray-800 text-white hover:bg-gray-700 dark:bg-gray-200 dark:text-black dark:hover:bg-gray-300"
-          >
+          <Button className="bg-gray-800 text-white hover:bg-gray-700 dark:bg-gray-200 dark:text-black dark:hover:bg-gray-300">
             <Link to="/gallery" className="flex items-center">
               <ArrowLeft className="h-4 w-4 mr-2" />
               Back to Gallery
@@ -125,18 +188,12 @@ const allImages = useMemo(() => {
       }).catch((error) => console.log('Error sharing', error));
     } else {
       navigator.clipboard.writeText(window.location.href);
-      toast({
-        title: "Link Copied",
-        description: "Artwork link copied to clipboard.",
-      });
+      toast({ title: "Link Copied", description: "Artwork link copied to clipboard." });
     }
   };
 
   const handleAddToCart = () => {
-    toast({
-      title: "Added to Cart!",
-      description: `${artWork.title} has been added to your cart.`,
-    });
+    toast({ title: "Added to Cart!", description: `${artWork.title} has been added to your cart.` });
     console.log(`Added ${artWork.id} to cart.`);
   };
 
@@ -145,89 +202,87 @@ const allImages = useMemo(() => {
   const isAvailable = !isSold && !isReserved;
 
   const ctaButton = isAvailable ? (
-    <Button
-      onClick={handleAddToCart}
-      className="cursor-pointer font-[inter] bg-[#625a50] hover:bg-[#45403b] transition-colors duration-200 w-full py-3 text-lg font-medium text-black dark:text-white dark:bg-[#817565] dark:hover:bg-[#625a50]"
-    >
+    <Button onClick={handleAddToCart} className="cursor-pointer font-[inter] bg-[#625a50] hover:bg-[#45403b] transition-colors duration-200 w-full py-3 text-lg font-medium text-black dark:text-white dark:bg-[#817565] dark:hover:bg-[#625a50]">
       Add To Cart
     </Button>
   ) : (
-    <Button
-      disabled
-      className="w-full py-3 text-lg font-semibold bg-gray-300 text-gray-500 dark:bg-gray-700 dark:text-gray-400 cursor-not-allowed"
-    >
+    <Button disabled className="w-full py-3 text-lg font-semibold bg-gray-300 text-gray-500 dark:bg-gray-700 dark:text-gray-400 cursor-not-allowed">
       {isSold ? 'Out of Stock' : 'Reserved'}
     </Button>
   );
 
   return (
-    <section ref={carouselRef} className="py-12 md:py-20">
+    <section className="py-12 md:py-20">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="mb-8">
-          <Link
-            to="/gallery"
-            className="hover:bg-gray-200 px-4 py-2 rounded-sm dark:hover:bg-gray-800 inline-flex items-center text-gray-600 dark:text-gray-400 hover:text-black dark:hover:text-white transition-colors"
-          >
+          <Link to="/gallery" className="hover:bg-gray-200 px-4 py-2 rounded-sm dark:hover:bg-gray-800 inline-flex items-center text-gray-600 dark:text-gray-400 hover:text-black dark:hover:text-white transition-colors">
             <ArrowLeft className="h-4 w-4 mr-2" />
             Back to Gallery
           </Link>
         </div>
-
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
-          {/* Image Carousel */}
-          <div className="flex flex-col items-center">
-            <div className="relative group aspect-square rounded-lg shadow-lg overflow-hidden w-full">
-              <div className="relative w-full h-full">
-                <img
-                  key={allImages[currentImageIndex]}
-                  src={allImages[currentImageIndex]}
-                  alt={`${artWork.title} - view ${currentImageIndex + 1}`}
-                  className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
-                />
-                {/* Hover overlay */}
-                <div className="absolute inset-0 bg-black/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-              </div>
+          <div className="relative flex flex-col items-center">
+            <div 
+                ref={imageContainerRef}
+                onMouseEnter={handleMouseEnter}
+                onMouseLeave={handleMouseLeave}
+                onMouseMove={handleMouseMove}
+                onTouchStart={handleTouchStart}
+                onTouchMove={handleTouchMove}
+                onTouchEnd={handleTouchEnd}
+                className="relative group aspect-square rounded-lg shadow-lg overflow-hidden w-full cursor-crosshair"
+            >
+              <img
+                key={allImages[currentImageIndex]}
+                src={allImages[currentImageIndex]}
+                alt={`${artWork.title} - view ${currentImageIndex + 1}`}
+                className="w-full h-full object-cover"
+              />
+              <div
+                style={{
+                  display: zoomActive && window.innerWidth > 768 ? 'block' : 'none',
+                  left: `${lensPosition.x}px`,
+                  top: `${lensPosition.y}px`,
+                }}
+                className="absolute w-1/2 h-1/2 border-2 border-white bg-white/30 pointer-events-none"
+              />
               {allImages.length > 1 && (
                 <>
-                  <Button
-                    onClick={handlePrevImage}
-                    className="cursor-pointer absolute left-2 top-1/2 -translate-y-1/2 bg-black/30 text-white hover:bg-black/50 opacity-0 group-hover:opacity-100"
-                  >
+                  <Button onClick={handlePrevImage} className="cursor-pointer absolute left-2 top-1/2 -translate-y-1/2 bg-black/30 text-white hover:bg-black/50 opacity-0 group-hover:opacity-100">
                     <ArrowLeft className="h-6 w-6" />
                   </Button>
-                  <Button
-                    onClick={handleNextImage}
-                    className="cursor-pointer absolute right-2 top-1/2 -translate-y-1/2 bg-black/30 text-white hover:bg-black/50 opacity-0 group-hover:opacity-100"
-                  >
+                  <Button onClick={handleNextImage} className="cursor-pointer absolute right-2 top-1/2 -translate-y-1/2 bg-black/30 text-white hover:bg-black/50 opacity-0 group-hover:opacity-100">
                     <ArrowRight className="h-6 w-6" />
                   </Button>
                 </>
               )}
             </div>
+            <div
+              style={{
+                display: zoomActive && window.innerWidth > 768 ? 'block' : 'none',
+                backgroundImage: `url(${allImages[currentImageIndex]})`,
+                backgroundPosition: `${backgroundPositionX}px ${backgroundPositionY}px`,
+                backgroundSize: `${zoomLevel * 100}%`,
+              }}
+              className={`absolute ${ window.innerWidth > 1024 ? "top-0 left-[102%]" : "top-[102%] left-0 "} w-full h-full border-2 rounded-lg shadow-xl hidden lg:block bg-no-repeat z-10 pointer-events-none`}
+            ></div>
             {allImages.length > 1 && (
               <div className="flex space-x-2 p-2 mt-3 bg-gray-100 dark:bg-gray-800 rounded-full">
                 {allImages.map((image, index) => (
                   <button
                     key={image}
                     onClick={() => handleDotClick(index)}
-                    className={`w-3 h-3 rounded-full transition-all cursor-pointer ${
-                      currentImageIndex === index ? 'bg-gray-900 dark:bg-white scale-125' : 'bg-gray-400 dark:bg-gray-500 hover:bg-gray-600 dark:hover:bg-gray-300'
-                    }`}
+                    className={`w-3 h-3 rounded-full transition-all cursor-pointer ${currentImageIndex === index ? 'bg-gray-900 dark:bg-white scale-125' : 'bg-gray-400 dark:bg-gray-500 hover:bg-gray-600 dark:hover:bg-gray-300'}`}
                   />
                 ))}
               </div>
             )}
           </div>
-
-          {/* Artwork Details */}
           <div className="space-y-6">
             <div>
               <div className="flex flex-wrap gap-2 mb-3">
                 {artWork.types.map((type) => (
-                  <Badge
-                    key={type}
-                    className="dark:text-white bg-[#e0dcd1] dark:bg-gray-700/50 text-black px-2.5 py-1 rounded-full"
-                  >
+                  <Badge key={type} className="dark:text-white bg-[#e0dcd1] dark:bg-gray-700/50 text-black px-2.5 py-1 rounded-full">
                     {type}
                   </Badge>
                 ))}
@@ -239,7 +294,6 @@ const allImages = useMemo(() => {
                 {artWork.medium} • {artWork.dimensions}
               </p>
             </div>
-
             {artWork.description && (
               <div>
                 <h3 className="font-[inter] font-semibold text-lg text-gray-900 dark:text-gray-100 mb-2">
@@ -250,7 +304,6 @@ const allImages = useMemo(() => {
                 </p>
               </div>
             )}
-
             <div className="border-t border-gray-200 dark:border-gray-700 pt-6 space-y-6">
               <div className="flex items-center justify-between">
                 <div>
@@ -261,23 +314,16 @@ const allImages = useMemo(() => {
                   </p>
                 </div>
                 <div className="flex space-x-2">
-                  <Button
-                    onClick={handleShare}
-                    className="cursor-pointer border border-gray-300 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-800"
-                  >
+                  <Button onClick={handleShare} className="cursor-pointer border border-gray-300 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-800">
                     <Share2 className="h-5 w-5 text-gray-700 dark:text-gray-300" />
                   </Button>
-                  <Button
-                    className="cursor-pointer border border-gray-300 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-800"
-                  >
+                  <Button className="cursor-pointer border border-gray-300 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-800">
                     <Heart className="h-5 w-5 text-gray-700 dark:text-gray-300" />
                   </Button>
                 </div>
               </div>
-
               {ctaButton}
             </div>
-
             <div className="bg-gray-100 dark:bg-gray-800 rounded-lg p-4">
               <h4 className="font-semibold text-gray-900 dark:text-gray-100 mb-3">
                 Artwork Details
@@ -293,27 +339,15 @@ const allImages = useMemo(() => {
                 </div>
                 <div className="flex justify-between">
                   <span className="text-gray-600 dark:text-gray-400">Framed:</span>
-                  <span className="font-medium text-gray-800 dark:text-gray-200">
-                    {artWork.framed ? 'Yes' : 'No'}
-                  </span>
+                  <span className="font-medium text-gray-800 dark:text-gray-200">{artWork.framed ? 'Yes' : 'No'}</span>
                 </div>
                 <div className="flex justify-between">
                   <span className="text-gray-600 dark:text-gray-400">Created:</span>
-                  <span className="font-medium text-gray-800 dark:text-gray-200">
-                    {new Date(artWork.created_at).toLocaleDateString()}
-                  </span>
+                  <span className="font-medium text-gray-800 dark:text-gray-200">{new Date(artWork.created_at).toLocaleDateString()}</span>
                 </div>
                 <div className="flex justify-between">
                   <span className="text-gray-600 dark:text-gray-400">Availability:</span>
-                  <span
-                    className={`font-bold ${
-                      isAvailable
-                        ? 'text-green-600 dark:text-green-400'
-                        : isReserved
-                        ? 'text-orange-500 dark:text-orange-400'
-                        : 'text-red-600 dark:text-red-400'
-                    }`}
-                  >
+                  <span className={`font-bold ${isAvailable ? 'text-green-600 dark:text-green-400' : isReserved ? 'text-orange-500 dark:text-orange-400' : 'text-red-600 dark:text-red-400'}`}>
                     {artWork.availability}
                   </span>
                 </div>
