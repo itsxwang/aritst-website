@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { fetchArt } from "../../utilities/fetchArtoworks";
 import { ArrowLeft, ArrowRight, Share2, Heart, IndianRupee } from 'lucide-react';
 import './styles/MainDetails.css'
+import { addToFavourites, isFavourite, removeFromFavourites } from "../../utilities/handleFavourites";
 
 // Define the Artwork interface to type the fetchArt return value
 type Artwork = ReturnType<typeof fetchArt>;
@@ -59,6 +60,8 @@ function MainDetails({ id }: { id: number }) {
   const [zoomActive, setZoomActive] = useState(false);
   const [lensPosition, setLensPosition] = useState({ x: 0, y: 0 });
   const imageContainerRef = useRef<HTMLDivElement>(null);
+  const [isFavorited, setIsFavorited] = useState(() => isFavourite(id));
+
 
   // State for swipe functionality
   const [touchStartX, setTouchStartX] = useState<number | null>(null);
@@ -102,7 +105,7 @@ function MainDetails({ id }: { id: number }) {
     const maxY = imageRect.height - lensHeight;
     x = Math.max(0, Math.min(x, maxX));
     y = Math.max(0, Math.min(y, maxY));
-    
+
     setLensPosition({ x, y });
   };
 
@@ -134,7 +137,7 @@ function MainDetails({ id }: { id: number }) {
     setTouchStartX(null);
     setTouchEndX(null);
   };
-  
+
   const allImages = useMemo(() => {
     if (!artWork) return [];
     return [artWork.mainImage, ...artWork.images];
@@ -222,15 +225,15 @@ function MainDetails({ id }: { id: number }) {
         </div>
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
           <div className="relative flex flex-col items-center">
-            <div 
-                ref={imageContainerRef}
-                onMouseEnter={handleMouseEnter}
-                onMouseLeave={handleMouseLeave}
-                onMouseMove={handleMouseMove}
-                onTouchStart={handleTouchStart}
-                onTouchMove={handleTouchMove}
-                onTouchEnd={handleTouchEnd}
-                className="relative group aspect-square rounded-lg shadow-lg overflow-hidden w-full cursor-crosshair"
+            <div
+              ref={imageContainerRef}
+              onMouseEnter={handleMouseEnter}
+              onMouseLeave={handleMouseLeave}
+              onMouseMove={handleMouseMove}
+              onTouchStart={handleTouchStart}
+              onTouchMove={handleTouchMove}
+              onTouchEnd={handleTouchEnd}
+              className="relative group aspect-square rounded-lg shadow-lg overflow-hidden w-full cursor-crosshair"
             >
               <img
                 key={allImages[currentImageIndex]}
@@ -264,13 +267,13 @@ function MainDetails({ id }: { id: number }) {
                 backgroundPosition: `${backgroundPositionX}px ${backgroundPositionY}px`,
                 backgroundSize: `${zoomLevel * 100}%`,
               }}
-              className={`absolute ${ window.innerWidth > 1024 ? "top-0 left-[102%]" : "top-[102%] left-0 "} w-full h-full border-2 rounded-lg shadow-xl hidden lg:block bg-no-repeat z-10 pointer-events-none`}
+              className={`absolute ${window.innerWidth > 1024 ? "top-0 left-[102%]" : "top-[102%] left-0 "} w-full h-full border-2 rounded-lg shadow-xl hidden lg:block bg-no-repeat z-10 pointer-events-none`}
             ></div>
             {allImages.length > 1 && (
               <div className="flex space-x-2 p-2 mt-3 bg-gray-100 dark:bg-gray-800 rounded-full">
-                {allImages.map((image, index) => (
+                {allImages.map((_, index) => (
                   <button
-                    key={image}
+                    key={index}
                     onClick={() => handleDotClick(index)}
                     className={`w-3 h-3 rounded-full transition-all cursor-pointer ${currentImageIndex === index ? 'bg-gray-900 dark:bg-white scale-125' : 'bg-gray-400 dark:bg-gray-500 hover:bg-gray-600 dark:hover:bg-gray-300'}`}
                   />
@@ -317,8 +320,18 @@ function MainDetails({ id }: { id: number }) {
                   <Button onClick={handleShare} className="cursor-pointer border border-gray-300 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-800">
                     <Share2 className="h-5 w-5 text-gray-700 dark:text-gray-300" />
                   </Button>
-                  <Button className="cursor-pointer border border-gray-300 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-800">
-                    <Heart className="h-5 w-5 text-gray-700 dark:text-gray-300" />
+
+                  <Button
+                    className="cursor-pointer border border-gray-300 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-800"
+                    onClick={() => {
+                      if (isFavorited) {
+                        removeFromFavourites(id);
+                      } else {
+                        addToFavourites(id);
+                      }
+                      setIsFavorited(!isFavorited);
+                    }}             >
+                    <Heart className={`h-5 w-5 transition-all duration-200 ${isFavorited ? 'text-red-500 fill-red-500 scale-110 drop-shadow-[0_0_4px_rgba(239,68,68,0.5)]' : 'text-gray-700 dark:text-gray-300 fill-transparent'}`} />
                   </Button>
                 </div>
               </div>

@@ -84,7 +84,7 @@ bg-beige-50/90 border-gray-400 text-gray-900 border-b-1`
 
         {/* ✅ Desktop Nav Links */}
         <div className="hidden md:flex gap-8">
-          {["Home", "Gallery", "About", "Contact"].map((link) => (
+          {["Home", "Gallery", "Favourites", "About", "Contact"].map((link) => (
             <Link
               key={link}
               to={link.toLowerCase() === "home" ? "/" : `/${link.toLowerCase()}`}
@@ -156,7 +156,7 @@ bg-beige-50/90 border-gray-400 text-gray-900 border-b-1`
 
         {/* Links */}
         <div className="flex flex-col items-start gap-6 px-8 mt-4">
-          {["Home", "Gallery", "About", "Contact"].map((link) => (
+          {["Home", "Gallery", "Favourites", "About", "Contact"].map((link) => (
             <Link
               key={link}
               to={link.toLowerCase() === "home" ? "/" : `/${link.toLowerCase()}`}

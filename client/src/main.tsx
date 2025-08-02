@@ -9,6 +9,7 @@ import About from './Components/About/About.tsx'
 import Cart from './Components/Cart/Cart.tsx'
 import Page404 from './Components/404/page404.tsx'
 import ArtDetails from './Components/ArtDetails/ArtDetails.tsx'
+import Favourites from './Components/Favourites/Favourites.tsx'
 
 
 const router = createBrowserRouter([
@@ -36,6 +37,10 @@ const router = createBrowserRouter([
   {
     path: '/art/:artId',
     element: <ArtDetails/>
+  },
+  {
+    path: '/favourites',
+    element: <Favourites/>
   },
   {
     path: '*',
