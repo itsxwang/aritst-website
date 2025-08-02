@@ -6,6 +6,8 @@ import { ArrowLeft, ArrowRight, Share2, Heart, IndianRupee } from 'lucide-react'
 // Define the Artwork interface to type the fetchArt return value
 // Assuming this is defined elsewhere, as it was not provided in the original code
 
+type Artwork = ReturnType<typeof fetchArt>;
+
 // Type for toast function parameters
 interface ToastParams {
   title: string;
@@ -51,12 +53,19 @@ const Badge = ({ children, className = '' }: BadgeProps) => (
 );
 
 function MainDetails({ id }: { id: number }) {
-  const artWork = fetchArt(id); // Fetch the artwork data
+  const [artWork, setArtWork] = useState<Artwork | null>(null);
+  useEffect(() => {
+    setArtWork(fetchArt(id));
+  }, [id]);
+
   const carouselRef = useRef<HTMLDivElement>(null);
 
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
-  const allImages = useMemo(() => [artWork!.mainImage, ...artWork!.images], [artWork]);
+const allImages = useMemo(() => {
+  if (!artWork) return [];
+  return [artWork.mainImage, ...artWork.images];
+}, [artWork]);
 
   const handleNextImage = useCallback(() => {
     setCurrentImageIndex((prevIndex) => (prevIndex + 1) % allImages.length);
@@ -65,6 +74,10 @@ function MainDetails({ id }: { id: number }) {
   const handlePrevImage = useCallback(() => {
     setCurrentImageIndex((prevIndex) => (prevIndex - 1 + allImages.length) % allImages.length);
   }, [allImages]);
+
+  const handleDotClick = useCallback((index: number) => {
+    setCurrentImageIndex(index);
+  }, []);
 
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
@@ -162,42 +175,47 @@ function MainDetails({ id }: { id: number }) {
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
           {/* Image Carousel */}
-          <div className="relative group aspect-square rounded-lg shadow-lg overflow-hidden">
-            <div className="relative w-full h-full">
-              <img
-                key={allImages[currentImageIndex]}
-                src={allImages[currentImageIndex]}
-                alt={`${artWork.title} - view ${currentImageIndex + 1}`}
-                className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
-              />
-              {/* Hover overlay */}
-              <div className="absolute inset-0 bg-black/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+          <div className="flex flex-col items-center">
+            <div className="relative group aspect-square rounded-lg shadow-lg overflow-hidden w-full">
+              <div className="relative w-full h-full">
+                <img
+                  key={allImages[currentImageIndex]}
+                  src={allImages[currentImageIndex]}
+                  alt={`${artWork.title} - view ${currentImageIndex + 1}`}
+                  className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
+                />
+                {/* Hover overlay */}
+                <div className="absolute inset-0 bg-black/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+              </div>
+              {allImages.length > 1 && (
+                <>
+                  <Button
+                    onClick={handlePrevImage}
+                    className="cursor-pointer absolute left-2 top-1/2 -translate-y-1/2 bg-black/30 text-white hover:bg-black/50 opacity-0 group-hover:opacity-100"
+                  >
+                    <ArrowLeft className="h-6 w-6" />
+                  </Button>
+                  <Button
+                    onClick={handleNextImage}
+                    className="cursor-pointer absolute right-2 top-1/2 -translate-y-1/2 bg-black/30 text-white hover:bg-black/50 opacity-0 group-hover:opacity-100"
+                  >
+                    <ArrowRight className="h-6 w-6" />
+                  </Button>
+                </>
+              )}
             </div>
             {allImages.length > 1 && (
-              <>
-                <Button
-                  onClick={handlePrevImage}
-                  className="cursor-pointer absolute left-2 top-1/2 -translate-y-1/2 bg-black/30 text-white hover:bg-black/50 opacity-0 group-hover:opacity-100"
-                >
-                  <ArrowLeft className="h-6 w-6" />
-                </Button>
-                <Button
-                  onClick={handleNextImage}
-                  className="cursor-pointer absolute right-2 top-1/2 -translate-y-1/2 bg-black/30 text-white hover:bg-black/50 opacity-0 group-hover:opacity-100"
-                >
-                  <ArrowRight className="h-6 w-6" />
-                </Button>
-                <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex space-x-2">
-                  {allImages.map((image, index) => (
-                    <div
-                      key={image}
-                      className={`w-2 h-2 rounded-full transition-all ${
-                        currentImageIndex === index ? 'bg-white scale-125' : 'bg-white/50'
-                      }`}
-                    />
-                  ))}
-                </div>
-              </>
+              <div className="flex space-x-2 p-2 mt-3 bg-gray-100 dark:bg-gray-800 rounded-full">
+                {allImages.map((image, index) => (
+                  <button
+                    key={image}
+                    onClick={() => handleDotClick(index)}
+                    className={`w-3 h-3 rounded-full transition-all cursor-pointer ${
+                      currentImageIndex === index ? 'bg-gray-900 dark:bg-white scale-125' : 'bg-gray-400 dark:bg-gray-500 hover:bg-gray-600 dark:hover:bg-gray-300'
+                    }`}
+                  />
+                ))}
+              </div>
             )}
           </div>
 
