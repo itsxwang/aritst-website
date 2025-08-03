@@ -73,7 +73,7 @@ function MainFavourites() {
     };
 
     return (
-        <section className="py-20 bg-white dark:bg-gradient-to-b dark:from-gray-900 dark:to-black">
+        <section className="py-20 bg-white dark:bg-gradient-to-b dark:from-gray-900 dark:to-black min-h-[60vh]">
             <div className="container mx-auto px-4">
                 {/* ✅ Header Section */}
                 <div className="text-center mb-8">

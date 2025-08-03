@@ -18,7 +18,8 @@ export function fetchAllArtoworks() {
       created_at: "2024-05-14T10:30:00Z",
       availability: "Available",
       stock_quantity: 1,
-      featured: true
+      featured: true,
+      isPrintsAvailable: false
     },
     {
       id: 2,
@@ -35,7 +36,8 @@ export function fetchAllArtoworks() {
       created_at: "2023-11-20T15:45:00Z",
       availability: "Sold",
       stock_quantity: 0,
-      featured: false
+      featured: false,
+      isPrintsAvailable: true
     },
     {
       id: 3,
@@ -52,7 +54,8 @@ export function fetchAllArtoworks() {
       created_at: "2024-08-02T09:00:00Z",
       availability: "Reserved",
       stock_quantity: 1,
-      featured: true
+      featured: true,
+      isPrintsAvailable: true
     },
     {
       id: 4,
@@ -68,8 +71,9 @@ export function fetchAllArtoworks() {
       framed: false,
       created_at: "2024-02-10T14:15:00Z",
       availability: "Available",
-      stock_quantity: 2,
-      featured: false
+      stock_quantity: 1,
+      featured: false,
+      isPrintsAvailable: false
     },
     {
       id: 5,
@@ -85,8 +89,9 @@ export function fetchAllArtoworks() {
       framed: true,
       created_at: "2024-09-18T11:20:00Z",
       availability: "Available",
-      stock_quantity: 1,
-      featured: true
+      stock_quantity: 5,
+      featured: true,
+      isPrintsAvailable: true
     }
    
    
