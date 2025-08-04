@@ -1,9 +1,10 @@
 import { useState, useRef, useEffect, useCallback, useMemo } from "react";
 import { Link } from "react-router-dom";
-import { fetchArt } from "../../utilities/fetchArtoworks";
+import { fetchArt } from "../../utilities/handleArtoworks";
 import { ArrowLeft, ArrowRight, Share2, Heart, IndianRupee, ChevronUp, ChevronDown } from 'lucide-react';
 import './styles/MainDetails.css'
 import { addToFavourites, isFavourite, removeFromFavourites } from "../../utilities/handleFavourites";
+
 
 // Define the Artwork interface to type the fetchArt return value
 type Artwork = ReturnType<typeof fetchArt>;
@@ -197,10 +198,7 @@ function MainDetails({ id }: { id: number }) {
     }
   };
 
-  const handleAddToCart = () => {
-    toast({ title: "Added to Cart!", description: `${cartQuantity} x ${artWork.title} has been added to your cart.` });
-    console.log(`Added ${cartQuantity} of ${artWork.id} to cart.`);
-  };
+ 
 
   const isSold = artWork.availability === 'Sold' || artWork.stock_quantity === 0;
   const isReserved = artWork.availability === 'Reserved';
@@ -210,9 +208,14 @@ function MainDetails({ id }: { id: number }) {
   const showQuantitySelector = artWork.isPrintsAvailable && isAvailable;
 
   const ctaButton = isAvailable ? (
-    <Button onClick={handleAddToCart} className="cursor-pointer font-[inter] bg-[#625a50] hover:bg-[#45403b] transition-colors duration-200 w-full py-3 text-lg font-medium text-black dark:text-white dark:bg-[#817565] dark:hover:bg-[#625a50]">
-      Add To Cart
-    </Button>
+    <Link
+      to={`/cart/${id}?quantity=${cartQuantity}`}
+      className="block w-full"
+    >
+      <Button className="cursor-pointer font-[inter] bg-[#625a50] hover:bg-[#45403b] transition-colors duration-200 w-full py-3 text-lg font-medium text-black dark:text-white dark:bg-[#817565] dark:hover:bg-[#625a50]">
+        Add To Cart
+      </Button>
+    </Link>
   ) : (
     <Button disabled className="w-full py-3 text-lg font-semibold bg-gray-300 text-gray-500 dark:bg-gray-700 dark:text-gray-400 cursor-not-allowed">
       {isSold ? 'Out of Stock' : 'Reserved'}
@@ -333,21 +336,21 @@ function MainDetails({ id }: { id: number }) {
                     <div className="flex items-center gap-x-2">
                       <p className="text-2xl text-gray-500 dark:text-gray-400">×</p>
                       <div className="flex flex-col items-center">
-                          <button
-                              onClick={handleIncreaseQuantity}
-                              disabled={cartQuantity >= artWork.stock_quantity}
-                              className="cursor-pointer text-gray-500 dark:text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 disabled:cursor-not-allowed disabled:opacity-50">
-                              <ChevronUp className="inline h-5 w-5" />
-                          </button>
-                          <span className="text-base font-semibold text-gray-700 dark:text-gray-300">
-                              {cartQuantity}
-                          </span>
-                          <button
-                              onClick={handleDecreaseQuantity}
-                              disabled={cartQuantity <= 1}
-                              className="cursor-pointer text-gray-500 dark:text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 disabled:cursor-not-allowed disabled:opacity-50">
-                              <ChevronDown className="inline h-5 w-5" />
-                          </button>
+                        <button
+                          onClick={handleIncreaseQuantity}
+                          disabled={cartQuantity >= artWork.stock_quantity}
+                          className="cursor-pointer text-gray-500 dark:text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 disabled:cursor-not-allowed disabled:opacity-50">
+                          <ChevronUp className="inline h-5 w-5" />
+                        </button>
+                        <span className="text-base font-semibold text-gray-700 dark:text-gray-300">
+                          {cartQuantity}
+                        </span>
+                        <button
+                          onClick={handleDecreaseQuantity}
+                          disabled={cartQuantity <= 1}
+                          className="cursor-pointer text-gray-500 dark:text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 disabled:cursor-not-allowed disabled:opacity-50">
+                          <ChevronDown className="inline h-5 w-5" />
+                        </button>
                       </div>
                     </div>
                   )}

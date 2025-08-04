@@ -1,5 +1,5 @@
 import { useState, useEffect, useMemo, useRef } from 'react';
-import { fetchAllArtoworks } from '../../utilities/fetchArtoworks';
+import { fetchAllArtoworks } from '../../utilities/handleArtoworks';
 import { Link } from "react-router-dom";
 
 import truncateDescription from '../../utilities/truncateDescription';
@@ -53,17 +53,16 @@ const MainSection = () => {
   }, [types]);
 
   const toggleType = (type: string) => {
-    setSelectedTypes((prev) =>
-    {
+    setSelectedTypes((prev) => {
 
       if (prev.includes(type)) {
-         const types = prev.filter((t) => t !== type) 
-         localStorage.setItem("galleryTypes", JSON.stringify(types));
-         return types;
-      }
-        const types = [...prev, type]
+        const types = prev.filter((t) => t !== type)
         localStorage.setItem("galleryTypes", JSON.stringify(types));
         return types;
+      }
+      const types = [...prev, type]
+      localStorage.setItem("galleryTypes", JSON.stringify(types));
+      return types;
     }
     );
   };
@@ -138,10 +137,10 @@ const MainSection = () => {
                 <div className="absolute z-10 mt-2 w-48 bg-white dark:bg-gray-800 rounded-lg shadow-lg max-h-60 overflow-y-auto transition-all duration-300 ease-in-out origin-top scale-95 animate-fadeIn">
                   <div className="p-2">
                     <button
-                      onClick={() => { localStorage.removeItem('galleryTypes')  ;setSelectedTypes([]) }}
+                      onClick={() => { localStorage.removeItem('galleryTypes'); setSelectedTypes([]) }}
                       className={`cursor-pointer w-full text-left px-3 py-2 rounded-md font-[Inter] mb-1 ${selectedTypes.length === 0
-                          ? 'bg-[#625a50] text-white'
-                          : 'text-gray-900 dark:text-white hover:bg-[#cbc3b4] dark:hover:bg-[#4b5563]'
+                        ? 'bg-[#625a50] text-white'
+                        : 'text-gray-900 dark:text-white hover:bg-[#cbc3b4] dark:hover:bg-[#4b5563]'
                         }`}
                     >
                       All
@@ -151,8 +150,8 @@ const MainSection = () => {
                         key={type}
                         onClick={() => toggleType(type)}
                         className={`cursor-pointer w-full text-left px-3 py-2 rounded-md font-[Inter] mb-1 ${selectedTypes.includes(type)
-                            ? 'bg-[#625a50] text-white'
-                            : 'text-gray-900 dark:text-white hover:bg-[#cbc3b4] dark:hover:bg-[#4b5563]'
+                          ? 'bg-[#625a50] text-white'
+                          : 'text-gray-900 dark:text-white hover:bg-[#cbc3b4] dark:hover:bg-[#4b5563]'
                           }`}
                       >
                         {type}
@@ -175,15 +174,15 @@ const MainSection = () => {
               to={`/art/${artwork.id}`}
               key={artwork.id}
               className={`cursor-pointer bg-white dark:bg-gray-800 rounded-lg shadow-md transition-all duration-300 ease ${layout === 'list'
-                  ? 'flex flex-col space-x-6 hover:scale-105'
-                  : 'hover:-translate-y-2 p-0 transform hover:shadow-lg'
+                ? 'flex flex-col space-x-6 hover:scale-105'
+                : 'hover:-translate-y-2 p-0 transform hover:shadow-lg'
                 }`}
             >
               {/* ✅ Image placeholder */}
               <div
                 className={`transition-all duration-300 ease-in-out ${layout === 'grid'
-                    ? 'w-full h-64 bg-gray-300 dark:bg-gray-700 mb-4 rounded-t-lg'
-                    : 'w-full h-40 bg-gray-300 dark:bg-gray-700 rounded'
+                  ? 'w-full h-64 bg-gray-300 dark:bg-gray-700 mb-4 rounded-t-lg'
+                  : 'w-full h-40 bg-gray-300 dark:bg-gray-700 rounded'
                   }`}
                 style={{
                   backgroundImage: `url(${artwork.mainImage})`,
@@ -229,6 +228,7 @@ const MainSection = () => {
                     </button>
                   ) : (
                     <button
+                      onClick={(e) => { e.preventDefault(); e.stopPropagation(); window.location.href = `/cart/${artwork.id}?quantity=1` }}
                       className={`cursor-pointer transition-all duration-300 ease-in-out bg-[#817565] font-semibold py-2 rounded text-gray-900 dark:text-white hover:bg-[#686055] dark:hover:bg-[#625a50] ${layout === 'grid' ? 'w-full' : 'w-auto px-6 mx-auto block'
                         }`}
                     >

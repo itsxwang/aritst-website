@@ -1,15 +1,17 @@
-import React, { useState, useEffect } from "react";
+import  { useState, useEffect } from "react";
 import { X } from "lucide-react";
-import { fetchCart } from "../../utilities/fetchArtoworks";
+import { addToCart, fetchCart } from "../../utilities/handleCart";
+import { removeFromCart } from "../../utilities/handleCart";
 import { Link } from "react-router-dom";
 
 import "./styles/mainCart.css";
 
 type CartType = ReturnType<typeof fetchCart>;
 
-const MainCart: React.FC = () => {
+const MainCart   = () => {
   const [cartItems, setCartItems] = useState<CartType>([]);
-
+  
+  
   useEffect(() => {
     setCartItems(fetchCart());
   }, []);
@@ -20,7 +22,11 @@ const MainCart: React.FC = () => {
       const updatedItems = prev.map((item) => {
         if (item.id === id) {
           const newQuantity = item.quantity + amount;
-          if (newQuantity < 1) return null; // Remove item if qty goes below 1
+          if (newQuantity < 1) 
+            {
+              removeFromCart(id);
+              return null; 
+            }
           return { ...item, quantity: newQuantity };
         }
         return item;
@@ -33,7 +39,10 @@ const MainCart: React.FC = () => {
 
   // ✅ Remove Item
   const removeItem = (id: number) => {
-    setCartItems((prev) => prev.filter((item) => item.id !== id));
+    setCartItems((prev) => prev.filter((item) => {
+      if (item.id === id) removeFromCart(id); 
+      return item.id !== id;
+    }));
   };
 
   // ✅ Calculate subtotal
@@ -82,7 +91,7 @@ const MainCart: React.FC = () => {
                 {/* ✅ Minus Button */}
                 <button
                   className="cus-minus-btn text-3xl w-7 h-7 flex items-center justify-center p-1 rounded-full cursor-pointer hover:bg-gray-400/30 text-gray-500 hover:text-black dark:text-gray-400 dark:hover:text-white"
-                  onClick={(e) =>{ e.preventDefault(); updateQuantity(item.id, -1) } }
+                  onClick={(e) =>{ e.preventDefault(); updateQuantity(item.id, -1); removeFromCart(item.id, 1); } }
                 >
                   &#45;
                 </button>
@@ -100,6 +109,7 @@ const MainCart: React.FC = () => {
                     e.preventDefault();
                     if (item.quantity < item.stock_quantity) {
                       updateQuantity(item.id, 1);
+                      addToCart(item.id, 1);
                     }
                   }}
                   disabled={item.quantity === item.stock_quantity}

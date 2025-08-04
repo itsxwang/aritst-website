@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 
 import { X } from "lucide-react";
 import "./styles/SearchModal.css";
-import { fetchAllArtoworks } from "../../utilities/fetchArtoworks";
+import { fetchAllArtoworks } from "../../utilities/handleArtoworks";
 
 type artworksType = ReturnType<typeof fetchAllArtoworks>;
 

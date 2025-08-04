@@ -1,5 +1,5 @@
-import { fetchAllArtoworks } from "../../utilities/fetchArtoworks";
-import  truncateDescription  from "../../utilities/truncateDescription";
+import { fetchAllArtoworks } from "../../utilities/handleArtoworks";
+import truncateDescription from "../../utilities/truncateDescription";
 import { Link } from "react-router-dom";
 
 function FeatureSection() {
@@ -10,7 +10,7 @@ function FeatureSection() {
   const featuredItems = allItems.filter((item) => item.featured === true);
 
   // ✅ Function to trim description safely (avoids overflow)
-  
+
 
   return (
     <section className="pb-20 pt-20 w-full py-12 cursor-pointer bg-gray-100 text-gray-800 dark:bg-[#202738] dark:text-white">
@@ -47,7 +47,7 @@ function FeatureSection() {
 
                 {/* ✅ Truncated description */}
                 <p className="text-gray-700 dark:text-gray-300 mt-2 text-sm leading-snug text-center font-[Intra]">
-                   {truncateDescription(item.description)}
+                  {truncateDescription(item.description)}
                 </p>
 
                 {/* ✅ Price */}
@@ -71,7 +71,9 @@ function FeatureSection() {
                     Out Of Stock
                   </button>
                 ) : (
-                  <button className="cursor-pointer transition duration-200 w-full bg-[#817565] font-semibold py-2 rounded text-gray-900 dark:text-white hover:bg-[#686055] dark:hover:bg-[#625a50]">
+                  <button
+                    onClick={ (e) => { e.preventDefault(); e.stopPropagation(); window.location.href = `/cart/${item.id}?quantity=1` } }
+                    className="cursor-pointer transition duration-200 w-full bg-[#817565] font-semibold py-2 rounded text-gray-900 dark:text-white hover:bg-[#686055] dark:hover:bg-[#625a50]">
                     Add To Cart
                   </button>
                 )}
@@ -86,7 +88,7 @@ function FeatureSection() {
           to="/gallery"
           className="cursor-pointer mt-15 px-9 py-[0.67rem]  font-[Inter] font-semibold text-[1.2rem] transition duration-200 rounded bg-[#E0DCD1] text-gray-800 hover:bg-[#cec7b5] dark:bg-gray-700 dark:text-gray-100 dark:hover:bg-gray-600"
         >
-          View All Artworks <span className="ml-2 text-2xl">→</span> 
+          View All Artworks <span className="ml-2 text-2xl">→</span>
         </Link>
       </div>
     </section>

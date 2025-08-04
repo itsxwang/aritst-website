@@ -1,5 +1,5 @@
 import { useState, useEffect, useMemo, useRef } from 'react';
-import { fetchAllArtoworks } from '../../utilities/fetchArtoworks';
+import { fetchAllArtoworks } from '../../utilities/handleArtoworks';
 import { isFavourite } from "../../utilities/handleFavourites";
 import { Link } from "react-router-dom";
 import truncateDescription from '../../utilities/truncateDescription';
@@ -141,7 +141,7 @@ function MainFavourites() {
                                 <div className="absolute z-10 mt-2 w-48 bg-white dark:bg-gray-800 rounded-lg shadow-lg max-h-60 overflow-y-auto transition-all duration-300 ease-in-out origin-top scale-95 animate-fadeIn">
                                     <div className="p-2">
                                         <button
-                                            onClick={() => { localStorage.removeItem('favouritesTypes'); setSelectedTypes([])} }
+                                            onClick={() => { localStorage.removeItem('favouritesTypes'); setSelectedTypes([]) }}
                                             className={`cursor-pointer w-full text-left px-3 py-2 rounded-md font-[Inter] mb-1 ${selectedTypes.length === 0
                                                 ? 'bg-[#625a50] text-white'
                                                 : 'text-gray-900 dark:text-white hover:bg-[#cbc3b4] dark:hover:bg-[#4b5563]'
@@ -231,6 +231,7 @@ function MainFavourites() {
                                         </button>
                                     ) : (
                                         <button
+                                            onClick={ (e) => { e.preventDefault(); e.stopPropagation(); window.location.href = `/cart/${artwork.id}?quantity=1` } }
                                             className={`cursor-pointer transition-all duration-300 ease-in-out bg-[#817565] font-semibold py-2 rounded text-gray-900 dark:text-white hover:bg-[#686055] dark:hover:bg-[#625a50] ${layout === 'grid' ? 'w-full' : 'w-auto px-6 mx-auto block'
                                                 }`}
                                         >

@@ -94,7 +94,6 @@ export function fetchAllArtoworks() {
       isPrintsAvailable: true
     }
    
-   
   ];
 }
 
@@ -102,15 +101,9 @@ export function fetchArt (id: number) {
   return fetchAllArtoworks().find((art) => art.id === id);
 }
 
-export function fetchCart() {
-  // comes from an api 
-  return [
-    { id: 1, title: "Whispers of Banaras", medium: "Acrylic on Canvas", dimensions: "9x24",   price: 1110.75, quantity: 1, mainImage: "https://placehold.co/800?text=Hello+World&font=roboto", stock_quantity:4 },
-    { id: 2, title: "Mountain Serenity", medium: "Oil on Canvas", dimensions: "30x40",  price: 71111.77, quantity: 1, mainImage: "https://via.placeholder.com/80", stock_quantity:1 },
-    { id: 3, title: "Urban Reflections", medium: "Mixed Media", dimensions: "30x40",  price: 1150, quantity: 1, mainImage: "https://via.placeholder.com/80", stock_quantity:2 },
-    { id: 4, title: "Romy Trousers", medium: "Portrait on Canvas", dimensions: "30x40",  price: 2150, quantity: 1, mainImage: "https://via.placeholder.com/80", stock_quantity:5 },
-    { id: 5, title: "Renname", medium: "Renname on Canvas", dimensions: "30x40",  price: 5000, quantity: 1, mainImage: "https://via.placeholder.com/80", stock_quantity:1 },
-  ]
 
+
+export function removeArtowork(id: number) {
+  const updatedArtoworks = fetchAllArtoworks().filter((art) => art.id !== id);
+  localStorage.setItem('artoworks', JSON.stringify(updatedArtoworks));
 }
-
