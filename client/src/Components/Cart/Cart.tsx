@@ -3,7 +3,7 @@ import Footer from '../global/Footer'
 import MainCart from './MainCart'
 import { useParams } from 'react-router-dom'
 import { useEffect, useRef } from 'react'
-import { addToCart } from '../../utilities/handleCart'
+import { addToCart } from '../../services/handleCart'
 
 
 

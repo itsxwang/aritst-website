@@ -1,9 +1,9 @@
 import { useState, useRef, useEffect, useCallback, useMemo } from "react";
 import { Link } from "react-router-dom";
-import { fetchArt } from "../../utilities/handleArtoworks";
+import { fetchArt } from "../../services/handleArtoworks";
 import { ArrowLeft, ArrowRight, Share2, Heart, IndianRupee, ChevronUp, ChevronDown } from 'lucide-react';
 import './styles/MainDetails.css'
-import { addToFavourites, isFavourite, removeFromFavourites } from "../../utilities/handleFavourites";
+import { addToFavourites, isFavourite, removeFromFavourites } from "../../services/handleFavourites";
 
 
 // Define the Artwork interface to type the fetchArt return value

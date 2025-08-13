@@ -1,6 +1,16 @@
 
-
 export function fetchAllArtoworks() {
+
+  fetch('http://localhost:7000/api/artworks', {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  }).then((res) => {
+    res.json().then(data => console.log(data));
+    
+  });
+  
   // come from an api
   return [
     {
@@ -107,3 +117,4 @@ export function removeArtowork(id: number) {
   const updatedArtoworks = fetchAllArtoworks().filter((art) => art.id !== id);
   localStorage.setItem('artoworks', JSON.stringify(updatedArtoworks));
 }
+

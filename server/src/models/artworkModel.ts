@@ -1,0 +1,22 @@
+import mongoose from "mongoose";
+
+const artworkSchema = new mongoose.Schema({
+  id: { type: Number, required: true },
+  title: { type: String, required: true },
+  medium: { type: String, required: true },
+  dimensions: { type: String, required: true },
+  description: { type: String },
+  mainImage: { type: String },
+  images: [{ type: String }],
+  price: { type: Number, required: true },
+  types: [{ type: String }],
+  instaVideoLink: { type: String },
+  framed: { type: String, default: "No" },
+  created_at: { type: Date, default: Date.now }, 
+  availability: { type: String }, // Available, Sold or Reserved
+  stock_quantity: { type: Number, default: 0 },
+  featured: { type: Boolean, default: false },
+  isPrintsAvailable: { type: Boolean, default: false }
+});
+
+export default  mongoose.model("Artwork", artworkSchema);

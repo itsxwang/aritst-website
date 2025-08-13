@@ -1,7 +1,6 @@
 import { Link } from "react-router-dom";
 import "./styles/hero.css"; // ✅ we’ll keep the custom CSS file
 
-
 function Hero() {
   return (
     <section

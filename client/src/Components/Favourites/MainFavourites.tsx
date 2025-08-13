@@ -1,6 +1,6 @@
 import { useState, useEffect, useMemo, useRef } from 'react';
-import { fetchAllArtoworks } from '../../utilities/handleArtoworks';
-import { isFavourite } from "../../utilities/handleFavourites";
+import { fetchAllArtoworks } from '../../services/handleArtoworks';
+import { isFavourite } from "../../services/handleFavourites";
 import { Link } from "react-router-dom";
 import truncateDescription from '../../utilities/truncateDescription';
 

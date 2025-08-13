@@ -1,5 +1,5 @@
 import { useState, useEffect, useMemo, useRef } from 'react';
-import { fetchAllArtoworks } from '../../utilities/handleArtoworks';
+import { fetchAllArtoworks } from '../../services/handleArtoworks';
 import { Link } from "react-router-dom";
 
 import truncateDescription from '../../utilities/truncateDescription';

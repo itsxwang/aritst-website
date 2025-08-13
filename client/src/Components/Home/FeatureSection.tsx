@@ -1,4 +1,4 @@
-import { fetchAllArtoworks } from "../../utilities/handleArtoworks";
+import { fetchAllArtoworks } from "../../services/handleArtoworks";
 import truncateDescription from "../../utilities/truncateDescription";
 import { Link } from "react-router-dom";
 

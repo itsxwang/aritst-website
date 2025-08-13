@@ -1,7 +1,7 @@
 import  { useState, useEffect } from "react";
 import { X } from "lucide-react";
-import { addToCart, fetchCart } from "../../utilities/handleCart";
-import { removeFromCart } from "../../utilities/handleCart";
+import { addToCart, fetchCart } from "../../services/handleCart";
+import { removeFromCart } from "../../services/handleCart";
 import { Link } from "react-router-dom";
 
 import "./styles/mainCart.css";
