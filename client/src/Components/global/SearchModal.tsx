@@ -4,9 +4,9 @@ import { Link } from "react-router-dom";
 
 import { X } from "lucide-react";
 import "./styles/SearchModal.css";
-import { fetchAllArtoworks } from "../../services/handleArtoworks";
+import { fetchAllArtoworks } from "../../services/handleArtworks";
 
-type artworksType = ReturnType<typeof fetchAllArtoworks>;
+type artworksType = Awaited<ReturnType<typeof fetchAllArtoworks>>;
 
 interface SearchModalProps {
   isOpen: boolean;
@@ -22,8 +22,7 @@ const SearchModal: React.FC<SearchModalProps> = ({ isOpen, onClose }) => {
   const itemRefs = useRef<(HTMLAnchorElement | null)[]>([]);
 
   useEffect(() => {
-    const artworks = fetchAllArtoworks();
-    setArtworks(artworks);
+    fetchAllArtoworks().then((artoworks) => setArtworks(artoworks));
   }, []);
 
   // ✅ Close modal on ESC
@@ -74,7 +73,7 @@ const SearchModal: React.FC<SearchModalProps> = ({ isOpen, onClose }) => {
         );
         e.preventDefault();
       } else if (e.key === "Enter" && highlightedIndex >= 0) {
-        window.location.href = `/art/${filteredResults[highlightedIndex].id}`;
+        window.location.href = `/art/${filteredResults[highlightedIndex]._id}`;
       }
     };
 
@@ -160,13 +159,13 @@ const SearchModal: React.FC<SearchModalProps> = ({ isOpen, onClose }) => {
             {filteredResults.length > 0 ? (
               filteredResults.map((artwork, index) => (
                 <Link
-                  key={artwork.id}
+                  key={artwork._id}
                   ref={(el) => {
                     if (el) {
                       itemRefs.current[index] = el;
                     }
                   }}
-                  to={`/art/${artwork.id}`}
+                  to={`/art/${artwork._id}`}
                   className={`rounded-lg p-3 cursor-pointer flex items-center gap-3 
                     ${
                       highlightedIndex === index

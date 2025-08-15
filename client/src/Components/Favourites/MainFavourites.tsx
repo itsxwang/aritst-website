@@ -1,5 +1,5 @@
 import { useState, useEffect, useMemo, useRef } from 'react';
-import { fetchAllArtoworks } from '../../services/handleArtoworks';
+import { fetchAllArtoworks } from '../../services/handleArtworks';
 import { isFavourite } from "../../services/handleFavourites";
 import { Link } from "react-router-dom";
 import truncateDescription from '../../utilities/truncateDescription';
@@ -8,14 +8,14 @@ import "../Gallery/styles/mainSection.css";
 
 function MainFavourites() {
     const [layout, setLayout] = useState<'grid' | 'list'>('grid');
-    const [allArtworks, setAllArtworks] = useState<ReturnType<typeof fetchAllArtoworks>>([]);
+    const [allArtworks, setAllArtworks] = useState<Awaited<ReturnType<typeof fetchAllArtoworks>>>([]);
     const [selectedTypes, setSelectedTypes] = useState<string[]>([]);
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
     const dropdownRef = useRef<HTMLDivElement>(null);
 
     // ✅ Fetch artworks on mount
     useEffect(() => {
-        setAllArtworks(fetchAllArtoworks());
+        fetchAllArtoworks().then((artworks) => setAllArtworks(artworks));
     }, []);
 
     // ✅ Handle dropdown outside click
@@ -31,7 +31,7 @@ function MainFavourites() {
 
     // ✅ Only show favourite artworks
     const favouriteArtworks = useMemo(
-        () => allArtworks.filter(({ id }) => isFavourite(id)),
+        () => allArtworks.filter(({ _id }) => isFavourite(_id)),
         [allArtworks]
     );
 
@@ -175,8 +175,8 @@ function MainFavourites() {
                 >
                     {filteredArtworks.map((artwork) => (
                         <Link
-                            to={`/art/${artwork.id}`}
-                            key={artwork.id}
+                            to={`/art/${artwork._id}`}
+                            key={artwork._id}
                             className={`cursor-pointer bg-white dark:bg-gray-800 rounded-lg shadow-md transition-all duration-300 ease ${layout === 'list'
                                 ? 'flex flex-col space-x-6 hover:scale-105'
                                 : 'hover:-translate-y-2 p-0 transform hover:shadow-lg'
@@ -231,7 +231,7 @@ function MainFavourites() {
                                         </button>
                                     ) : (
                                         <button
-                                            onClick={ (e) => { e.preventDefault(); e.stopPropagation(); window.location.href = `/cart/${artwork.id}?quantity=1` } }
+                                            onClick={ (e) => { e.preventDefault(); e.stopPropagation(); window.location.href = `/cart/${artwork._id}?quantity=1` } }
                                             className={`cursor-pointer transition-all duration-300 ease-in-out bg-[#817565] font-semibold py-2 rounded text-gray-900 dark:text-white hover:bg-[#686055] dark:hover:bg-[#625a50] ${layout === 'grid' ? 'w-full' : 'w-auto px-6 mx-auto block'
                                                 }`}
                                         >

@@ -15,7 +15,7 @@ function ArtPage() {
       </div>
 
       <div className="flex-grow" >
-        <MainDetails  id= {Number(useParams().artId)}  />
+        <MainDetails  id= {useParams().artId! }  />
       </div>
 
       <div>

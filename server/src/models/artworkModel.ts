@@ -1,7 +1,6 @@
 import mongoose from "mongoose";
 
 const artworkSchema = new mongoose.Schema({
-  id: { type: Number, required: true },
   title: { type: String, required: true },
   medium: { type: String, required: true },
   dimensions: { type: String, required: true },

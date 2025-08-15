@@ -1,13 +1,23 @@
-import { fetchAllArtoworks } from "../../services/handleArtoworks";
+import { useEffect,  useState } from "react";
+import { fetchAllArtoworks } from "../../services/handleArtworks";
+import { type Artwork } from "../../services/handleArtworks";
 import truncateDescription from "../../utilities/truncateDescription";
 import { Link } from "react-router-dom";
 
 function FeatureSection() {
   // ✅ Fetch all artworks (will come from API later)
-  const allItems = fetchAllArtoworks();
+  const [artworks, setArtworks] = useState<Awaited<ReturnType<typeof fetchAllArtoworks>>>();
+  const [featuredItems, setFeaturedItems] = useState<Artwork[]>([]);
+
+  useEffect(() => {
+    fetchAllArtoworks().then((artoworks) => setArtworks(artoworks));
+  }, []);
 
   // ✅ Filter featured artworks only
-  const featuredItems = allItems.filter((item) => item.featured === true);
+  useEffect(() => {
+    if (!artworks) return;
+    setFeaturedItems(artworks.filter((item) => item.featured === true));
+  }, [artworks]);
 
   // ✅ Function to trim description safely (avoids overflow)
 
@@ -24,8 +34,8 @@ function FeatureSection() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-15">
           {featuredItems.map((item) => (
             <Link
-              to={`/art/${item.id}`}
-              key={item.id}
+              to={`/art/${item._id}`}
+              key={item._id}
               className="cursor-pointer bg-white dark:bg-gray-800 p-0 rounded-lg shadow-md transition duration-300 ease hover:scale-105"
             >
               {/* ✅ Image placeholder */}
@@ -72,7 +82,7 @@ function FeatureSection() {
                   </button>
                 ) : (
                   <button
-                    onClick={ (e) => { e.preventDefault(); e.stopPropagation(); window.location.href = `/cart/${item.id}?quantity=1` } }
+                    onClick={ (e) => { e.preventDefault(); e.stopPropagation(); window.location.href = `/cart/${item._id}?quantity=1` } }
                     className="cursor-pointer transition duration-200 w-full bg-[#817565] font-semibold py-2 rounded text-gray-900 dark:text-white hover:bg-[#686055] dark:hover:bg-[#625a50]">
                     Add To Cart
                   </button>
