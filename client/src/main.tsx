@@ -10,6 +10,7 @@ import Cart from './Components/Cart/Cart.tsx'
 import Page404 from './Components/404/page404.tsx'
 import ArtDetails from './Components/ArtDetails/ArtDetails.tsx'
 import Favourites from './Components/Favourites/Favourites.tsx'
+import Verify from './Components/Verify/Verify.tsx'
 
 
 const router = createBrowserRouter([
@@ -44,7 +45,11 @@ const router = createBrowserRouter([
   },
   {
     path: '/favourites',
-    element: <Favourites/>
+    element: <Favourites/>    
+  },
+  {
+    path: '/verify',
+    element: <Verify/>
   },
   {
     path: '*',
