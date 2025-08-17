@@ -1,26 +1,40 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 
 function Footer() {
   const [email, setEmail] = useState<string>('');
   const [error, setError] = useState<string>('');
-  const [success, setSuccess] = useState<string>('');
-
-  useEffect(() => {
-    if (success) {
-      const timer = setTimeout(() => {
-        setSuccess('');
-      }, 3500);
-      return () => clearTimeout(timer);
-    }
-  }, [success]);
-
+  const [loading, setLoading] = useState<boolean>(false);
+  
   function handleEmail() {
     if (!email) return setError('Please enter your email');
     if (!(email.match(/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/))) return setError('Please enter a valid email');
     setError('');
-    window.location.href = `/verify`
+
+    setLoading(true);
+    
+    console.log("reached 1");
+    
+    fetch("http://localhost:7001/verify/newsletter", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email }),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        console.log("data",data);
+        if (data.error) {
+          setError(data.error);
+        } else {
+          console.log(data);  
+        window.location.href = `/verify/${data._id}`;
+        }
+      }).catch((error) => {
+        setError(error.message);        
+      }).finally(() => {
+        setLoading(false);
+      })
   }
 
   return (
@@ -112,26 +126,45 @@ function Footer() {
                 className="flex h-10 w-full rounded-md border px-3 py-2 text-base ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50 md:text-sm flex-1 bg-gray-100 border-gray-300 text-gray-900 rounded-r-none focus:ring-gray-900 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:focus:ring-gray-500 focus-visible:ring-offset-0 dark:focus-visible:ring-offset-2"
                 placeholder="Enter your email"
               />
-              <button
-                onClick={handleEmail}
-                className="cursor-pointer inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-white h-10 px-4 py-2 rounded-l-none bg-[#625a50] hover:bg-[#4e4841] dark:bg-[#817565] dark:hover:bg-[#625a50]"
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="24"
-                  height="24"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  className="lucide lucide-arrow-right h-4 w-4"
+
+
+              {loading ? (
+                <button
+                  className="cursor-not-allowed inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-white h-10 px-4 py-2 rounded-l-none  bg-[#4e4841] :bg-[#625a50]"
                 >
-                  <path d="M5 12h14"></path>
-                  <path d="m12 5 7 7-7 7"></path>
-                </svg>
-              </button>
+                  <svg className="animate-spin h-5 w-5 text-white" viewBox="0 0 24 24">
+                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z" />
+                  </svg>
+                </button>
+
+              ) : (
+
+                <button
+                  onClick={handleEmail}
+                  className="cursor-pointer inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-white h-10 px-4 py-2 rounded-l-none bg-[#625a50] hover:bg-[#4e4841] dark:bg-[#817565] dark:hover:bg-[#625a50]"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    className="lucide lucide-arrow-right h-4 w-4"
+                  >
+                    <path d="M5 12h14"></path>
+                    <path d="m12 5 7 7-7 7"></path>
+                  </svg>
+                </button>
+              )
+
+              }
+
+
             </div>
             <div
 
@@ -149,19 +182,8 @@ function Footer() {
                   {error}
                 </motion.div>
               )}
-              {success && !error && (
-                <motion.div
-                  initial={{ opacity: 0, y: -20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.5 }}
-                  className="p-2 bg-green-100 text-green-900  rounded-md flex items-center justify-center gap-2 w-full animate-fade-out">
-                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
-                  </svg>
-                  {success}
-                </motion.div>
-              )}
             </div>
+
           </div>
         </div>
         <div className="mt-8 pt-8 border-t border-gray-300 dark:border-gray-600 text-center">

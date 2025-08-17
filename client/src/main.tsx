@@ -48,7 +48,7 @@ const router = createBrowserRouter([
     element: <Favourites/>    
   },
   {
-    path: '/verify',
+    path: '/verify/:id',
     element: <Verify/>
   },
   {

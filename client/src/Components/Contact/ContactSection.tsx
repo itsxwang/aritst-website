@@ -49,7 +49,7 @@ const ContactSection = () => {
         setEmail('');
         setMessage('');
       } else {
-        setError("Failed to send message. Please try again.");
+        setError("Failed to send email. Please try again.");
       }
       setLoading(false);
     } catch {
