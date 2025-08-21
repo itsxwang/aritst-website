@@ -46,7 +46,7 @@ function Footer() {
             <p className="font-[Inter] mb-4">Contemporary artist creating meaningful connections through color and form.</p>
             <div className="flex space-x-4">
               <a
-                href="https://www.youtube.com/@magitypeccoloursofsamridhi4874"
+                href="https://www.youtube.com/@magiccoloursofsamridhi4874"
                 target="_blank"
                 className="cursor-pointer inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 hover:bg-accent h-10 w-10 text-gray-900 hover:bg-gray-100 dark:text-gray-100 dark:hover:bg-gray-800"
               >

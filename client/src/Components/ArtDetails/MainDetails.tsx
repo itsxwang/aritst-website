@@ -4,7 +4,7 @@ import { fetchArt } from "../../services/handleArtworks";
 import { ArrowLeft, ArrowRight, Share2, Heart, IndianRupee, ChevronUp, ChevronDown, Link as LinkIcon } from 'lucide-react';
 import './styles/MainDetails.css'
 import { addToFavourites, isFavourite, removeFromFavourites } from "../../services/handleFavourites";
-import { FaWhatsapp} from "react-icons/fa";
+import { FaWhatsapp } from "react-icons/fa";
 import { motion } from "framer-motion";
 import { FaXTwitter } from "react-icons/fa6";
 
@@ -228,7 +228,7 @@ function MainDetails({ id }: { id: string }) {
     </Link>
   ) : (
     <Button disabled className="w-full py-3 text-lg font-semibold bg-gray-300 text-gray-500 dark:bg-gray-700 dark:text-gray-400 cursor-not-allowed">
-      {isSold ? 'Out of Stock' : 'Reserved'}
+       {isSold ? 'Out of Stock' : 'Reserved'}
     </Button>
   );
 

@@ -103,7 +103,7 @@ const CartItem = ({
 );
 
 // 4. Order Summary Component
-const OrderSummary = ({ subtotal }: { subtotal: number }) => (
+const OrderSummary = ({ subtotal,url }: { subtotal: number, url: string }) => (
     <div className="lg:sticky lg:top-28">
         <div className="bg-gray-50 dark:bg-gray-800/50 rounded-lg p-6 shadow-sm">
             <h2 className="text-xl font-bold mb-4 dark:text-white">Order Summary</h2>
@@ -122,7 +122,7 @@ const OrderSummary = ({ subtotal }: { subtotal: number }) => (
                 <span>Total</span>
                 <span>₹{subtotal.toFixed(2)}</span>
             </div>
-            <button className="cursor-pointer w-full py-3 rounded-lg font-semibold text-white bg-[#817565] hover:bg-[#625a50] transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#817565] dark:focus:ring-offset-gray-900">
+            <button onClick={() => { window.location.href = url; }} className="cursor-pointer w-full py-3 rounded-lg font-semibold text-white bg-[#817565] hover:bg-[#625a50] transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#817565] dark:focus:ring-offset-gray-900">
                 Proceed to Checkout
             </button>
         </div>
@@ -218,7 +218,7 @@ const MainCart = () => {
                 </div>
 
                 <div className="lg:col-span-1 mt-8 lg:mt-0">
-                    <OrderSummary subtotal={subtotal} />
+                    <OrderSummary subtotal={subtotal} url={`/checkout/${cartItems.map(item => item._id +"="+ item.quantity).join('+')}`} />
                 </div>
             </div>
         </main>

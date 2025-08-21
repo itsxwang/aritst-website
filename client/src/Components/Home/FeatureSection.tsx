@@ -78,7 +78,7 @@ function FeatureSection() {
                     className="w-full bg-gray-500 text-white font-semibold py-2 rounded opacity-70 cursor-not-allowed"
                     disabled
                   >
-                    Out Of Stock
+                    Out of Stock
                   </button>
                 ) : (
                   <button

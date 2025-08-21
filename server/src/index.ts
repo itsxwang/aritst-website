@@ -5,6 +5,7 @@ import cors from 'cors';
 import allartWorksrouter from './router/artworkRouter';
 import emailRouter from './router/emailRouter';
 import verifyRouter from './router/verifyRouter';
+import checkRouter from './router/checkoutRouter';
 import path from 'path';
 
 
@@ -29,7 +30,8 @@ const PORT = process.env.BACKEND_PORT;
 
 app.use(allartWorksrouter);
 app.use(emailRouter);
-app.use(verifyRouter)
+app.use(checkRouter)
+app.use(verifyRouter);
 
 
 mongoose
