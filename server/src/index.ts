@@ -1,47 +1,54 @@
-import express from 'express';
-import dotenv from 'dotenv';
-import mongoose from 'mongoose';
-import cors from 'cors';
-import allartWorksrouter from './router/artworkRouter';
-import emailRouter from './router/emailRouter';
-import verifyRouter from './router/verifyRouter';
-import checkRouter from './router/checkoutRouter';
-import path from 'path';
+import express from "express";
+import cors from "cors";
+import dotenv from "dotenv";
+import mongoose from "mongoose";
+import artworkRouter from "./router/artworkRouter";
+import checkoutRouter from "./router/checkoutRouter";
+import emailRouter from "./router/emailRouter";
+import verifyRouter from "./router/verifyRouter";
 
-
-dotenv.config({
-  path: path.resolve(__dirname, '../../.env') // go up one directory
-});
-
-
+dotenv.config();
 
 const app = express();
 
+app.use(cors());
 app.use(express.json());
 
-app.use(cors());
+// Health check
+app.get("/api/health", (_req, res) => res.json({ status: "ok" }));
 
-
-
-
-const PORT = process.env.BACKEND_PORT;
-
-
-
-app.use(allartWorksrouter);
+// Mount routers
+app.use(artworkRouter);
+app.use(checkoutRouter);
 app.use(emailRouter);
-app.use(checkRouter)
 app.use(verifyRouter);
+app.use("/404", (_req, res) => res.status(404).json({ error: "Not Found" }));
+// Try to connect to MongoDB if URI provided, but do NOT exit on failure.
+// Serverless environments should not crash at import time.
+const mongoUri = process.env.MONGO_URI;
+console.log("red", mongoUri);
 
-
-mongoose
-    .connect(process.env.MONGO_URI!)
-    .then(() => {
-        app.listen(PORT, () => {
-            console.log("Server started on port http://localhost:" + PORT);
-        });
-    })
+if (mongoUri) {
+  mongoose
+    .connect(mongoUri)
+    .then(() => console.log("Connected to MongoDB"))
     .catch((err) => {
-        console.log("Database connection failed", err);
-        console.log(process.env.DB_PATH);
+      console.error("MongoDB connection error (will continue without DB):", err);
     });
+} else {
+  console.warn("MONGODB_URI not set — skipping MongoDB connection.");
+}
+
+// Only start a listener when running as a normal server (local/dev).
+// Vercel / serverless will import this file and call the exported handler.
+if (!process.env.VERCEL) {
+  const PORT = process.env.PORT || 7001;
+  app.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}`);
+  });
+}
+
+// Export a handler compatible with @vercel/node (and other serverless runners)
+export default function handler(req: any, res: any) {
+  return app(req, res);
+}
