@@ -23,7 +23,7 @@ async function sendEmail(req, res) {
         await transporter.sendMail({
             from: `"${name}" <${process.env.GMAIL_USER}>`,
             to: process.env.RECEIVER_EMAIL,
-            subject: `New contact form message from "${name}"`,
+            subject: `New contact-form message from "${name}"`,
             text: message,
             replyTo: email,
         });

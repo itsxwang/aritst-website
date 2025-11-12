@@ -2,7 +2,7 @@
 
 type cartItem = { _id: string; quantity: number };
 
-import { fetchArt, updateArtwork, type Artwork, fetchAllArtoworks } from "./handleArtworks";
+import { fetchArt, fetchAllArtoworks } from "./handleArtworks";
 
 const getCartFromStorage = (): cartItem[] => {
     const cartJson = localStorage.getItem("cartItem");
@@ -27,11 +27,7 @@ export async function addToCart(_id: string, quantityToAdd: number) {
         return; 
     }
 
-    const newArtworkState: Artwork = {
-        ...artwork,
-        stock_quantity: artwork.stock_quantity - quantityToAdd,
-    };
-    await updateArtwork(_id, newArtworkState);
+    
 
     let updatedCart;
     if (cartItem) {
@@ -54,13 +50,8 @@ export async function removeFromCart(_id: string, quantityToRemove: number) {
     if (!cartItem) return;
 
     const isFullRemoval = quantityToRemove >= cartItem.quantity;
-    const stockToRestore = isFullRemoval ? cartItem.quantity : quantityToRemove;
 
-    const newArtworkState: Artwork = {
-        ...artwork,
-        stock_quantity: artwork.stock_quantity + stockToRestore,
-    };
-    await updateArtwork(_id, newArtworkState);
+    
     
     let updatedCart;
     if (isFullRemoval) {
@@ -95,3 +86,5 @@ export async function fetchCart() {
 
     return cartItems;
 }
+
+//! in 1st time  we have to sync the stock quantity data with the UI, so user can't add to cart again if stock quantity is 0, so we have to change flow

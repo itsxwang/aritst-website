@@ -1,16 +1,16 @@
 import { Request, Response } from 'express';
 import Artworks from '../models/artworkModel';
-import mongoose from 'mongoose';
 import dotenv from 'dotenv';
 
 
-dotenv.config();
+dotenv.config();    
 
 export async function getAllArtworks(req: Request, res: Response) {
     try {
         const artworks = await Artworks.find({});
+        console.log(artworks);
         return res.status(200).json(artworks);
-    } catch (error: any) {
+    } catch (error: any) {``
         console.error("Error fetching artworks:", error);
         return res.status(500).json({ message: "Internal Server Error", error: error.message });
     }

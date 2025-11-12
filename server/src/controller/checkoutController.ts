@@ -7,34 +7,39 @@ dotenv.config();
 
 export const postCheckout = async (req: Request, res: Response) => {
     const { name, email, address, phone, altPhone, countryCode } = req.body.userDetails;
+    const artworks = await artworkSchema.find({ _id: { $in: req.body.arts.map((a: any) => a._id) } });
 
-    const artworks = await artworkSchema.find({ _id: { $in: req.body.arts } });
-
-
-    type artworkType = { title: string; quantity: number, totalprice: number }
+    type artworkType = { title: string; quantity: number; totalprice: number };
+    
     if (artworks.length !== req.body.arts.length) {
-        return res.status(200).json({ error: "Some artworks not found or are out of stock." });
+        return res.status(400).json({ error: "Some artworks not found or are out of stock." });
     }
 
-
     const finalArtworks: artworkType[] = [];
-    artworks.forEach((artwork) => {
+    
+    // Update stock quantities
+    for (let artwork of artworks) {
         for (let i of req.body.arts) {
             if (artwork._id.toString() === i._id.toString()) {
-               
+                // Check if stock is available
+                if (artwork.stock_quantity < i.quantity) {
+                    return res.status(400).json({ error: `Insufficient stock for ${artwork.title}` });
+                }
+
                 finalArtworks.push({
                     title: artwork.title,
                     quantity: i.quantity,
                     totalprice: artwork.price * i.quantity
                 });
+                
+                artwork.stock_quantity -= i.quantity;
+                await artwork.save();
                 break;
             }
         }
-    });
-
+    }
 
     try {
-
         const transporter = nodemailer.createTransport({
             service: "gmail",
             auth: {
@@ -43,24 +48,23 @@ export const postCheckout = async (req: Request, res: Response) => {
             },
         });
 
-        await transporter.sendMail({
-            from: `"website" <${process.env.GMAIL_USER}>`,
-            to: process.env.RECEIVER_EMAIL,
-            subject: `New order from website by "${name}" :"`,
-            text: `
-            Name: ${name}
-            Email: ${email}
-            Address: ${address}
-            Phone: +${countryCode} ${phone}
-            Alternate Phone: ${altPhone ? "-" : altPhone} 
-            Artworks: ${JSON.stringify(finalArtworks, null, 2)}`,
-            replyTo: email
+        const mailOptions = {
+            from: process.env.GMAIL_USER,
+            to: email,
+            subject: "Order Confirmation",
+            html: `<h2>Order Confirmed!</h2><p>Hi ${name},</p><p>Your order has been placed successfully.</p>`
+        };
+
+        await transporter.sendMail(mailOptions);
+
+        return res.status(200).json({
+            message: "Order placed successfully",
+            userDetails: { name, email, address, phone, altPhone, countryCode },
+            artworks: finalArtworks
         });
 
-        res.status(200).json({ message: "Email sent successfully." });
-    } catch (error) {
-        console.error(error);
-        res.status(500).json({ error: "Failed to send email and Order not placed." });
+    } catch (error: any) {
+        console.error("Checkout error:", error);
+        return res.status(500).json({ error: "Checkout failed", details: error.message });
     }
-
-}
+};

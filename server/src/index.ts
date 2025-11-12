@@ -42,7 +42,7 @@ if (mongoUri) {
 // Only start a listener when running as a normal server (local/dev).
 // Vercel / serverless will import this file and call the exported handler.
 if (!process.env.VERCEL) {
-  const PORT = process.env.PORT || 7001;
+  const PORT = process.env.BACKEND_PORT || 7001;
   app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
   });
