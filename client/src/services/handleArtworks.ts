@@ -9,12 +9,11 @@ export type Artwork = {
   price: number;
   types: string[];
   instaVideoLink: string;
-  framed: "Yes" | "No" | "On Request";
+  framed: string;
   created_at: string;
-  availability: "Available" | "Reserved" | "Sold";
+  availability: string;
   stock_quantity: number;
   featured: boolean;
-  isPrintsAvailable: boolean;
 };
 
 export async function fetchAllArtoworks(): Promise<Artwork[]> {

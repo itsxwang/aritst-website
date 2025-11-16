@@ -86,19 +86,24 @@ function MainDetails({ id }: { id: string }) {
     if (!imageContainerRef.current || !zoomActive) return;
 
     const imageRect = imageContainerRef.current.getBoundingClientRect();
-    const lensWidth = imageRect.width / 2;
-    const lensHeight = imageRect.height / 2;
+    const imageWidth = imageRect.width;
+    const imageHeight = imageRect.height;
 
-    let x = e.clientX - imageRect.left;
-    let y = e.clientY - imageRect.top;
+    // Lens size (1/zoomLevel of the image)
+    const lensWidth = imageWidth / zoomLevel;
+    const lensHeight = imageHeight / zoomLevel;
 
-    x = x - (lensWidth / 2);
-    y = y - (lensHeight / 2);
+    // Calculate mouse position relative to the image container
+    const mouseX = e.clientX - imageRect.left;
+    const mouseY = e.clientY - imageRect.top;
 
-    const maxX = imageRect.width - lensWidth;
-    const maxY = imageRect.height - lensHeight;
-    x = Math.max(0, Math.min(x, maxX));
-    y = Math.max(0, Math.min(y, maxY));
+    // Center the lens on the mouse
+    let x = mouseX - lensWidth / 2;
+    let y = mouseY - lensHeight / 2;
+
+    // Clamp the lens position so it doesn't go off the image
+    x = Math.max(0, Math.min(x, imageWidth - lensWidth));
+    y = Math.max(0, Math.min(y, imageHeight - lensHeight));
 
     setLensPosition({ x, y });
   };
@@ -215,7 +220,7 @@ function MainDetails({ id }: { id: string }) {
   const isReserved = artWork.availability === 'Reserved';
   const isAvailable = !isSold && !isReserved;
 
-  const showQuantitySelector = artWork.isPrintsAvailable && isAvailable;
+  const showQuantitySelector =   artWork.stock_quantity > 1;
 
   const ctaButton = isAvailable ? (
     <Link
@@ -255,9 +260,11 @@ function MainDetails({ id }: { id: string }) {
             >
               <img
                 key={allImages[currentImageIndex]}
-                src={allImages[currentImageIndex]}
+                src={`/${allImages[currentImageIndex]}`}
                 alt={`${artWork.title} - view ${currentImageIndex + 1}`}
-                className="w-full h-full object-cover"
+                // ✅ FIX 1: Removed 'object-cover' to ensure 
+                // image stretches, matching the zoom pane's logic.
+                className="w-full h-full"
               />
               <div
                 style={{
@@ -281,9 +288,11 @@ function MainDetails({ id }: { id: string }) {
             <div
               style={{
                 display: zoomActive ? 'block' : 'none',
-                backgroundImage: `url(${allImages[currentImageIndex]})`,
+                backgroundImage: `url(/${allImages[currentImageIndex]})`,
                 backgroundPosition: `${backgroundPositionX}px ${backgroundPositionY}px`,
-                backgroundSize: `${zoomLevel * 100}%`,
+                // ✅ FIX 2: Explicitly set width AND height to 200%
+                // to match the main image's stretch.
+                backgroundSize: `${zoomLevel * 100}% ${zoomLevel * 100}%`,
               }}
               className="absolute top-[102%] left-0 lg:top-0 lg:left-[102%] w-full h-full border-2 rounded-lg shadow-xl hidden lg:block bg-no-repeat z-10 pointer-events-none"
             ></div>
@@ -459,7 +468,7 @@ function MainDetails({ id }: { id: string }) {
                 </div>
                 <div className="flex justify-between">
                   <span className="text-gray-600 dark:text-gray-400">Created:</span>
-                  <span className="font-medium text-gray-800 dark:text-gray-200">{new Date(artWork.created_at).toLocaleDateString()}</span>
+                  <span className="font-medium text-gray-800 dark:text-gray-200">{artWork.created_at}</span>
                 </div>
                 <div className="flex justify-between">
                   <span className="text-gray-600 dark:text-gray-400">Availability:</span>

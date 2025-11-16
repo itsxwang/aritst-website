@@ -11,11 +11,10 @@ const artworkSchema = new mongoose.Schema({
   types: [{ type: String }],
   instaVideoLink: { type: String },
   framed: { type: String, default: "No" },
-  created_at: { type: Date, default: Date.now }, 
+  created_at: { type: String, required: true }, 
   availability: { type: String }, // Available, Sold or Reserved
   stock_quantity: { type: Number, default: 0 },
   featured: { type: Boolean, default: false },
-  isPrintsAvailable: { type: Boolean, default: false }
 });
 
 export default  mongoose.model("Artwork", artworkSchema);

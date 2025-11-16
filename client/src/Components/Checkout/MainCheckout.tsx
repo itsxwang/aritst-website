@@ -133,7 +133,6 @@ function MainCheckout() {
       [name]: value,
     }));
   };
-
   // Handler for form submission
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
