@@ -18,7 +18,7 @@ export type Artwork = {
 
 export async function fetchAllArtoworks(): Promise<Artwork[]> {
 
-  return await fetch('http://localhost:7001/api/artworks', {
+  return await fetch('https://aritst-website-abwf.vercel.app/api/artworks', {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',
@@ -41,7 +41,7 @@ export function removeArtowork(id: string) {
 }
 
 export function updateArtwork(_id: string, artwork: Artwork) {
-  return fetch('http://localhost:7001/api/artworks', {
+  return fetch('https://aritst-website-abwf.vercel.app/api/artworks', {
     method: 'PATCH',
     headers: {
       'Content-Type': 'application/json',

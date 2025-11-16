@@ -139,7 +139,7 @@ function MainCheckout() {
     setLoading(true);
     setError(''); // Clear previous errors
 
-    fetch('http://localhost:7001/checkout', {
+    fetch('https://aritst-website-abwf.vercel.app/checkout', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

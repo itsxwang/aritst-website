@@ -485,4 +485,4 @@ function MainDetails({ id }: { id: string }) {
   );
 }
 
-export default MainDetails;
+export default MainDetails;  
