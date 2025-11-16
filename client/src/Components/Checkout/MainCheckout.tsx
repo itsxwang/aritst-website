@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { motion } from "framer-motion";
 
 // --- SVG Icon Components for better UI ---
@@ -81,7 +81,7 @@ const HomeIcon = () => (
 function MainCheckout() {
   // Your existing logic to get product details from URL params
   const arts = useParams()
-    .arts!
+    .arts!  
     .split("+")
     .map((art) => ({
       _id: art.split("=")[0],
@@ -103,27 +103,26 @@ function MainCheckout() {
   // State for loading, error, and success messages
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
-  const [success, setSuccess] = useState(false);
   useEffect(() => {
 
     type cartItem = {
       _id: string;
       quantity: number;
     }
-     const cart: cartItem[] | [] = JSON.parse(localStorage.getItem("cartItem") || "[]")!
+    const cart: cartItem[] | [] = JSON.parse(localStorage.getItem("cartItem") || "[]")!
 
-     for (const art of arts) {
-        const cartItem = cart.find((item) => item._id === art._id);
-        if (!cartItem || cartItem.quantity != art.quantity) {
-            window.location.href = "/";
-        }
-     }
-     if (cart.length === 0 || cart.length !== arts.length) {
+    for (const art of arts) {
+      const cartItem = cart.find((item) => item._id === art._id);
+      if (!cartItem || cartItem.quantity != art.quantity) {
         window.location.href = "/";
-     }
-     
-  
-     
+      }
+    }
+    if (cart.length === 0 || cart.length !== arts.length) {
+      window.location.href = "/";
+    }
+
+
+
   }, [arts]);
 
   // A generic handler to update state on input change
@@ -150,19 +149,17 @@ function MainCheckout() {
     })
       .then(res => {
         if (!res.ok) {
-          // Handle HTTP errors like 404 or 500
           throw new Error('Network response was not ok');
         }
         return res.json();
       })
       .then(data => {
-        setLoading(false);
         console.log(data);
         if (data.error) {
           setError(data.error);
         } else {
-          setSuccess(true);
           localStorage.removeItem("cartItem"); // Clear cart on successful order
+          window.location.href = '/confirmOrder';
         }
       })
       .catch(err => {
@@ -171,44 +168,6 @@ function MainCheckout() {
         console.log("Fetch error:", err);
       });
   };
-
-  // Conditional rendering for the success screen
-  if (success) {
-    return (
-      <motion.div
-        initial="initial"
-        animate="animate"
-        exit="exit"
-        className="flex-grow flex flex-col p-4 bg-gray-50 dark:bg-transparent"
-      >
-        <div className="flex-grow flex flex-col items-center justify-center text-center">
-          <motion.h1
-            initial={{ scale: 0.9, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            transition={{ delay: 0.2 }}
-            className="text-3xl font-bold text-gray-800 dark:text-white sm:text-4xl font-playfair"
-          >
-            Order Confirmed
-          </motion.h1>
-          <motion.div
-            initial={{ y: 20, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            transition={{ delay: 0.4 }}
-            className="mt-3"
-          >
-            <p className="mt-2 text-gray-600 dark:text-gray-300">Your order has been placed successfully.</p>
-            <p className="mt-2 text-gray-600 dark:text-gray-300">You will receive an email or phone call from us soon.</p>
-            <Link
-              to="/gallery"
-              className="mt-3 inline-block px-6 py-3 rounded-lg font-medium dark:bg-[#817565] dark:hover:bg-[#625a50] bg-[#817565] hover:bg-[#686055] text-white transition-colors duration-200 cursor-pointer"
-            >
-              Continue Exploring
-            </Link>
-          </motion.div>
-        </div>
-      </motion.div>
-    );
-  }
 
   // The main checkout form
   return (
@@ -382,3 +341,5 @@ function MainCheckout() {
 }
 
 export default MainCheckout;
+
+

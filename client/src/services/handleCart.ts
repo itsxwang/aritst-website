@@ -19,15 +19,15 @@ export async function addToCart(_id: string, quantityToAdd: number) {
 
     // ✅ FIX: Reconstruct the original total stock before validating.
     // Original Total Stock = (Stock left in DB) + (What's currently in our cart)
-    const originalTotalStock = artwork.stock_quantity + currentQuantityInCart;
+    const originalTotalStock = artwork.stock_quantity;
 
     // Now, validate against the original total stock.
-    if (currentQuantityInCart + quantityToAdd > originalTotalStock) {
+    if (currentQuantityInCart >= originalTotalStock) {
         console.warn("Not enough stock available. Total stock is", originalTotalStock);
-        return; 
+        return;
     }
 
-    
+
 
     let updatedCart;
     if (cartItem) {
@@ -51,8 +51,8 @@ export async function removeFromCart(_id: string, quantityToRemove: number) {
 
     const isFullRemoval = quantityToRemove >= cartItem.quantity;
 
-    
-    
+
+
     let updatedCart;
     if (isFullRemoval) {
         updatedCart = cart.filter((item) => item._id !== _id);
@@ -72,12 +72,12 @@ export async function fetchCart() {
         .map((artwork) => {
             const cartItem = cartData.find((item) => item._id === artwork._id);
             if (!cartItem) return null;
-            
+
             // ✅ FIX: Add a 'total_stock' property for the UI to use.
             const total_stock = artwork.stock_quantity + cartItem.quantity;
-            
-            return { 
-                ...artwork, 
+
+            return {
+                ...artwork,
                 quantity: cartItem.quantity,
                 total_stock: total_stock, // Pass the correct total stock to the UI
             };

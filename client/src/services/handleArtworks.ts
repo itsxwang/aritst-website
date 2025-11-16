@@ -30,7 +30,7 @@ export async function fetchAllArtoworks(): Promise<Artwork[]> {
 
 }
 
-export async function fetchArt(id: string) {
+export function fetchArt(id: string) {
   return fetchAllArtoworks().then((artoworks) => artoworks.find((art) => art._id === id));
 }
 

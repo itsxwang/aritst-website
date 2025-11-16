@@ -12,6 +12,7 @@ import ArtDetails from './Components/ArtDetails/ArtDetails.tsx'
 import Favourites from './Components/Favourites/Favourites.tsx'
 import Verify from './Components/Verify/Verify.tsx'
 import Checkout from './Components/Checkout/Checkout.tsx'
+import ConfirmOrder from './Components/Checkout/ConfirmOrder.tsx'
 
 
 const router = createBrowserRouter([
@@ -51,6 +52,10 @@ const router = createBrowserRouter([
   {
     path: '/checkout/:arts',
     element: <Checkout/>
+  },
+  {
+    path: '/confirmOrder',
+    element: <ConfirmOrder/>
   },
   {
     path: '/verify/:id',
