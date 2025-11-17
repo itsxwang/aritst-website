@@ -1,8 +1,7 @@
-import express from "express";
+import express, { Request, Response } from "express";
 import cors from "cors";
 import dotenv from "dotenv";
 import mongoose from "mongoose";
-import e, { Request, Response } from "express";
 
 import artworkRouter from "./router/artworkRouter";
 import checkoutRouter from "./router/checkoutRouter";
@@ -64,6 +63,7 @@ if (process.env.NODE_ENV === "development") {
   });
 }
 
-
-
-export default app;
+// ✅ Export handler for Vercel (required for serverless)
+export default function handler(req: Request, res: Response) {
+  return app(req, res);
+}
