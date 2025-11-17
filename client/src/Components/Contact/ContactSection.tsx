@@ -37,7 +37,7 @@ const ContactSection = () => {
     }
 
     try {
-      const res = await fetch("https://aritst-website-abwf.vercel.app/api/send-email", {
+      const res = await fetch("https://aritst-website-abwf.vercel.app/send-email", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ name, email: sender, message }),
