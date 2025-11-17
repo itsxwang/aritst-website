@@ -41,10 +41,10 @@ if (process.env.MONGO_URI) {
 
 // Routes
 app.get("/api/health", (_req, res) => res.json({ status: "ok" }));
-app.use(artworkRouter);
-app.use(checkoutRouter);
-app.use(emailRouter);
-app.use(verifyRouter);
+app.use("/api", artworkRouter);
+app.use("/api", checkoutRouter);
+app.use("/api", emailRouter);
+app.use("/api", verifyRouter);
 app.use("/404", (_req, res) => res.status(404).json({ error: "Not Found" }));
 
 // Error handling middleware
