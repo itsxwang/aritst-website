@@ -89,7 +89,7 @@ const ContactSection = () => {
             </div>
             <div>
               <h4 className="font-semibold text-lg text-black dark:text-white">Studio</h4>
-              <p className="text-gray-700 dark:text-gray-300">Portland, Oregon</p>
+              <p className="text-gray-700 dark:text-gray-300">India</p>
             </div>
           </div>
         </div>

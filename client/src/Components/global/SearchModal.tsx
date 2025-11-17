@@ -11,7 +11,7 @@ type artworksType = Awaited<ReturnType<typeof fetchAllArtoworks>>;
 interface SearchModalProps {
   isOpen: boolean;
   onClose: () => void;
-}
+ }
 
 const SearchModal: React.FC<SearchModalProps> = ({ isOpen, onClose }) => {
   const [artworks, setArtworks] = useState<artworksType>([]);
