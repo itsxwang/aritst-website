@@ -1,6 +1,7 @@
 import { Mail, MapPin } from "lucide-react";
 import { useState, useEffect } from "react";
 
+
 const ContactSection = () => {
   const [name, setName] = useState<string>('');
   const [email, setEmail] = useState<string>('');
@@ -37,7 +38,7 @@ const ContactSection = () => {
     }
 
     try {
-      const res = await fetch("https://aritst-website-abwf.vercel.app/send-email", {
+      const res = await fetch(`http://localhost:7001/send-email`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ name, email: sender, message }),

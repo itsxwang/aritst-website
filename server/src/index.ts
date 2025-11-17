@@ -44,7 +44,7 @@ app.get("/api/health", (_req, res) => res.json({ status: "ok" }));
 app.use(artworkRouter);
 app.use(checkoutRouter);
 app.use(emailRouter);
-app.use(verifyRouter);
+app.use("/verify",verifyRouter);
 app.use("/404", (_req, res) => res.status(404).json({ error: "Not Found" }));
 
 // Error handling middleware
@@ -55,15 +55,8 @@ app.use((err: any, _req: Request, res: Response) => {
   });
 });
 
-// ✅ ONLY for local development (not Vercel)
-if (process.env.NODE_ENV === "development") {
-  const PORT = process.env.BACKEND_PORT || 7001;
-  app.listen(PORT, () => {
-    console.log(`Server running on port ${PORT}`);
-  });
-}
-
-// ✅ Export handler for Vercel (required for serverless)
-export default function handler(req: Request, res: Response) {
-  return app(req, res);
-}
+// Start server
+const PORT = process.env.BACKEND_PORT || 7001;
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
+});

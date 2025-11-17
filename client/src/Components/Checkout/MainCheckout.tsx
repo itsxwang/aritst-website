@@ -77,39 +77,48 @@ const HomeIcon = () => (
 
 // Add animation variants
 
-
 function MainCheckout() {
   // Your existing logic to get product details from URL params
   const arts = useParams()
-    .arts!  
-    .split("+")
+    .arts!.split("+")
     .map((art) => ({
       _id: art.split("=")[0],
       quantity: parseInt(art.split("=")[1]),
     }));
 
-
-
+  type userDetails = {
+    name: string;
+    countryCode: string;
+    phone: string;
+    altPhone: string;
+    email: string;
+    address: string;
+  };
   // State to hold the form data
-  const [formData, setFormData] = useState({
-    name: "",
-    countryCode: "",
-    phone: "",
-    altPhone: "",
-    email: "",
-    address: "",
-  });
+  const [formData, setFormData] = useState(() =>
+    localStorage.getItem("pendingOrder")
+      ? (JSON.parse(localStorage.getItem("pendingOrder")!).userDetails as userDetails)
+      : {
+          name: "",
+          countryCode: "",
+          phone: "",
+          altPhone: "",
+          email: "",
+          address: "",
+        }
+  );
 
   // State for loading, error, and success messages
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
   useEffect(() => {
-
     type cartItem = {
       _id: string;
       quantity: number;
-    }
-    const cart: cartItem[] | [] = JSON.parse(localStorage.getItem("cartItem") || "[]")!
+    };
+    const cart: cartItem[] | [] = JSON.parse(
+      localStorage.getItem("cartItem") || "[]"
+    )!;
 
     for (const art of arts) {
       const cartItem = cart.find((item) => item._id === art._id);
@@ -120,13 +129,18 @@ function MainCheckout() {
     if (cart.length === 0 || cart.length !== arts.length) {
       window.location.href = "/";
     }
-
-
-
   }, [arts]);
 
+  useEffect(() => {
+    if (localStorage.getItem("pendingOrder") && formData.email) {
+      localStorage.removeItem("pendingOrder");
+    }
+  }, [formData]);
+
   // A generic handler to update state on input change
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
     const { name, value } = e.target;
     setFormData((prevState) => ({
       ...prevState,
@@ -137,33 +151,47 @@ function MainCheckout() {
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setLoading(true);
-    setError(''); // Clear previous errors
+    setError(""); // Clear previous errors
 
-    fetch('https://aritst-website-abwf.vercel.app/checkout', {
-      method: 'POST',
+    fetch(`http://localhost:7001/checkout`, {
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
       body: JSON.stringify({ userDetails: formData, arts }),
     })
-      .then(res => {
+      .then((res) => {
         if (!res.ok) {
-          throw new Error('Network response was not ok');
+          throw new Error("Network response was not ok");
         }
         return res.json();
       })
-      .then(data => {
+      .then((data) => {
         console.log(data);
         if (data.error) {
           setError(data.error);
+          console.log("datass error");
         } else {
+          if (data._id) {
+            // setError(
+            //   "Email not verified. Please verify your email before placing an order."
+            // );
+            setLoading(false);
+            localStorage.setItem(
+              "pendingOrder",
+              JSON.stringify({ userDetails: formData, arts })
+            );
+            window.location.href = `/verify/${data._id}`;
+            return;
+          }
+
           localStorage.removeItem("cartItem"); // Clear cart on successful order
-          window.location.href = '/confirmOrder';
+          window.location.href = "/confirmOrder";
         }
       })
-      .catch(err => {
+      .catch((err) => {
         setLoading(false);
-        setError('An unexpected error occurred. Please try again later.');
+        setError("An unexpected error occurred. Please try again later.");
         console.log("Fetch error:", err);
       });
   };
@@ -192,7 +220,6 @@ function MainCheckout() {
         </motion.div>
 
         <motion.form
-
           initial="initial"
           animate="animate"
           onSubmit={handleSubmit}
@@ -202,7 +229,10 @@ function MainCheckout() {
 
           {/* Name Field */}
           <div>
-            <label htmlFor="name" className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-1 block">
+            <label
+              htmlFor="name"
+              className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-1 block"
+            >
               Full Name
             </label>
             <div className="relative">
@@ -222,7 +252,10 @@ function MainCheckout() {
 
           {/* Phone Number Field with Country Code */}
           <div>
-            <label htmlFor="phone" className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-1 block">
+            <label
+              htmlFor="phone"
+              className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-1 block"
+            >
               Phone Number
             </label>
             <div className="flex items-center gap-2">
@@ -259,8 +292,12 @@ function MainCheckout() {
 
           {/* Alternate Phone Number Field (Optional) */}
           <div>
-            <label htmlFor="altPhone" className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-1 block">
-              Alternate Phone <span className="text-xs text-gray-500">(Optional)</span>
+            <label
+              htmlFor="altPhone"
+              className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-1 block"
+            >
+              Alternate Phone{" "}
+              <span className="text-xs text-gray-500">(Optional)</span>
             </label>
             <div className="relative">
               <PhoneIcon />
@@ -278,7 +315,10 @@ function MainCheckout() {
 
           {/* Email Field */}
           <div>
-            <label htmlFor="email" className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-1 block">
+            <label
+              htmlFor="email"
+              className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-1 block"
+            >
               Email Address
             </label>
             <div className="relative">
@@ -298,7 +338,10 @@ function MainCheckout() {
 
           {/* Address Field */}
           <div>
-            <label htmlFor="address" className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-1 block">
+            <label
+              htmlFor="address"
+              className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-1 block"
+            >
               Shipping Address
             </label>
             <div className="relative">
@@ -318,9 +361,7 @@ function MainCheckout() {
 
           {/* Error Message Display */}
           {error && (
-            <div className="text-center text-red-500 text-sm">
-              {error}
-            </div>
+            <div className="text-center text-red-500 text-sm">{error}</div>
           )}
 
           {/* Submit Button */}
@@ -330,7 +371,7 @@ function MainCheckout() {
               disabled={loading}
               className="disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer text-white bg-[#817565] hover:bg-[#625a50] transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#817565] dark:focus:ring-offset-gray-900 font-semibold w-full flex justify-center py-3 px-4 border border-transparent rounded-md shadow-sm text-sm"
             >
-              {loading ? 'Placing Order...' : 'Place Order'}
+              {loading ? "Placing Order..." : "Place Order"}
             </button>
           </div>
         </motion.form>
@@ -340,5 +381,3 @@ function MainCheckout() {
 }
 
 export default MainCheckout;
-
-

@@ -4,6 +4,8 @@ import { useState, useRef, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { motion } from "framer-motion";
 
+
+
 function MainVerify() {
   const [code, setCode] = useState(Array(6).fill(""));
   const [validMessage, setValidMessage] = useState("");
@@ -16,15 +18,15 @@ function MainVerify() {
 
   useEffect(() => {
     // Restore original fetch logic
-    fetch(`https://aritst-website-abwf.vercel.app/verify/${id}`).then((res) => {
-      if (!(res.ok)) {
+    fetch(`http://localhost:7001/verify/${id}`).then((res) => {
+      if (!res.ok) {
         return res.json().then((data) => {
           console.log(data);
           setValidMessage(data.message);
-        })
+        });
       }
-    })
-  }, [id])
+    });
+  }, [id]);
 
   /**
    * Handles changes in the input fields for the verification code.
@@ -51,7 +53,10 @@ function MainVerify() {
    * @param {React.KeyboardEvent<HTMLInputElement>} e - The keyboard event.
    * @param {number} index - The index of the input field.
    */
-  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>, index: number) => {
+  const handleKeyDown = (
+    e: React.KeyboardEvent<HTMLInputElement>,
+    index: number
+  ) => {
     if (e.key === "Backspace" && !code[index] && index > 0) {
       inputsRef.current[index - 1]?.focus();
     }
@@ -71,7 +76,7 @@ function MainVerify() {
 
     if (pastedData) {
       const newCode = Array(6).fill("");
-      pastedData.split('').forEach((char, index) => {
+      pastedData.split("").forEach((char, index) => {
         if (index < 6) {
           newCode[index] = char;
         }
@@ -94,21 +99,37 @@ function MainVerify() {
     console.log("Verification code:", finalCode);
 
     setLoading(true);
-    fetch(`https://aritst-website-abwf.vercel.app/verify/email`, {
+    fetch(`http://localhost:7001/verify/email`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ id, code: finalCode }),
-    }).then((res) => res.json()).then(data => {
-      console.log(data.message, data.error);
-      if (!(data.message) && data.error) {
-        return setError(data.error)
-      }
-      return setVerified(true)
-    }).catch((error) => {
-      return setError(`Some error occured: "${error.message}". Please try again later!`);
-    }).finally(() => {
-      setLoading(false);
     })
+      .then((res) => res.json())
+      .then((data) => {
+        console.log(data.message, data.error);
+        if (!data.message && data.error) {
+          return setError(data.error);
+        }
+
+        return localStorage.getItem("pendingOrder")
+          ? (window.location.href = `/checkout/${JSON.parse(
+              localStorage.getItem("pendingOrder") as string
+            )
+              .arts.map(
+                (art: { _id: string; quantity: number }) =>
+                  `${art._id}=${art.quantity}`
+              )
+              .join("+")}`)
+          : setVerified(true);
+      })
+      .catch((error) => {
+        return setError(
+          `Some error occured: "${error.message}". Please try again later!`
+        );
+      })
+      .finally(() => {
+        setLoading(false);
+      });
   };
 
   // Rendered when the verification link is invalid or expired
@@ -118,11 +139,17 @@ function MainVerify() {
         <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-4 font-[inter]">
           Error :(
         </h1>
-        <p className="text-gray-600 dark:text-gray-300 mb-1 text-center max-w-md">
+        <p className="text-gray-600 dark:text-gray-300 mb-1 text-center max-w-md text-[20px]">
           {validMessage}
         </p>
-        <p className="text-gray-600 dark:text-gray-300 text-center max-w-md">It seems like the link has expired or may never exist.</p>
-        <p className="text-gray-600 dark:text-gray-300 text-center max-w-md">You can try again.</p>
+
+        <p className="text-gray-600 dark:text-gray-300 text-center max-w-md text-[20px]">
+          It seems like the link has expired or may never exist.
+        </p>
+        <p className="text-gray-600 dark:text-gray-300 text-center max-w-md text-[20px]">
+          You can try again. If you already Verified your email address, then
+          you good to go.
+        </p>
       </div>
     );
   }
@@ -136,6 +163,9 @@ function MainVerify() {
         </h1>
         <p className="text-gray-600 dark:text-gray-300 mb-1 text-center max-w-md">
           Thanks! for subscribing to our newsletter.
+        </p>
+        <p className="text-gray-600 dark:text-gray-300 mb-1 text-center max-w-md">
+          Now you can also place orders with this email.
         </p>
       </div>
     );
@@ -193,28 +223,38 @@ function MainVerify() {
 
         {/* Verify Button */}
 
-        {
-          loading ? 
-
-        <button className="verify-button w-full flex items-center font-medium max-w-sm gap-2 justify-center py-3 px-6 bg-[#50483f] dark:bg-[#6b5f4e] text-white rounded-md cursor-not-allowed">
-          
-          Verifying... <svg className="animate-spin h-5 w-5 text-white mb-0.5" viewBox="0 0 24 24">
-                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
-                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z" />
-                  </svg>
-
-        </button>
-        :
-
-        <button
-          onClick={handleVerify}
-          className="verify-button py-3 px-6 rounded-md w-full max-w-sm bg-[#625a50] dark:bg-[#817565] 
+        {loading ? (
+          <button className="verify-button w-full flex items-center font-medium max-w-sm gap-2 justify-center py-3 px-6 bg-[#50483f] dark:bg-[#6b5f4e] text-white rounded-md cursor-not-allowed">
+            Verifying...{" "}
+            <svg
+              className="animate-spin h-5 w-5 text-white mb-0.5"
+              viewBox="0 0 24 24"
+            >
+              <circle
+                className="opacity-25"
+                cx="12"
+                cy="12"
+                r="10"
+                stroke="currentColor"
+                strokeWidth="4"
+              />
+              <path
+                className="opacity-75"
+                fill="currentColor"
+                d="M4 12a8 8 0 018-8v8z"
+              />
+            </svg>
+          </button>
+        ) : (
+          <button
+            onClick={handleVerify}
+            className="verify-button py-3 px-6 rounded-md w-full max-w-sm bg-[#625a50] dark:bg-[#817565] 
                      hover:bg-[#50483f] dark:hover:bg-[#6b5f4e] text-white font-medium 
                      shadow-md transition-all duration-300 transform hover:scale-105 cursor-pointer"
-        >
-          Verify
-        </button>
-        }
+          >
+            Verify
+          </button>
+        )}
 
         {/* Error Message */}
         {error && (
@@ -222,9 +262,20 @@ function MainVerify() {
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
-            className="p-3 mt-2 bg-red-100 text-red-700 rounded-md flex items-center justify-center gap-2  animate-fade-in">
-            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+            className="p-3 mt-2 bg-red-100 text-red-700 rounded-md flex items-center justify-center gap-2  animate-fade-in"
+          >
+            <svg
+              className="w-5 h-5"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+              />
             </svg>
             {error}
           </motion.div>

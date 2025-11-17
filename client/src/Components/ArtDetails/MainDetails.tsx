@@ -227,7 +227,7 @@ function MainDetails({ id }: { id: string }) {
       to={`/cart/${id}?quantity=${cartQuantity}`}
       className="block w-full"
     >
-      <Button className="font-[inter] bg-[#625a50] hover:bg-[#45403b] transition-colors duration-200 w-full py-3 text-lg font-medium text-black dark:text-white dark:bg-[#817565] dark:hover:bg-[#625a50]">
+      <Button className="font-[inter] bg-[#625a50] hover:bg-[#45403b] transition-colors duration-200 w-full py-3 text-lg font-medium text-white dark:text-white dark:bg-[#817565] dark:hover:bg-[#625a50]">
         Add To Cart
       </Button>
     </Link>
@@ -248,6 +248,8 @@ function MainDetails({ id }: { id: string }) {
         </div>
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
           <div className="relative flex flex-col items-center">
+            {/* ✅ FIX 1: Removed 'aspect-square'
+                The container now grows vertically based on the image's natural height */}
             <div
               ref={imageContainerRef}
               onMouseEnter={handleMouseEnter}
@@ -256,15 +258,15 @@ function MainDetails({ id }: { id: string }) {
               onTouchStart={handleTouchStart}
               onTouchMove={handleTouchMove}
               onTouchEnd={handleTouchEnd}
-              className="relative group aspect-square rounded-lg shadow-lg overflow-hidden w-full cursor-crosshair"
+              className="relative group rounded-lg shadow-lg overflow-hidden w-full cursor-crosshair"
             >
               <img
                 key={allImages[currentImageIndex]}
                 src={`/${allImages[currentImageIndex]}`}
                 alt={`${artWork.title} - view ${currentImageIndex + 1}`}
-                // ✅ FIX 1: Removed 'object-cover' to ensure 
-                // image stretches, matching the zoom pane's logic.
-                className="w-full h-full"
+                // ✅ FIX 2: Changed 'h-full' to 'h-auto'
+                // This makes the image use its natural aspect ratio.
+                className="w-full h-auto"
               />
               <div
                 style={{
@@ -290,10 +292,13 @@ function MainDetails({ id }: { id: string }) {
                 display: zoomActive ? 'block' : 'none',
                 backgroundImage: `url(/${allImages[currentImageIndex]})`,
                 backgroundPosition: `${backgroundPositionX}px ${backgroundPositionY}px`,
-                // ✅ FIX 2: Explicitly set width AND height to 200%
-                // to match the main image's stretch.
-                backgroundSize: `${zoomLevel * 100}% ${zoomLevel * 100}%`,
+                // ✅ FIX 3: Changed backgroundSize to scale proportionally
+                // '200% auto' scales width x2 and height proportionally, matching the <img>
+                backgroundSize: `${zoomLevel * 100}% auto`,
               }}
+              // This div is `h-full` of its parent. Since the parent's height
+              // is now set by the `h-auto` image, this zoom pane will
+              // automatically have the same natural aspect ratio.
               className="absolute top-[102%] left-0 lg:top-0 lg:left-[102%] w-full h-full border-2 rounded-lg shadow-xl hidden lg:block bg-no-repeat z-10 pointer-events-none"
             ></div>
             {allImages.length > 1 && (
@@ -485,4 +490,4 @@ function MainDetails({ id }: { id: string }) {
   );
 }
 
-export default MainDetails;  
+export default MainDetails;

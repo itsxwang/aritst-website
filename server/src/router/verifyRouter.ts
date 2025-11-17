@@ -4,8 +4,10 @@ const router = express.Router();
 
 
 
-router.post("/verify/newsletter", verifyNewsletter)
+router.post("/newsletter", verifyNewsletter)
 // if someone open valid page with random id, we are handling that
-router.get("/verify/:id", verifyId)
-router.post("/verify/email", verifyEmail)
+router.get("/:id", verifyId)
+router.post("/email", verifyEmail)
+
+
 export default router;

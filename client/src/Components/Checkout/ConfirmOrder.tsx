@@ -25,16 +25,18 @@ function ConfirmOrder() {
           transition={{ delay: 0.2 }}
           className="max-w-2xl text-center"
         >
-          <h1 className="text-5xl md:text-6xl font-bold mb-6 text-black dark:text-white font-playfair">
-            Order Confirmed! 🎉
-          </h1>
+            <p className="text-5xl md:text-6xl font-bold mb-6 text-black dark:text-white font-playfair flex items-center justify-center gap-2">🎉</p>
+            <h1 className="text-5xl md:text-6xl font-bold mb-6 text-black dark:text-white font-playfair flex items-center justify-center gap-2">
+            Order Confirmed ! 
+            </h1>
           
-          <p className="text-lg md:text-xl text-black dark:text-gray-100 mb-6">
-            Your order has been confirmed! We sent you a confirmation email.
+          
+          <p className="text-lg md:text-xl text-black dark:text-gray-100 mb-2.5">
+            Your order has been confirmed! Check your email for the details. 
           </p>
           
           <p className="text-base md:text-lg text-gray-700 dark:text-gray-300 mb-8">
-            Soon we will contact you regarding things related to your order, if needed.
+             We are excited to prepare this for you !
           </p>
 
           <motion.div

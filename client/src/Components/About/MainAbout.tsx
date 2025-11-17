@@ -1,11 +1,12 @@
 import React from "react";
 import { motion } from "framer-motion";
-import { useCountUp } from "../../hooks/useCountUp"; // ✅ import utility hook
+// import { useCountUp } from "../../hooks/useCountUp"; // ✅ import utility hook
 
 const MainAbout: React.FC = () => {
-  const artworksCount = useCountUp(150, 2000); // counts to 150 in 2s
-  const exhibitionsCount = useCountUp(25, 2000); // counts to 25 in 2s
+  // const artworksCount = useCountUp(150, 2000); // counts to 150 in 2s
+  // const exhibitionsCount = useCountUp(25, 2000); // counts to 25 in 2s
 
+  
   return (
     <div className="flex flex-col md:flex-row items-center justify-center gap-8 px-4 sm:px-6 md:px-12 lg:px-20 py-10 md:py-20 dark:text-white text-black dark:bg-transparent bg-white transition-colors duration-200">
       
@@ -30,7 +31,7 @@ const MainAbout: React.FC = () => {
         transition={{ duration: 0.8, delay: 0.2 }}
         className="w-full md:w-1/2 text-center md:text-left flex flex-col items-center md:items-start max-w-[650px]"
       >
-        <h2 className="font-bold mb-6 font-[playfair] text-3xl sm:text-4xl lg:text-5xl xl:text-6xl">
+        <h2 className="font-bold mb-6 font-[playfair] text-3xl sm:text-4xl lg:text-5xl xl:text-6xl self-center text-center">
           About Samridhi
         </h2>
 
@@ -38,15 +39,30 @@ const MainAbout: React.FC = () => {
           <strong>“Magic Colours of Samridhi”</strong> is a contemporary artist whose work explores the intersection of emotion and color. With over 15 years of experience, her paintings capture the essence of human experience through abstract forms and vibrant landscapes.
         </p>
 
-        <p className="leading-relaxed text-[1.1rem] mb-4 px-2 sm:px-0">
+        <p className="leading-relaxed text-[1.1rem] mb-4 px-2 sm:px-0 ">
           Born and raised in the Pacific Northwest, Samridhi draws inspiration from nature's ever-changing moods and the urban energy of city life. Her work has been featured in galleries across the country and is held in private collections worldwide.
         </p>
 
-        <p className="italic leading-relaxed text-[1.1rem] mb-6 px-2 sm:px-0">
+        <p className="italic leading-relaxed text-[1.1rem] mb-6 px-2 sm:px-0 text-center">
           "Art is the language of the soul. Through my paintings, I strive to create a dialogue between the viewer and their inner world, revealing beauty in both chaos and serenity."
         </p>
 
-        {/* Stats Section */}
+
+      {/* specific */}
+        <motion.blockquote
+          initial={{ opacity: 0, y: 18, scale: 0.98 }}
+          animate={{ opacity: 1, y: 0, scale: 1 }}
+          transition={{ duration: 0.8, delay: 0.25, ease: "easeOut" }}
+          className="w-full hover:scale-105 transition-transform duration-300 md:w-4/5 mx-auto bg-gradient-to-r from-[#fffaf0] via-[#fff6e8] to-white dark:from-[#0f1724] dark:via-[#111827] dark:to-[#0b1220] px-6 py-4 rounded-xl shadow-lg border border-gray-100 dark:border-gray-800 text-center mb-6"
+          aria-label="Artist quote"
+        >
+          <p className="italic text-[1.05rem] sm:text-[1.1rem] font-[playfair] text-black dark:text-gray-200">
+            “Bringing stories to life through art.”
+          </p>
+          <cite className="mt-2 block text-sm font-semibold text-gray-600 dark:text-gray-400">— Samridhi</cite>
+        </motion.blockquote>
+
+        {/* Stats Section
         <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 mt-8 justify-center md:justify-start w-full">
           <div className="flex-1 bg-[#e0dcd1] dark:bg-[#2a3042] px-6 py-4 rounded-md shadow-md text-center cursor-pointer transition duration-300 hover:scale-105">
             <h3 className="text-2xl font-bold font-playfair  italic sm:text-3xl">{artworksCount}+</h3>
@@ -60,7 +76,7 @@ const MainAbout: React.FC = () => {
               Gallery Exhibitions
             </p>
           </div>
-        </div>
+        </div> */}
       </motion.div>
     </div>
   );

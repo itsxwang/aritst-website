@@ -59,7 +59,7 @@ const router = createBrowserRouter([
   },
   {
     path: '/verify/:id',
-    element: <Verify/>
+    element: <Verify />
   },
   {
     path: '*',
