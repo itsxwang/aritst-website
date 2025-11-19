@@ -12,23 +12,19 @@ dotenv.config();
 
 const app = express();
 
-// CORS + JSON
 app.use(cors());
 app.use(express.json());
 
-// Global Mongo connection variable
 let isConnected = false;
 
 // 🔌 MongoDB Connection Function
 async function connectToMongoDB() {
   if (isConnected) return;
-
   try {
     await mongoose.connect(process.env.MONGO_URI as string, {
       serverSelectionTimeoutMS: 30000,
       socketTimeoutMS: 45000,
     });
-
     isConnected = true;
     console.log("Connected to MongoDB");
   } catch (error) {
@@ -36,31 +32,36 @@ async function connectToMongoDB() {
   }
 }
 
-// Connect automatically if URI exists
+// Connect only if URI exists
 if (process.env.MONGO_URI) {
   connectToMongoDB();
 } else {
-  console.warn("⚠️ MONGO_URI not set — skipping MongoDB connection.");
+  console.warn("MONGO_URI not set — skipping MongoDB connection.");
 }
 
 // Routes
 app.get("/api/health", (_req, res) => res.json({ status: "ok" }));
+app.use(artworkRouter);
+app.use(checkoutRouter);
+app.use(emailRouter);
+app.use("/verify",verifyRouter);
+app.use("/404", (_req, res) => res.status(404).json({ error: "Not Found" }));
 
-app.use("/api/artwork", artworkRouter);
-app.use("/api/checkout", checkoutRouter);
-app.use("/api/email", emailRouter);
-app.use("/api/verify", verifyRouter);
-
-app.use("/api/404", (_req, res) => res.status(404).json({ error: "Not Found" }));
-
-// Error handler
+// Error handling middleware
 app.use((err: any, _req: Request, res: Response) => {
   console.error("Error:", err);
-  res.status(err.status || 500).json({
-    error: err.message || "Internal Server Error",
+  res.status(err.status || 500).json({ 
+    error: err.message || "Internal Server Error" 
   });
 });
 
-// ❗ NO app.listen() FOR VERCEL ❗
-// Instead, export the serverless handler:
+// Start server
+if (process.env.NODE_ENV == "development") {
+  const PORT =  process.env.BACKEND_PORT || 7001;
+  app.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}`);
+  });
+}
+
+
 export default app;
