@@ -1,4 +1,3 @@
-import React from 'react'
 import Navbar from '../global/NavBar'
 import Footer from '../global/Footer'
 import Main404 from './Main404'
