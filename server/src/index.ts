@@ -12,22 +12,10 @@ dotenv.config();
 
 const app = express();
 
-// ✅ Configure CORS properly
-const allowedOrigins = [
-  'http://localhost:5173',           // Local dev
-  'http://localhost:3000',           // Alternative port
-  'https://aritst-website-frontend.vercel.app'  // Update with your actual Vercel URL
-];
-
+// ✅ Allow all origins temporarily for debugging
 app.use(cors({
-  origin: function (origin, callback) {
-    if (!origin || allowedOrigins.includes(origin)) {
-      callback(null, true);
-    } else {
-      callback(new Error('Not allowed by CORS'));
-    }
-  },
-  credentials: true,
+  origin: '*',
+  credentials: false,
   methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization']
 }));
