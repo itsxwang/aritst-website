@@ -55,8 +55,13 @@ app.use((err: any, _req: Request, res: Response) => {
   });
 });
 
-// Start server
-const PORT = process.env.BACKEND_PORT || 7001;
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
-});
+// Start server only in local development
+if (process.env.VERCEL === undefined) {
+  const PORT = process.env.BACKEND_PORT || 7001;
+  app.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}`);
+  });
+}
+
+// Export handler for Vercel serverless
+export default app;
