@@ -13,9 +13,11 @@
     }
   ],
   "env": {
-    "MONGO_URI": "@mongo_uri",
-    "GMAIL_USER": "@gmail_user",
-    "GMAIL_PASS": "@gmail_pass",
-    "RECEIVER_EMAIL": "@receiver_email"
+    "MONGO_URI": "@MONGO_URI",
+    "GMAIL_USER": "@GMAIL_USER",
+    "GMAIL_PASS": "@GMAIL_PASS",
+    "RECEIVER_EMAIL": "@RECEIVER_EMAIL",
+    "BACKEND_PORT": "@BACKEND_PORT",
+    "SECRET_KEY": "@SECRET_KEY"
   }
 }
