@@ -12,14 +12,7 @@ dotenv.config();
 
 const app = express();
 
-// ✅ Allow all origins temporarily for debugging
-app.use(cors({
-  origin: '*',
-  credentials: false,
-  methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization']
-}));
-
+app.use(cors());
 app.use(express.json());
 
 let isConnected = false;
@@ -62,13 +55,8 @@ app.use((err: any, _req: Request, res: Response) => {
   });
 });
 
-// Start server only in local development
-if (process.env.VERCEL === undefined) {
-  const PORT = process.env.BACKEND_PORT || 7001;
-  app.listen(PORT, () => {
-    console.log(`Server running on port ${PORT}`);
-  });
-}
-
-// Export handler for Vercel serverless
-export default app;
+// Start server
+const PORT = process.env.BACKEND_PORT || 7001;
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
+});
