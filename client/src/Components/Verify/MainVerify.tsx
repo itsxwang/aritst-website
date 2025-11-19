@@ -4,8 +4,6 @@ import { useState, useRef, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { motion } from "framer-motion";
 
-
-
 function MainVerify() {
   const [code, setCode] = useState(Array(6).fill(""));
   const [validMessage, setValidMessage] = useState("");
@@ -146,11 +144,19 @@ function MainVerify() {
         </p>
 
         <p className="text-gray-600 dark:text-gray-300 text-center max-w-md text-[20px]">
-          It seems like the link has expired or may never exist.
+          Try, by RELOAD the page!
+        </p>
+
+        <p className="text-gray-600 dark:text-gray-300 text-center max-w-md text-[20px]">
+          If it still not works then the link has expired or may never
+          exist.
         </p>
         <p className="text-gray-600 dark:text-gray-300 text-center max-w-md text-[20px]">
-          You can try again. If you already Verified your email address, then
-          you good to go.
+          You can try again from start, few minutes later.
+        </p>
+
+        <p>
+          If you already Verified your email address, then you good to go.
         </p>
       </div>
     );
