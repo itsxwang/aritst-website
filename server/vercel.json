@@ -11,13 +11,5 @@
       "src": "/(.*)",
       "dest": "src/index.ts"
     }
-  ],
-  "env": {
-    "MONGO_URI": "@MONGO_URI",
-    "GMAIL_USER": "@GMAIL_USER",
-    "GMAIL_PASS": "@GMAIL_PASS",
-    "RECEIVER_EMAIL": "@RECEIVER_EMAIL",
-    "BACKEND_PORT": "@BACKEND_PORT",
-    "SECRET_KEY": "@SECRET_KEY"
-  }
+  ]
 }
