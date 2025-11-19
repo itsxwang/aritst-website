@@ -153,7 +153,7 @@ function MainCheckout() {
     setLoading(true);
     setError(""); // Clear previous errors
 
-    fetch(`http://localhost:7001/checkout`, {
+    fetch(`${process.env.BACKEND_URL}/checkout`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

@@ -18,7 +18,7 @@ function MainVerify() {
 
   useEffect(() => {
     // Restore original fetch logic
-    fetch(`http://localhost:7001/verify/${id}`).then((res) => {
+    fetch(`${process.env.BACKEND_URL}/verify/${id}`).then((res) => {
       if (!res.ok) {
         return res.json().then((data) => {
           console.log(data);
@@ -99,7 +99,7 @@ function MainVerify() {
     console.log("Verification code:", finalCode);
 
     setLoading(true);
-    fetch(`http://localhost:7001/verify/email`, {
+    fetch(`${process.env.BACKEND_URL}/verify/email`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ id, code: finalCode }),

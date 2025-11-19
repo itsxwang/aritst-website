@@ -38,7 +38,7 @@ const ContactSection = () => {
     }
 
     try {
-      const res = await fetch(`http://localhost:7001/send-email`, {
+      const res = await fetch(`${process.env.BACKEND_URL}/send-email`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ name, email: sender, message }),

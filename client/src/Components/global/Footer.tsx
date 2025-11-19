@@ -16,7 +16,7 @@ function Footer() {
     
     console.log("reached 1");
     
-    fetch("http://localhost:7001/verify/newsletter", {
+    fetch(`${process.env.BACKEND_URL}/verify/newsletter`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ email }),
