@@ -22,20 +22,7 @@ const allowedOrigins = [
   "https://samstudio.com"        // replace if using custom domain
 ];
 
-app.use(
-  cors({
-    origin: (origin, callback) => {
-      if (!origin || allowedOrigins.includes(origin)) {
-        callback(null, true);
-      } else {
-        console.log("❌ CORS blocked:", origin);
-        callback(new Error("Not allowed by CORS"));
-      }
-    },
-    credentials: true,
-  })
-);
-
+app.use(cors({ origin: '*' }));
 app.use(express.json());
 
 // ---------------------
