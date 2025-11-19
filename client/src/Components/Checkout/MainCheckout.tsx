@@ -4,6 +4,9 @@ import { motion } from "framer-motion";
 
 // --- SVG Icon Components for better UI ---
 // You can move these to a separate file if you prefer
+
+
+
 const UserIcon = () => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
@@ -152,8 +155,9 @@ function MainCheckout() {
     e.preventDefault();
     setLoading(true);
     setError(""); // Clear previous errors
+    const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
-    fetch(`${process.env.BACKEND_URL}/checkout`, {
+    fetch(`${BACKEND_URL}/checkout`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

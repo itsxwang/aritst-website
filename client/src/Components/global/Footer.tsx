@@ -15,8 +15,10 @@ function Footer() {
     setLoading(true);
     
     console.log("reached 1");
+
+    const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
     
-    fetch(`${process.env.BACKEND_URL}/verify/newsletter`, {
+    fetch(`${BACKEND_URL}/verify/newsletter`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ email }),

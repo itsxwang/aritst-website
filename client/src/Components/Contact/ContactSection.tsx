@@ -38,7 +38,8 @@ const ContactSection = () => {
     }
 
     try {
-      const res = await fetch(`${process.env.BACKEND_URL}/send-email`, {
+      const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
+      const res = await fetch(`${BACKEND_URL}/send-email`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ name, email: sender, message }),

@@ -16,10 +16,11 @@ export type Artwork = {
   featured: boolean;
 };
 
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
 export async function fetchAllArtoworks(): Promise<Artwork[]> {
 
-  return await fetch(`${process.env.BACKEND_URL}/api/artworks`, {
+  return await fetch(`${BACKEND_URL}/api/artworks`, {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',
@@ -42,7 +43,7 @@ export function removeArtowork(id: string) {
 }
 
 export function updateArtwork(_id: string, artwork: Artwork) {
-  return fetch(`${process.env.BACKEND_URL}/api/artworks`, {
+  return fetch(`${BACKEND_URL}/api/artworks`, {
     method: 'PATCH',
     headers: {
       'Content-Type': 'application/json',

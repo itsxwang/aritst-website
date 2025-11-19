@@ -15,6 +15,7 @@ function MainFavourites() {
 
     // ✅ Fetch artworks on mount
     useEffect(() => {
+
         fetchAllArtoworks().then((artworks) => setAllArtworks(artworks));
     }, []);
 
