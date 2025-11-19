@@ -16,7 +16,7 @@ const app = express();
 const allowedOrigins = [
   'http://localhost:5173',           // Local dev
   'http://localhost:3000',           // Alternative port
-  'https://aritst-website-frontend.vercel.app/'  // Update with your actual Vercel URL
+  'https://aritst-website-frontend.vercel.app'  // Update with your actual Vercel URL
 ];
 
 app.use(cors({
