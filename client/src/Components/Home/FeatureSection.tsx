@@ -19,7 +19,7 @@ function FeatureSection() {
 
   // ✅ Filter featured artworks only
   useEffect(() => {
-    if (!artworks) return;
+    if (!Array.isArray(artworks)) return;
     setFeaturedItems(artworks.filter((item) => item.featured === true));
   }, [artworks]);
 

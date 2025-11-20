@@ -41,8 +41,8 @@ const MainSection = () => {
 
   // ✅ Filter artworks by selected types
   const filteredArtworks = useMemo(() => {
-    if (selectedTypes.length === 0) return allArtworks;
-    return allArtworks.filter((artwork) =>
+    if (selectedTypes.length === 0) return Array.isArray(allArtworks) ? allArtworks : [];
+    return (Array.isArray(allArtworks) ? allArtworks : []).filter((artwork) =>
       selectedTypes.some((type) => artwork.types.includes(type))
     );
   }, [selectedTypes, allArtworks]);

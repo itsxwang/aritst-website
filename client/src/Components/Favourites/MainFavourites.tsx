@@ -40,7 +40,7 @@ function MainFavourites() {
 
   // ✅ Only show favourite artworks
   const favouriteArtworks = useMemo(
-    () => allArtworks.filter(({ _id }) => isFavourite(_id)),
+    () => Array.isArray(allArtworks) ? allArtworks.filter(({ _id }) => isFavourite(_id)) : [],
     [allArtworks]
   );
 
