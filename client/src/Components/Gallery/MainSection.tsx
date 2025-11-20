@@ -36,7 +36,7 @@ const MainSection = () => {
 
   // ✅ Get all types dynamically
   const types = useMemo(() => {
-    return [...new Set(allArtworks.flatMap((artwork) => artwork.types))];
+    return [...new Set((Array.isArray(allArtworks) ? allArtworks : []).flatMap((artwork) => artwork.types))];
   }, [allArtworks]);
 
   // ✅ Filter artworks by selected types

@@ -46,8 +46,8 @@ function MainFavourites() {
 
   // ✅ Get all types dynamically (from favourites only)
   const types = useMemo(() => {
-    return [...new Set(favouriteArtworks.flatMap((artwork) => artwork.types))];
-  }, [favouriteArtworks]);
+    return [...new Set((Array.isArray(allArtworks) ? allArtworks : []).flatMap((artwork) => artwork.types))];
+  }, [allArtworks]);
 
   useEffect(() => {
     const storedTypes = localStorage.getItem("favouritesTypes");
