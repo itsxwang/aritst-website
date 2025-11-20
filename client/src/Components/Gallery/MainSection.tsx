@@ -14,10 +14,14 @@ const MainSection = () => {
   const [allArtworks, setAllArtworks] = useState<artworksType>([]);
   const [selectedTypes, setSelectedTypes] = useState<string[]>([]);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [loading, setLoading] = useState(true);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    fetchAllArtoworks().then((artworks) => setAllArtworks(artworks));
+    fetchAllArtoworks().then((artworks) => {
+      setAllArtworks(artworks);
+      setLoading(false);
+    });
   }, []);
 
   useEffect(() => {
@@ -66,7 +70,19 @@ const MainSection = () => {
     );
   };
 
-
+  // Skeleton loader componentin feature
+  const GallerySkeleton = ({ layout }: { layout: 'grid' | 'list' }) => (
+    <div className={`animate-pulse cursor-pointer bg-white dark:bg-gray-800 rounded-lg shadow-md transition-all duration-300 ease ${layout === 'list' ? 'flex flex-col space-x-6 hover:scale-105' : 'hover:-translate-y-2 p-0 transform hover:shadow-lg'}`}>
+      <div className={`transition-all duration-300 ease-in-out ${layout === 'grid' ? 'w-full h-64 bg-gray-300 dark:bg-gray-700 mb-4 rounded-t-lg' : 'w-full h-40 bg-gray-300 dark:bg-gray-700 rounded'}`}></div>
+      <div className={`${layout === 'list' ? 'flex-1 mt-3.5 px-4' : 'p-7 pb-4 pt-3'}`}>
+        <div className="h-6 bg-gray-300 dark:bg-gray-700 rounded w-2/3 mx-auto mb-2"></div>
+        <div className="h-4 bg-gray-200 dark:bg-gray-600 rounded w-1/2 mx-auto mb-2"></div>
+        <div className="h-4 bg-gray-200 dark:bg-gray-600 rounded w-3/4 mx-auto mb-2"></div>
+        <div className="h-6 bg-gray-300 dark:bg-gray-700 rounded w-1/3 mx-auto mb-2"></div>
+        <div className={`bg-gray-200 dark:bg-gray-600 rounded mt-3 ${layout === 'grid' ? 'h-10 w-full' : 'h-8 w-24 mx-auto mb-3.5'}`}></div>
+      </div>
+    </div>
+  );
 
   return (
     <section className="py-20 bg-white dark:bg-gradient-to-b dark:from-gray-900 dark:to-black">
@@ -168,76 +184,80 @@ const MainSection = () => {
           className={`grid gap-8 transition-all duration-500 ease-in-out ${layout === 'grid' ? 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3' : 'grid-cols-1'
             }`}
         >
-          {filteredArtworks.map((artwork) => (
-            <Link
-              to={`/art/${artwork._id}`}
-              key={artwork._id}
-              className={`cursor-pointer bg-white dark:bg-gray-800 rounded-lg shadow-md transition-all duration-300 ease ${layout === 'list'
-                ? 'flex flex-col space-x-6 hover:scale-105'
-                : 'hover:-translate-y-2 p-0 transform hover:shadow-lg'
-                }`}
-            >
-              {/* ✅ Image placeholder */}
-              <div
-                className={`transition-all duration-300 ease-in-out ${layout === 'grid'
-                  ? 'w-full h-64 bg-gray-300 dark:bg-gray-700 mb-4 rounded-t-lg'
-                  : 'w-full h-40 bg-gray-300 dark:bg-gray-700 rounded'
+          {loading
+            ? Array.from({ length: 3 }).map((_, i) => (
+              <GallerySkeleton key={i} layout={layout} />
+            ))
+            : filteredArtworks.map((artwork) => (
+              <Link
+                to={`/art/${artwork._id}`}
+                key={artwork._id}
+                className={`cursor-pointer bg-white dark:bg-gray-800 rounded-lg shadow-md transition-all duration-300 ease ${layout === 'list'
+                  ? 'flex flex-col space-x-6 hover:scale-105'
+                  : 'hover:-translate-y-2 p-0 transform hover:shadow-lg'
                   }`}
-                style={{
-                  backgroundImage: `url(${artwork.mainImage})`,
-                  backgroundSize: "cover",
-                  backgroundPosition: "center",
-                }}
-              ></div>
+              >
+                {/* ✅ Image placeholder */}
+                <div
+                  className={`transition-all duration-300 ease-in-out ${layout === 'grid'
+                    ? 'w-full h-64 bg-gray-300 dark:bg-gray-700 mb-4 rounded-t-lg'
+                    : 'w-full h-40 bg-gray-300 dark:bg-gray-700 rounded'
+                  }`}
+                  style={{
+                    backgroundImage: `url(${artwork.mainImage})`,
+                    backgroundSize: "cover",
+                    backgroundPosition: "center",
+                  }}
+                ></div>
 
-              {/* ✅ Artwork Details */}
-              <div className={`${layout === 'list' ? 'flex-1 mt-3.5 px-4' : ''}`}>
-                <h3 className="p-2 text-xl font-semibold mb-2 text-center text-black dark:text-white font-playfair">
-                  {artwork.title}
-                </h3>
+                {/* ✅ Artwork Details */}
+                <div className={`${layout === 'list' ? 'flex-1 mt-3.5 px-4' : ''}`}>
+                  <h3 className="p-2 text-xl font-semibold mb-2 text-center text-black dark:text-white font-playfair">
+                    {artwork.title}
+                  </h3>
 
-                <p className="text-gray-700 dark:text-gray-300 text-sm text-center">
-                  {artwork.medium} • {artwork.dimensions}
-                </p>
+                  <p className="text-gray-700 dark:text-gray-300 text-sm text-center">
+                    {artwork.medium} • {artwork.dimensions}
+                  </p>
 
 
-                <p className="text-gray-700 dark:text-gray-300 mt-2 text-[0.99rem] text-center font-[Intra]">
-                  {truncateDescription(artwork.description)}
-                </p>
+                  <p className="text-gray-700 dark:text-gray-300 mt-2 text-[0.99rem] text-center font-[Intra]">
+                    {truncateDescription(artwork.description)}
+                  </p>
 
-                <p className="text-gray-900 dark:text-white font-bold mt-3 text-center">
-                  ₹{artwork.price}
-                </p>
+                  <p className="text-gray-900 dark:text-white font-bold mt-3 text-center">
+                    ₹{artwork.price}
+                  </p>
 
-                {/* ✅ Button Logic */}
-                <div className={`${layout === 'grid' ? 'p-7 pb-4 pt-3' : 'pt-3 pb-5'}`}>
-                  {artwork.availability === "Reserved" ? (
-                    <button
-                      className={`w-full bg-yellow-500 dark:text-white text-gray-950 font-semibold py-2 rounded opacity-70 cursor-not-allowed`}
-                      disabled
-                    >
-                      Reserved
-                    </button>
-                  ) : artwork.stock_quantity === 0 ? (
-                    <button
-                      className={`w-full bg-gray-500 dark:text-white text-gray-950 font-semibold py-2 rounded opacity-70 cursor-not-allowed`}
-                      disabled
-                    >
-                      Out of Stock
-                    </button>
-                  ) : (
-                    <button
-                      onClick={(e) => { e.preventDefault(); e.stopPropagation(); window.location.href = `/cart/${artwork._id}?quantity=1` }}
-                      className={`cursor-pointer transition-all duration-300 ease-in-out bg-[#817565] font-semibold py-2 rounded text-white dark:text-white hover:bg-[#686055] dark:hover:bg-[#625a50] ${layout === 'grid' ? 'w-full' : 'w-auto px-6 mx-auto block'
-                        }`}
-                    >
-                      Add To Cart
-                    </button>
-                  )}
+                  {/* ✅ Button Logic */}
+                  <div className={`${layout === 'grid' ? 'p-7 pb-4 pt-3' : 'pt-3 pb-5'}`}>
+                    {artwork.availability === "Reserved" ? (
+                      <button
+                        className={`w-full bg-yellow-500 dark:text-white text-gray-950 font-semibold py-2 rounded opacity-70 cursor-not-allowed`}
+                        disabled
+                      >
+                        Reserved
+                      </button>
+                    ) : artwork.stock_quantity === 0 ? (
+                      <button
+                        className={`w-full bg-gray-500 dark:text-white text-gray-950 font-semibold py-2 rounded opacity-70 cursor-not-allowed`}
+                        disabled
+                      >
+                        Out of Stock
+                      </button>
+                    ) : (
+                      <button
+                        onClick={(e) => { e.preventDefault(); e.stopPropagation(); window.location.href = `/cart/${artwork._id}?quantity=1` }}
+                        className={`cursor-pointer transition-all duration-300 ease-in-out bg-[#817565] font-semibold py-2 rounded text-white dark:text-white hover:bg-[#686055] dark:hover:bg-[#625a50] ${layout === 'grid' ? 'w-full' : 'w-auto px-6 mx-auto block'
+                          }`}
+                      >
+                        Add To Cart
+                      </button>
+                    )}
+                  </div>
                 </div>
-              </div>
-            </Link>
-          ))}
+              </Link>
+            ))}
         </div>
       </div>
     </section>

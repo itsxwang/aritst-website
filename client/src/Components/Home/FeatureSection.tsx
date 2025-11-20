@@ -8,9 +8,13 @@ function FeatureSection() {
   // ✅ Fetch all artworks (will come from API later)
   const [artworks, setArtworks] = useState<Awaited<ReturnType<typeof fetchAllArtoworks>>>();
   const [featuredItems, setFeaturedItems] = useState<Artwork[]>([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetchAllArtoworks().then((artoworks) => setArtworks(artoworks));
+    fetchAllArtoworks().then((artoworks) => {
+      setArtworks(artoworks);
+      setLoading(false);
+    });
   }, []);
 
   // ✅ Filter featured artworks only
@@ -19,7 +23,21 @@ function FeatureSection() {
     setFeaturedItems(artworks.filter((item) => item.featured === true));
   }, [artworks]);
 
-  // ✅ Function to trim description safely (avoids overflow)
+  // Skeleton loader component
+  const FeatureSkeleton = () => (
+    <div className="animate-pulse bg-white dark:bg-gray-800 p-0 rounded-lg shadow-md transition-all duration-300 ease hover:scale-105">
+      <div className="w-full h-64 bg-gray-300 dark:bg-gray-700 mb-4 rounded-t-lg"></div>
+      <div className="p-4 text-left">
+        <div className="h-6 bg-gray-300 dark:bg-gray-700 rounded w-2/3 mx-auto mb-2"></div>
+        <div className="h-4 bg-gray-200 dark:bg-gray-600 rounded w-1/2 mx-auto mb-2"></div>
+        <div className="h-4 bg-gray-200 dark:bg-gray-600 rounded w-3/4 mx-auto mb-2"></div>
+        <div className="h-6 bg-gray-300 dark:bg-gray-700 rounded w-1/3 mx-auto mb-2"></div>
+      </div>
+      <div className="p-4 pt-0">
+        <div className="h-10 bg-gray-200 dark:bg-gray-600 rounded w-full"></div>
+      </div>
+    </div>
+  );
 
 
   return (
@@ -32,7 +50,11 @@ function FeatureSection() {
 
         {/* ✅ Grid layout */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-15">
-          {featuredItems.map((item) => (
+          {loading
+            ? Array.from({ length: 3 }).map((_, i) => (
+                <FeatureSkeleton key={i} />
+              ))
+            : featuredItems.map((item) => (
             <Link
               to={`/art/${item._id}`}
               key={item._id}
