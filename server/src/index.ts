@@ -4,10 +4,10 @@ import mongoose from "mongoose";
 import serverless from "serverless-http";
 import dotenv from "dotenv";
 
-import artworkRouter from "../router/artworkRouter";
-import checkoutRouter from "../router/checkoutRouter";
-import emailRouter from "../router/emailRouter";
-import verifyRouter from "../router/verifyRouter";
+import artworkRouter from "../src/router/artworkRouter";
+import checkoutRouter from "../src/router/checkoutRouter";
+import emailRouter from  "../src/router/emailRouter";
+import verifyRouter from  "../src/router/verifyRouter";
 
 dotenv.config();
 
