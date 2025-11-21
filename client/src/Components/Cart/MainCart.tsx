@@ -95,7 +95,7 @@ const CartItem = ({
                     </button>
                 </div>
                 <p className="font-semibold text-lg dark:text-white">
-                    ₹{(item.price * item.quantity).toFixed(2)}
+                    ₹{(item.price * item.quantity).toLocaleString("en-IN")}
                 </p>
             </div>
         </div>
@@ -110,7 +110,7 @@ const OrderSummary = ({ subtotal,url }: { subtotal: number, url: string }) => (
             <div className="space-y-3">
                 <div className="flex justify-between dark:text-white ">
                     <span>Subtotal</span>
-                    <span className="font-medium dark:text-white">₹{subtotal.toFixed(2)}</span>
+                    <span className="font-medium dark:text-white">₹{subtotal.toLocaleString("en-IN")}</span>
                 </div>
                 <div className="flex justify-between text-sm text-gray-500 dark:text-gray-400">
                     <span>Shipping</span>
@@ -120,7 +120,7 @@ const OrderSummary = ({ subtotal,url }: { subtotal: number, url: string }) => (
             <div className="border-t dark:border-gray-700 my-4"></div>
             <div className="flex justify-between font-bold text-lg mb-4 dark:text-white">
                 <span>Total</span>
-                <span>₹{subtotal.toFixed(2)}</span>
+                <span>₹{subtotal.toLocaleString("en-IN")}</span>
             </div>
             <button onClick={() => { window.location.href = url; }} className="cursor-pointer w-full py-3 rounded-lg font-semibold text-white bg-[#817565] hover:bg-[#625a50] transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#817565] dark:focus:ring-offset-gray-900">
                 Proceed to Checkout
