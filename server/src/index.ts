@@ -30,10 +30,14 @@ app.use(express.json());
 // ---------------------
 // MongoDB - Vercel Safe
 // ---------------------
-let cached = global.mongoose;
+// Fix global type for cache
+let cached = (globalThis as any).mongoose as {
+  conn: mongoose.Mongoose | null;
+  promise: Promise<mongoose.Mongoose> | null;
+};
 
 if (!cached) {
-  cached = global.mongoose = { conn: null, promise: null };
+  cached = (globalThis as any).mongoose = { conn: null, promise: null };
 }
 
 async function connectToMongoDB() {
