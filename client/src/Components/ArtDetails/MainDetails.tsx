@@ -178,6 +178,10 @@ function MainDetails({ id }: { id: string }) {
       .finally(() => setIsLoading(false)); // Stop loading regardless of success/failure
   }, [id]);
 
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }, [id]);
+
   // Calculations for the zoom pane
   const zoomLevel = 2;
   const backgroundPositionX = -lensPosition.x * zoomLevel;
