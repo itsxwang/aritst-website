@@ -20,6 +20,7 @@ import {
 import { FaWhatsapp } from "react-icons/fa";
 import { motion } from "framer-motion";
 import { FaXTwitter } from "react-icons/fa6";
+import useTitle from "../../hooks/useTitle";
 
 // --- Types ---
 type Artwork = Awaited<ReturnType<typeof fetchArt>>;
@@ -178,8 +179,9 @@ function MainDetails({ id }: { id: string }) {
       .finally(() => setIsLoading(false)); // Stop loading regardless of success/failure
   }, [id]);
 
+  useTitle(artWork ? artWork.title : "Artwork Details");
   useEffect(() => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    window.scrollTo({ top: 0, behavior: "smooth" });
   }, [id]);
 
   // Calculations for the zoom pane

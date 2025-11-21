@@ -5,11 +5,13 @@ import { useParams, useNavigate } from 'react-router-dom'
 import { useEffect, useRef, useState } from 'react'
 import { addToCart } from '../../services/handleCart'
 import { Loader2 } from "lucide-react";
+import useTitle from '../../hooks/useTitle'
 
 
 
 
 function Cart() {
+  useTitle("Cart");
 
   
   const { artId: productId } = useParams()

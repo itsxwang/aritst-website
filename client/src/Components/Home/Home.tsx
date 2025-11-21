@@ -3,8 +3,10 @@ import Hero from "./Hero"
 import Navbar from "../global/NavBar"
 import FeatureSection from "./FeatureSection";
 import Footer from "../global/Footer";
+import useTitle from "../../hooks/useTitle";
 
 function Home() {
+  document.title = "Samridhi Studio"
   return (
     <>
     <div id="homeNavParent" className={` dark:bg-gradient-to-b dark:from-gray-900 dark:to-black  sticky top-0 z-50`}>
