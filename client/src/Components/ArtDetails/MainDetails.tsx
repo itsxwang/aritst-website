@@ -376,7 +376,7 @@ function MainDetails({ id }: { id: string }) {
       disabled
       className="w-full py-3 text-lg font-semibold bg-gray-300 text-gray-500 dark:bg-gray-700 dark:text-gray-400 cursor-not-allowed"
     >
-      {isSold ? "Out of Stock" : "Reserved"}
+      {isSold ? "Sold" : "Reserved"}
     </Button>
   );
 

@@ -324,7 +324,7 @@ function MainFavourites() {
                         className="w-full bg-gray-500 dark:text-white text-gray-950 font-semibold py-2 rounded opacity-70 cursor-not-allowed"
                         disabled
                       >
-                        Out of Stock
+                        Sold
                       </button>
                     ) : (
                       <button

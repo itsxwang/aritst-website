@@ -6,10 +6,8 @@ const MainAbout: React.FC = () => {
   // const artworksCount = useCountUp(150, 2000); // counts to 150 in 2s
   // const exhibitionsCount = useCountUp(25, 2000); // counts to 25 in 2s
 
-  
   return (
     <div className="flex flex-col md:flex-row items-center justify-center gap-8 px-4 sm:px-6 md:px-12 lg:px-20 py-10 md:py-20 dark:text-white text-black dark:bg-transparent bg-white transition-colors duration-200">
-      
       {/* Left - Image */}
       <motion.div
         initial={{ opacity: 0, x: -50 }}
@@ -18,7 +16,7 @@ const MainAbout: React.FC = () => {
         className="md:h-[500px] flex justify-center mb-8 md:mb-0 self-center"
       >
         <img
-          src="channel_profile.jpg"
+          src="aboutimg.jpg"
           alt="Channel Profile"
           className="min-w-[250px] min-h-[250px] sm:w-[350px] sm:h-[350px] lg:w-[450px] lg:h-[450px] xl:w-[500px] xl:h-[500px] object-cover rounded-full shadow-lg"
         />
@@ -35,20 +33,28 @@ const MainAbout: React.FC = () => {
           About Samridhi
         </h2>
 
-        <p className="leading-relaxed mb-4 px-2 text-[1.1rem] sm:px-0">
-          <strong>“Magic Colours of Samridhi”</strong> is a contemporary artist whose work explores the intersection of emotion and color. With over 15 years of experience, her paintings capture the essence of human experience through abstract forms and vibrant landscapes.
+        <p className=" mb-4 px-2 text-[1.25rem] sm:px-0 font-[inter]">
+          Hi, I'm <span className="font-semibold">Samridhi</span> — a
+          23-year-old self-taught artist. Even though I studied B.Com, life
+          gently led me back to the thing that has been with me since childhood:
+          ART I’ve been painting professionally for two years now, discovering
+          more of my instinct and expression with every canvas.
         </p>
 
-        <p className="leading-relaxed text-[1.1rem] mb-4 px-2 sm:px-0 ">
-          Born and raised in the Pacific Northwest, Samridhi draws inspiration from nature's ever-changing moods and the urban energy of city life. Her work has been featured in galleries across the country and is held in private collections worldwide.
+        <p className="leading-relaxed text-[1.25rem] mb-4 px-2 sm:px-0">
+          For me, art is storytelling. I try to transform moments, emotions, and
+          little pieces of life into colours on a canvas. Every artwork I create
+          comes from a feeling — a memory, a place, or a story that I reimagine
+          in my own world of soft, poetic visuals.
         </p>
 
-        <p className="italic leading-relaxed text-[1.1rem] mb-6 px-2 sm:px-0 text-center">
-          "Art is the language of the soul. Through my paintings, I strive to create a dialogue between the viewer and their inner world, revealing beauty in both chaos and serenity."
+        <p className="italic leading-relaxed text-[1.25rem] mb-6 px-2 sm:px-0 text-center">
+          "Through my paintings, I blend imagination with reality, turning
+          ordinary moments into something magical. Welcome to my studio — where
+          every stroke holds a story.""
         </p>
 
-
-      {/* specific */}
+        {/* specific */}
         <motion.blockquote
           initial={{ opacity: 0, y: 18, scale: 0.98 }}
           animate={{ opacity: 1, y: 0, scale: 1 }}
@@ -59,7 +65,9 @@ const MainAbout: React.FC = () => {
           <p className="italic text-[1.05rem] sm:text-[1.1rem] font-[playfair] text-black dark:text-gray-200">
             “Bringing stories to life through art.”
           </p>
-          <cite className="mt-2 block text-sm font-semibold text-gray-600 dark:text-gray-400">— Samridhi</cite>
+          <cite className="mt-2 block text-sm font-semibold text-gray-600 dark:text-gray-400">
+            — Samridhi
+          </cite>
         </motion.blockquote>
 
         {/* Stats Section
