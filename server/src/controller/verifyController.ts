@@ -2,11 +2,42 @@ import { Request, Response } from "express";
 import nodemailer from "nodemailer";
 import dotenv from "dotenv";
 import { Verification, userEmails } from "../models/verifyModel";
+import mongoose from "mongoose";
 
 dotenv.config();
 
+// Ensure MongoDB connection before querying
+async function ensureConnection() {
+  if (mongoose.connection.readyState === 1) {
+    return; // Already connected
+  }
+
+  if (!process.env.MONGO_URI) {
+    throw new Error("MONGO_URI environment variable is not defined");
+  }
+
+  try {
+    await mongoose.connect(process.env.MONGO_URI, {
+      serverSelectionTimeoutMS: 10000,
+      socketTimeoutMS: 45000,
+      connectTimeoutMS: 10000,
+      maxPoolSize: 5,
+      minPoolSize: 1,
+      retryWrites: true,
+      w: "majority",
+    });
+    console.log("✅ Connected to MongoDB");
+  } catch (error) {
+    console.error("❌ Error connecting to MongoDB:", error);
+    throw error;
+  }
+}
+
 export async function verifyNewsletter(req: Request, res: Response) {
   try {
+    // Ensure connection before querying
+    await ensureConnection();
+
     const { email } = req.body;
     // check in Verification that if email already exists, then give error
     const existingVerifyEmail = await Verification.findOne({ email });
@@ -63,9 +94,12 @@ export async function verifyNewsletter(req: Request, res: Response) {
 
 // this will all for /verify page
 export async function verifyId(req: Request, res: Response) {
-  const id = req.params.id;
-
   try {
+    // Ensure connection before querying
+    await ensureConnection();
+
+    const id = req.params.id;
+
     const verification = await Verification.findById(id);
     if (!verification) {
       return res
@@ -73,7 +107,8 @@ export async function verifyId(req: Request, res: Response) {
         .json({ message: "Invalid or expired verification request." });
     }
     return res.json(verification);
-  } catch {
+  } catch (error: any) {
+    console.error("❌ Error:", error);
     return res
       .status(400)
       .json({ message: "Invalid or expired verification request." });
@@ -83,6 +118,9 @@ export async function verifyId(req: Request, res: Response) {
 // verify the email, if valid, save to userEmails
 export async function verifyEmail(req: Request, res: Response) {
   try {
+    // Ensure connection before querying
+    await ensureConnection();
+
     const { id, code } = req.body;
 
     const verification = await Verification.findById(id);
@@ -105,7 +143,7 @@ export async function verifyEmail(req: Request, res: Response) {
 
     return res.json({ message: "Email verified successfully" });
   } catch (err) {
-    console.error(err);
+    console.error("❌ Error:", err);
     return res
       .status(500)
       .json({ error: "Server error. Please try again later!" });

@@ -26,30 +26,56 @@ app.use(cors({ origin: '*' }));
 app.use(express.json());
 
 // ---------------------
-// MongoDB Connection
+// MongoDB Connection (Serverless-friendly)
 // ---------------------
 let isConnected = false;
 
 async function connectToMongoDB() {
-  if (isConnected) return;
+  // Check if already connected
+  if (isConnected) {
+    console.log("ℹ️  Using existing MongoDB connection");
+    return;
+  }
+
+  // Check if mongoose is already connecting or connected
+  if (mongoose.connection.readyState === 1) {
+    isConnected = true;
+    console.log("ℹ️  Using existing mongoose connection (readyState: 1)");
+    return;
+  }
+
+  if (!process.env.MONGO_URI) {
+    console.error("❌ MONGO_URI is not set");
+    throw new Error("MONGO_URI environment variable is not defined");
+  }
 
   try {
-    await mongoose.connect(process.env.MONGO_URI as string, {
-      serverSelectionTimeoutMS: 30000,
+    await mongoose.connect(process.env.MONGO_URI, {
+      serverSelectionTimeoutMS: 10000,
       socketTimeoutMS: 45000,
+      connectTimeoutMS: 10000,
+      maxPoolSize: 5,
+      minPoolSize: 1,
+      retryWrites: true,
+      w: "majority",
     });
 
     isConnected = true;
     console.log("✅ Connected to MongoDB");
   } catch (error) {
+    isConnected = false;
     console.error("❌ Error connecting to MongoDB:", error);
+    throw error;
   }
 }
 
+// Initialize connection on startup (for Railway/long-running servers)
 if (process.env.MONGO_URI) {
-  connectToMongoDB();
+  connectToMongoDB().catch((err) => {
+    console.error("Failed to connect to MongoDB on startup:", err);
+  });
 } else {
-  console.warn("⚠ MONGO_URI not set — skipping MongoDB connection.");
+  console.warn("⚠️  MONGO_URI not set — database connection will fail");
 }
 
 // ---------------------

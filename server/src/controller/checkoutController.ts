@@ -3,13 +3,45 @@ import dotenv from "dotenv";
 import artworkSchema from "../models/artworkModel";
 import nodemailer from "nodemailer";
 import { userEmails, Verification } from "../models/verifyModel";
+import mongoose from "mongoose";
 dotenv.config();
 
+// Ensure MongoDB connection before querying
+async function ensureConnection() {
+  if (mongoose.connection.readyState === 1) {
+    return; // Already connected
+  }
+
+  if (!process.env.MONGO_URI) {
+    throw new Error("MONGO_URI environment variable is not defined");
+  }
+
+  try {
+    await mongoose.connect(process.env.MONGO_URI, {
+      serverSelectionTimeoutMS: 10000,
+      socketTimeoutMS: 45000,
+      connectTimeoutMS: 10000,
+      maxPoolSize: 5,
+      minPoolSize: 1,
+      retryWrites: true,
+      w: "majority",
+    });
+    console.log("✅ Connected to MongoDB");
+  } catch (error) {
+    console.error("❌ Error connecting to MongoDB:", error);
+    throw error;
+  }
+}
+
 export const postCheckout = async (req: Request, res: Response) => {
-  const { name, email, address, phone, altPhone, countryCode } =
-    req.body.userDetails;
-  // check if email exists in userEmails collection
-  const existingEmail = await userEmails.findOne({ email });
+  try {
+    // Ensure connection before querying
+    await ensureConnection();
+
+    const { name, email, address, phone, altPhone, countryCode } =
+      req.body.userDetails;
+    // check if email exists in userEmails collection
+    const existingEmail = await userEmails.findOne({ email });
 
   if (!existingEmail) {
     // generate 6 digit random code
@@ -177,7 +209,13 @@ export const postCheckout = async (req: Request, res: Response) => {
       artworks: finalArtworks,
     });
   } catch (error: any) {
-    console.error("Checkout error:", error);
+    console.error("❌ Email sending error:", error);
+    return res
+      .status(500)
+      .json({ error: "Checkout failed", details: error.message });
+  }
+  } catch (error: any) {
+    console.error("❌ Checkout error:", error);
     return res
       .status(500)
       .json({ error: "Checkout failed", details: error.message });
