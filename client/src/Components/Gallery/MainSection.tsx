@@ -226,7 +226,7 @@ const MainSection = () => {
                   </p>
 
                   <p className="text-gray-900 dark:text-white font-bold mt-3 text-center">
-                    ₹{artwork.price}
+                    ₹{artwork.price.toLocaleString("en-IN")}
                   </p>
 
                   {/* ✅ Button Logic */}

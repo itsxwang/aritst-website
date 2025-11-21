@@ -83,7 +83,7 @@ function FeatureSection() {
                 </p>
 
                 {/* ✅ Price */}
-                <p className="text-gray-900 dark:text-gray-100 font-bold mt-3 text-center">₹{item.price ? (item.price).toFixed(2) : "N/A"}</p>
+                <p className="text-gray-900 dark:text-gray-100 font-bold mt-3 text-center">₹{item.price ? (item.price).toLocaleString("en-IN") : "N/A"}</p>
               </div>
 
               {/* ✅ Button Section */}

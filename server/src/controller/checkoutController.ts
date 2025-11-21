@@ -161,10 +161,9 @@ export const postCheckout = async (req: Request, res: Response) => {
           <strong>Artwork:</strong> ${finalArtworks
             .map((art) => art.title)
             .join(", ")}<br>
-          <strong>Amount:</strong> ${finalArtworks.reduce(
-            (total, art) => total + art.totalprice,
-            0
-          )} INR
+          <strong>Amount:</strong> ${finalArtworks
+            .reduce((total, art) => total + art.totalprice, 0)
+            .toLocaleString("en-IN")} INR
         </p>
       </div>
 
