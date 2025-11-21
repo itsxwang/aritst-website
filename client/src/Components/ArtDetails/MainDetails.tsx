@@ -11,6 +11,7 @@ import {
   ChevronDown,
   Link as LinkIcon,
 } from "lucide-react";
+import { FaInstagram } from "react-icons/fa";
 import "./styles/MainDetails.css";
 import {
   addToFavourites,
@@ -123,6 +124,7 @@ const MainDetailsSkeleton = () => {
                 </div>
 
                 <div className="flex space-x-2">
+                  <div className="h-10 w-10 bg-gray-200 dark:bg-gray-800 rounded"></div>
                   <div className="h-10 w-10 bg-gray-200 dark:bg-gray-800 rounded"></div>
                   <div className="h-10 w-10 bg-gray-200 dark:bg-gray-800 rounded"></div>
                 </div>
@@ -548,7 +550,16 @@ function MainDetails({ id }: { id: string }) {
                   )}
                 </div>
                 <div className="relative flex space-x-2 self-start sm:self-center">
-                  <div className="relative">
+                  <div className="relative flex flex-row gap-2">
+                    <a
+                      href={artWork.instaVideoLink}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="border border-gray-300 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-800 px-4 py-2 rounded-md transition-colors cursor-pointer flex items-center"
+                      aria-label="View on Instagram"
+                    >
+                      <FaInstagram className="h-5 w-5 text-pink-500" />
+                    </a>
                     <Button
                       onClick={handleShare}
                       className="border border-gray-300 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-800"
